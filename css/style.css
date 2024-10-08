@@ -1,0 +1,1231 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: "Unbounded", sans-serif;
+}
+
+body {
+    background-color: #f4ebdc;
+}
+
+
+body::-webkit-scrollbar {
+    width: 12px;
+    /* width of the entire scrollbar */
+}
+
+body::-webkit-scrollbar-track {
+    background: #f4ebdc;
+    /* color of the tracking area */
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #5c2308;
+    /* color of the scroll thumb */
+    border-radius: 20px;
+    /* roundness of the scroll thumb */
+    border: 3px solid #5c2308;
+    /* creates padding around scroll thumb */
+}
+
+
+/* HEADER PC ---------------------------------------------------------------------*/
+#header {
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding-left: 10%;
+    padding-right: 10%;
+    width: 100%;
+    height: 100px;
+    background-color: #B22222;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+#header img {
+    width: 175px;
+    height: auto;
+    image-rendering: auto;
+    /* Suaviza a imagem para uma aparência melhor */
+    image-rendering: -webkit-optimize-contrast;
+    /* Suaviza a imagem em navegadores WebKit */
+    image-rendering: crisp-edges;
+    /* Evita bordas serrilhadas, se possível */
+    image-rendering: pixelated;
+}
+
+#header-menu {
+    height: 100%;
+    align-items: center;
+    display: flex;
+}
+
+ul {
+    list-style: none;
+    display: flex;
+}
+
+ul li {
+    margin-right: 15px;
+    margin-left: 15px;
+}
+
+ul li a {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: 700;
+    color: white;
+    transition: all ease 0.3s;
+}
+
+ul li a:hover {
+    color: rgb(206, 206, 131);
+
+
+}
+
+ul li a>svg path {
+
+    fill: antiquewhite;
+    transition: all ease 0.3s;
+}
+
+ul li a:hover>svg path {
+    fill: rgb(206, 206, 131);
+}
+
+ul li a i {
+    font-size: 30px;
+}
+
+#header-carrinho {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#header-carrinho button {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-decoration: none;
+    background-color: #B22222;
+    border: none;
+    cursor: pointer;
+
+}
+
+#header-carrinho button span {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #5c2308;
+    background-color: antiquewhite;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 25px;
+    margin-bottom: -20px;
+    text-decoration: none;
+    transition: all ease 0.3s;
+}
+
+#header-carrinho button:hover>span {
+
+    background-color: white;
+}
+
+#header-carrinho button>svg path {
+
+    fill: white;
+    transition: all ease 0.3s;
+}
+
+#header-carrinho button:hover>svg path {
+    fill: antiquewhite;
+}
+
+
+
+/* HEADER MOBILE ---------------------------------------------------------------------*/
+
+#header-menu-mobile {
+    position: fixed;
+    left: 0;
+    top: 85px;
+    height: 70px;
+    width: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+    display: none;
+    align-items: center;
+    padding-left: 10px;
+    background-color: #B22222;
+}
+
+#header-menu-mobile a {
+    box-shadow: scroll;
+    font-size: 0.7rem;
+}
+
+#header-menu-mobile::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+    /* width of the entire scrollbar */
+}
+
+#header-menu-mobile::-webkit-scrollbar-track {
+    background: #ee7700;
+    /* color of the tracking area */
+}
+
+#header-menu-mobile::-webkit-scrollbar-thumb {
+    background-color: #5c2308;
+    /* color of the scroll thumb */
+    border-radius: 20px;
+    /* roundness of the scroll thumb */
+    border: 3px solid #5c2308;
+    /* creates padding around scroll thumb */
+}
+
+/* INICIO ---------------------------------------------------------------------*/
+#inicio {
+    margin-top: 100px;
+    height: 70vh;
+    background-image: url('/imagens/fundo.png');
+    background-color: #471803;
+    background-size: cover;
+    background-position: center;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+
+}
+
+/* CARDAPIO ---------------------------------------------------------------------*/
+#cardapio {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+}
+
+#cardapio p {
+    color: white;
+    background-color: #B22222;
+    text-align: center;
+    text-decoration: none;
+    font-size: 2rem;
+    font-weight: 800;
+    padding: 5px;
+    padding-left: 30px;
+    padding-right: 30px;
+    border-radius: 20px;
+
+
+}
+
+/* LISTAGEM DOS LANCHES ---------------------------------------------------------------------*/
+#salgados,
+#batatas,
+#bebidas,
+#pasteisEspeciais,
+#pastel,
+#sorvete,
+#hamburguer {
+    padding: 5%;
+    width: 100%;
+    margin-top: 20px;
+}
+
+#salgados h1,
+#batatas h1,
+#bebidas h1,
+#pasteisEspeciais h1,
+#pastel h1,
+#sorvete h1,
+#hamburguer h1 {
+    margin-left: 60px;
+    color: #5c2308;
+    font-size: 2.6rem;
+}
+
+.container-salgados,
+.container-batatas,
+.container-bebidas,
+.container-pasteisEspeciais,
+.container-pastel,
+.container-sorvete,
+.container-hamburguer {
+    width: 100%;
+
+    height: 400px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.salgados-seta-right,
+.salgados-seta-left,
+.batatas-seta-right,
+.batatas-seta-left,
+.bebidas-seta-right,
+.bebidas-seta-left,
+.pasteisEspeciais-seta-right,
+.pasteisEspeciais-seta-left,
+.pastel-seta-right,
+.pastel-seta-left,
+.sorvete-seta-right,
+.sorvete-seta-left,
+.hamburguer-seta-right,
+.hamburguer-seta-left {
+    height: 100%;
+    width: 40px;
+    background-color: #f4ebdc;
+    display: flex;
+    align-items: center;
+}
+
+.batatas-seta-right,
+.batatas-seta-left {
+    opacity: 0;
+}
+
+
+.salgados-seta-right,
+.batatas-seta-right,
+.bebidas-seta-right,
+.pasteisEspeciais-seta-right,
+.pastel-seta-right,
+.sorvete-seta-right,
+.hamburguer-seta-right {
+    justify-content: end;
+}
+
+.salgados-seta-right svg,
+.salgados-seta-left svg,
+.batatas-seta-right svg,
+.batatas-seta-left svg,
+.bebidas-seta-right svg,
+.bebidas-seta-left svg,
+.pasteisEspeciais-seta-right svg,
+.pasteisEspeciais-seta-left svg,
+.pastel-seta-right svg,
+.pastel-seta-left svg,
+.sorvete-seta-right svg,
+.sorvete-seta-left svg,
+.hamburguer-seta-right svg,
+.hamburguer-seta-left svg {
+    width: 40px;
+}
+
+.salgados-seta-left>svg path,
+.salgados-seta-right>svg path,
+.batatas-seta-left>svg path,
+.batatas-seta-right>svg path,
+.bebidas-seta-left>svg path,
+.bebidas-seta-right>svg path,
+.pasteisEspeciais-seta-left>svg path,
+.pasteisEspeciais-seta-right>svg path,
+.pastel-seta-left>svg path,
+.pastel-seta-right>svg path,
+.sorvete-seta-left>svg path,
+.sorvete-seta-right>svg path,
+.hamburguer-seta-right>svg path,
+.hamburguer-seta-left>svg path {
+
+    fill: #471803;
+    transition: all ease 0.3s;
+    cursor: pointer;
+}
+
+.batatas-seta-left>svg path,
+.batatas-seta-right>svg path {
+    cursor: none;
+}
+
+.salgados-seta-right svg:hover path,
+.salgados-seta-left svg:hover path,
+.batatas-seta-right svg:hover path,
+.batatas-seta-left svg:hover path,
+.bebidas-seta-right svg:hover path,
+.bebidas-seta-left svg:hover path,
+.pasteisEspeciais-seta-right svg:hover path,
+.pasteisEspeciais-seta-left svg:hover path,
+.pastel-seta-right svg:hover path,
+.pastel-seta-left svg:hover path,
+.sorvete-seta-right svg:hover path,
+.sorvete-seta-left svg:hover path,
+.hamburguer-seta-right svg:hover path,
+.hamburguer-seta-left svg:hover path {
+    fill: #ee7700;
+}
+
+.salgados-listarea,
+.batatas-listarea,
+.bebidas-listarea,
+.pasteisEspeciais-listarea,
+.pastel-listarea,
+.sorvete-listarea,
+.hamburguer-listarea {
+    height: 100%;
+    width: 100%;
+
+    overflow: hidden;
+}
+
+.salgados-list,
+.batatas-list,
+.bebidas-list,
+.pasteisEspeciais-list,
+.pastel-list,
+.sorvete-list,
+.hamburguer-list {
+    height: 100%;
+    width: 3400px;
+    margin-left: 0px;
+    display: flex;
+    align-items: center;
+    transition: all ease 0.3s;
+}
+
+.pasteisEspeciais-list {
+    width: 1700px;
+}
+
+.batatas-list {
+    width: 1020px;
+}
+
+.batatas-list,
+.pastel-list {
+    width: 3740px;
+}
+
+.sorvete-list {
+    width: 4280px;
+}
+
+.salgados-item,
+.batatas-item,
+.bebidas-item,
+.pasteisEspeciais-item,
+.pastel-item,
+.sorvete-item,
+.hamburguer-item {
+    width: 300px;
+    height: 350px;
+    background-color: #471803;
+    margin-left: 20px;
+    margin-right: 20px;
+    border-radius: 40px;
+}
+
+.salgados-item-area1,
+.batatas-item-area1,
+.bebidas-item-area1,
+.pasteisEspeciais-item-area1,
+.pastel-item-area1,
+.sorvete-item-area1,
+.hamburguer-item-area1 {
+    width: 100%;
+    background-color: #fe8824;
+    height: 45%;
+    border-radius: 40px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.salgados-item-area1 img,
+.batatas-item-area1 img,
+.bebidas-item-area1 img,
+.pasteisEspeciais-item-area1 img,
+.pastel-item-area1 img,
+.sorvete-item-area1 img,
+.hamburguer-item-area1 img {
+    height: 80%;
+}
+
+.sorvete-item-area1 img {
+    height: 230.5px;
+    margin-top: -100px;
+}
+
+.salgados-item-area2,
+.batatas-item-area2,
+.bebidas-item-area2,
+.pasteisEspeciais-item-area2,
+.pastel-item-area2,
+.sorvete-item-area2,
+.hamburguer-item-area2 {
+    width: 100%;
+    padding: 1rem;
+
+}
+
+.salgados-item-area2 h2,
+.batatas-item-area2 h2,
+.bebidas-item-area2 h2,
+.pasteisEspeciais-item-area2 h2,
+.pastel-item-area2 h2,
+.sorvete-item-area2 h2,
+.hamburguer-item-area2 h2 {
+    color: #ee7700;
+    font-size: 1.3rem;
+    line-height: 20px;
+}
+
+.salgados-item-area2 p,
+.batatas-item-area2 p,
+.bebidas-item-area2 p,
+.pasteisEspeciais-item-area2 p,
+.pastel-item-area2 p,
+.sorvete-item-area2 p,
+.hamburguer-item-area2 p {
+    color: antiquewhite;
+    font-size: 0.7rem;
+    margin-top: 5px;
+}
+
+.salgados-item-area3,
+.batatas-item-area3,
+.bebidas-item-area3,
+.pasteisEspeciais-item-area3,
+.pastel-item-area3,
+.sorvete-item-area3,
+.hamburguer-item-area3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.salgados-item-area3 h2,
+.batatas-item-area3 h2,
+.bebidas-item-area3 h2,
+.pasteisEspeciais-item-area3 h2,
+.pastel-item-area3 h2,
+.sorvete-item-area3 h2,
+.hamburguer-item-area3 h2 {
+    color: #ee7700;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+}
+
+.salgados-item-area3 h2 span,
+.batatas-item-area3 h2 span,
+.bebidas-item-area3 h2 span,
+.pasteisEspeciais-item-area3 h2 span,
+.pastel-item-area3 h2 span,
+.sorvete-item-area3 h2 span,
+.hamburguer-item-area3 h2 span {
+    font-size: 1rem;
+}
+
+.salgados-item-area3 .salgados-plus,
+.batatas-item-area3 .batatas-plus,
+.bebidas-item-area3 .bebidas-plus,
+.pasteisEspeciais-item-area3 .pasteisEspeciais-plus,
+.pastel-item-area3 .pastel-plus,
+.sorvete-item-area3 .sorvete-plus,
+.hamburguer-item-area3 .hamburguer-plus {
+    border: 2px solid #f4ebdc;
+    border-radius: 15px;
+    padding: 0.8rem;
+    margin-left: 30px;
+    cursor: pointer;
+    transition: all ease 0.3s;
+}
+
+.sorvete-item-area3 .sorvete-plus {
+    margin-left: 0;
+}
+
+.salgados-item-area3 .salgados-plus:hover,
+.batatas-item-area3 .batatas-plus:hover,
+.bebidas-item-area3 .bebidas-plus:hover,
+.pasteisEspeciais-item-area3 .pasteisEspeciais-plus:hover,
+.pastel-item-area3 .pastel-plus:hover,
+.sorvete-item-area3 .sorvete-plus:hover,
+.hamburguer-item-area3 .hamburguer-plus:hover {
+    background-color: #f4ebdc;
+}
+
+.salgados-plus svg,
+.batatas-plus svg,
+.bebidas-plus svg,
+.pasteisEspeciais-plus svg,
+.pastel-plus svg,
+.sorvete-plus svg,
+.hamburguer-plus svg {
+    fill: #f4ebdc;
+}
+
+.salgados-plus:hover>svg path,
+.batatas-plus:hover>svg path,
+.bebidas-plus:hover>svg path,
+.pasteisEspeciais-plus:hover>svg path,
+.pastel-plus:hover>svg path,
+.sorvete-plus:hover>svg path,
+.hamburguer-plus:hover>svg path {
+
+    fill: #5c2308;
+}
+
+/* MODAL PRODUTO ---------------------------------------------------------------------*/
+.produto-modal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(92, 35, 8, 0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.show {
+    display: flex;
+}
+
+@keyframes scale-in {
+    0% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+    }
+
+    100% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+}
+
+.produto {
+    transition: all ease 0.4s;
+    max-width: 900px;
+    background-color: #ee7700;
+    border-radius: 40px;
+    box-shadow: 0px 0px 15px #111;
+    display: flex;
+    -webkit-animation: scale-in 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940);
+    animation: scale-in 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940);
+
+}
+
+.produto-img {
+    height: 50vh;
+    width: 250px;
+    background-color: #f4ebdc;
+    border-radius: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.produto-img img {
+    width: 80%;
+}
+
+.produto-informacoes {
+    height: 50vh;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.produto-informacoes-area1 {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    padding-top: 2.5rem;
+}
+
+.produto-informacoes-area1 h2 {
+    color: #f4ebdc;
+    font-size: 1.3rem;
+}
+
+.produto-informacoes-area1 p {
+    color: #471803;
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+.produto-informacoes-area2 {
+    padding: 1rem 1.5rem;
+    padding-top: 0;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+}
+
+.produto-informacoes-area2 h3 {
+    color: #bf5900;
+    font-size: 0.9rem;
+}
+
+.produto-informacoes-area2 h2 {
+    color: #f4ebdc;
+    font-weight: 500;
+    font-size: 2rem;
+}
+
+.produto-quantidade {
+    display: flex;
+    align-items: center;
+    border: 2px solid #f4ebdc;
+    border-radius: 60px;
+    overflow: hidden;
+}
+
+.produto-quantidade h3 {
+    color: #f4ebdc;
+    font-weight: 500;
+    font-size: 2rem;
+    margin-right: 1rem;
+    margin-left: 1rem;
+}
+
+.produto-quantidade button {
+    width: 50px;
+    height: 50px;
+    border: none;
+    cursor: pointer;
+    transition: all ease 0.3s;
+}
+
+.produto-quantidade button:hover {
+    background-color: #5c2308;
+}
+
+.produto-quantidade button h1 {
+    color: #ee7700;
+    font-size: 2.2rem;
+    font-weight: 500;
+}
+
+.produto-informacoes-area3 {
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.produto-informacoes-area3 button {
+    font-size: 0.9rem;
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+#add {
+    background-color: #5c2308;
+    color: #ee7700;
+    border-radius: 30px;
+    padding: 1.2rem;
+    transition: all ease 0.3s;
+
+}
+
+#add:hover {
+    background-color: #371200;
+}
+
+.cancela {
+    background-color: #ee7700;
+    color: #f4ebdc;
+    margin-left: 1rem;
+    font-size: 1.1rem;
+    transition: all ease 0.3s;
+}
+
+.cancela:hover {
+    color: #5c2308;
+}
+
+@keyframes slidein {
+    from {
+        height: 100%;
+        width: 0
+    }
+
+    to {
+        height: 100%;
+        width: 700px;
+    }
+}
+
+@keyframes slideout {
+    from {
+        height: 100%;
+        width: 700px
+    }
+
+    to {
+        height: 100%;
+        width: 0px;
+    }
+}
+
+/* MODAL CARRINHO ---------------------------------------------------------------------*/
+.modal-carrinho {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(196, 102, 35, 0.8);
+    display: none;
+    align-items: center;
+    justify-content: end;
+}
+
+.carrinho {
+    width: 700px;
+    height: 100vh;
+    background-color: #371200;
+    border-top-left-radius: 40px;
+    border-bottom-left-radius: 40px;
+    animation-duration: 0.8s;
+    animation-name: slidein;
+    padding: 5%;
+    overflow: scroll;
+}
+
+.carrinho::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+    /* width of the entire scrollbar */
+}
+
+.carrinho-seta {
+    padding: 1rem 0rem;
+    display: flex;
+    justify-content: space-around;
+}
+
+.carrinho-seta h3 {
+    color: #f4ebdc;
+    font-weight: 500;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.carrinho-seta h3 span {
+    color: #ee7700;
+}
+
+.carrinho-seta button {
+    background-color: #371200;
+    border: none;
+    cursor: pointer;
+}
+
+.carrinho-seta a>svg path {
+
+    fill: #ee7700;
+    transition: all ease 0.3s;
+
+}
+
+.carrinho-seta a:hover>svg path {
+
+    fill: #f4ebdc;
+}
+
+.carrinho-seta button>svg path {
+
+    fill: #ee7700;
+    transition: all ease 0.3s;
+
+}
+
+.carrinho-seta button:hover>svg path {
+
+    fill: #f4ebdc;
+}
+
+.carrinho-seupedido {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ee7700;
+    font-size: 1.5rem;
+}
+
+.carrinho-item {
+    display: flex;
+    background-color: #5c2308;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 1.3rem;
+    padding: 1rem;
+    margin-top: 20px;
+}
+
+.carrinho-item div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carrinho-item h2 {
+    font-size: 0.9rem;
+    color: #f4ebdc;
+}
+
+.carrinho-item h3 {
+    font-size: 0.9rem;
+    color: #471803;
+    background-color: #ee7700;
+    border-radius: 1rem;
+    padding: 5px;
+    margin-right: 10px;
+}
+
+.carrinho-item h4 {
+    color: #ee7700;
+    font-weight: 500;
+    font-size: 1.3rem;
+}
+
+.carrinho-item button {
+    background-color: #5c2308;
+    border: none;
+    padding: 0.3rem;
+    border-radius: 1rem;
+    margin-left: 2px;
+    cursor: pointer;
+}
+
+.carrinho-item button span {
+
+    color: #ee7700;
+    transition: all ease 0.3s;
+    cursor: pointer;
+}
+
+.carrinho-item button:hover>span {
+
+    color: #f4ebdc;
+}
+
+.area-adicionar-mais-itens {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 1rem;
+}
+
+.area-adicionar-mais-itens button {
+    padding: 1rem;
+    padding-left: 4rem;
+    padding-right: 4rem;
+    background-color: #ee7700;
+    border: none;
+    border-radius: 2rem;
+    color: #371200;
+    font-weight: 600;
+    cursor: pointer;
+    transform: scale(0.95);
+    transition: all ease 0.3s;
+}
+
+.area-adicionar-mais-itens button:hover {
+    transform: scale(1);
+    background-color: #bf5900;
+}
+
+.total-itens {
+    border-top: 1px solid #ee7700;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.total-itens h1 {
+    font-size: 1.8rem;
+    color: #f4ebdc;
+    font-weight: 400;
+}
+
+.total-itens h2 {
+    color: #f4ebdc;
+    font-size: 1.8rem;
+    font-weight: 400;
+}
+
+.show {
+    display: flex;
+}
+
+footer {
+    width: 100%;
+    padding: 7rem;
+    background-color: #371200;
+}
+
+/* RESPONSIVIDADE ---------------------------------------------------------------------*/
+@media (max-width: 1400px) {
+    #header {
+
+        padding-left: 5%;
+        padding-right: 5%;
+
+    }
+}
+
+@media (max-width: 1200px) {
+    #header {
+        height: 85px;
+        padding-left: 10%;
+        padding-right: 10%;
+
+    }
+
+    #header img {
+        width: 125px;
+        height: auto;
+        image-rendering: auto;
+        /* Suaviza a imagem para uma aparência melhor */
+        image-rendering: -webkit-optimize-contrast;
+        /* Suaviza a imagem em navegadores WebKit */
+        image-rendering: crisp-edges;
+        /* Evita bordas serrilhadas, se possível */
+        image-rendering: pixelated;
+    }
+
+    #header-menu {
+        display: none;
+    }
+
+    #header-menu-mobile {
+        display: flex;
+
+    }
+
+    #inicio {
+        margin-top: 155px;
+        height: 40vh;
+        background-image: url('fundo-celular.png');
+        background-color: #471803;
+        background-size: cover;
+        background-position: center;
+    }
+
+    #salgados,
+    #batatas,
+    #bebidas,
+    #pasteisEspeciais,
+    #pastel,
+    #sorvete,
+    #hamburguer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    #salgados h1,
+    #batatas h1,
+    #bebidas h1,
+    #pasteisEspeciais h1,
+    #pastel h1,
+    #sorvete h1,
+    #hamburguer h1 {
+        margin-left: 0px;
+    }
+
+    .batatas-seta-right,
+    .batatas-seta-left {
+        opacity: 1;
+    }
+
+    .batatas-seta-left>svg path,
+    .batatas-seta-right>svg path {
+        cursor: pointer;
+    }
+
+}
+
+@media(max-width: 460px) {
+
+    #salgados,
+    #batatas,
+    #bebidas,
+    #pasteisEspeciais,
+    #pastel,
+    #sorvete,
+    #hamburguer {
+        padding: 0%;
+        width: 100%;
+
+    }
+
+    .salgados-item,
+    .batatas-item,
+    .bebidas-item,
+    .pasteisEspeciais-item,
+    .pastel-item,
+    .sorvete-item,
+    .hamburguer-item {
+        width: calc(100vw - 80px);
+        height: 350px;
+        background-color: #471803;
+        margin-left: 0px;
+        margin-right: 20px;
+        border-radius: 40px;
+    }
+
+    .salgados-list,
+    .batatas-list,
+    .bebidas-list,
+    .pasteisEspeciais-list,
+    .pastel-list .sorvete-list,
+    .hamburguer-list {
+
+        width: calc(10* (100vw - 20px));
+
+    }
+}
+
+@media(max-width: 670px) {
+
+    .produto {
+        flex-direction: column;
+        width: 95vw;
+    }
+
+    .produto-img {
+        height: 20vh;
+        width: 100%;
+        background-color: #f4ebdc;
+        border-radius: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .produto-img img {
+        width: auto;
+        height: 80%;
+    }
+
+    .produto-informacoes-area1 {
+        width: 100%;
+        padding: 1.5rem;
+        padding-top: 1.5rem;
+    }
+
+    :root {
+        font-size: 14px;
+
+    }
+
+    .produto-informacoes {
+        height: auto;
+        width: 100%;
+    }
+}
+
+#conteudo {
+    width: 400px;
+    text-align: center;
+}
+
+#botaoCaptura {
+    padding: 1rem;
+    padding-left: 4rem;
+    padding-right: 4rem;
+    background-color: #ee7700;
+    border: none;
+    border-radius: 2rem;
+    color: #371200;
+    font-weight: 600;
+    cursor: pointer;
+    transform: scale(0.95);
+    transition: all ease 0.3s;
+}
+
+#botaoCaptura:hover {
+    transform: scale(1);
+    background-color: #bf5900;
+}
+
+#botaoCaptura:disabled {
+    background-color: #ee7700;
+    cursor: not-allowed;
+}
+
+#loader {
+    display: none;
+    margin-top: 15px;
+    border: 4px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 4px solid #bf5900;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+#controles {
+    padding: 1rem;
+    padding-left: 4rem;
+    padding-right: 4rem;
+    background-color: #ee7700;
+    border: none;
+    border-radius: 2rem;
+    color: #371200;
+    font-weight: 600;
+    cursor: pointer;
+    transform: scale(0.95);
+    transition: all ease 0.3s;
+}
+
+#mensagemOrientacao {
+    font-size: 14px;
+    color: #000000;
+    text-align: center;
+    transition: opacity 0.5s ease-in-out;
+}
+
+#linkDownload {
+    font-size: 14px;
+    color: #111;
+    text-decoration: none;
+}
+
+#linkDownload:hover {
+    color: blue;
+    text-decoration: underline;
+}
