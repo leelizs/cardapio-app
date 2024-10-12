@@ -1101,7 +1101,7 @@ botaoAddMaisItens.addEventListener('click', () => { // Botão adicionar mais ite
 
 function addCarrinho(keyEscolhido, itemEscolhido) {
     const compra = new Object();
-    
+
     // Verifique se o elemento existe antes de acessar o valor
     const quantidadeElemento = document.querySelector('.produto-quantidade .quantidade');
     if (quantidadeElemento) {
@@ -1167,7 +1167,6 @@ function contagemCarrinho() { //funcao que conta quantos itens tem no carrinho
     carrinhoQuantidade.innerText = qt;
 }
 
-
 function mostrarPedidos() {
     modalCarrinho.classList.add("show");
     document.querySelector('.carrinho').style.animationName = 'slidein';
@@ -1179,14 +1178,15 @@ function mostrarPedidos() {
         const carrinhodiv1 = document.createElement("div");
         const carrinhoqt = document.createElement("h3");
         const carrinhoNome = document.createElement("h2");
+        const carrinhoDescricao = document.createElement("p"); // Novo elemento para a descrição
         const carrinhodiv2 = document.createElement("div");
         const carrinhoPrice = document.createElement("h4");
-        const carrinhoDescricao = document.createElement("p"); // Novo elemento para a descrição
         const valorReal = item.quantidade * item.produto.price.toFixed(2);
         const carrinhoButton = document.createElement("button");
         const carrinhoSpan = document.createElement("span");
 
         carrinhoItem.classList.add("carrinho-item");
+        carrinhodiv1.classList.add("carrinho-detalhes"); // Classe adicional para estilização
         carrinhoqt.innerText = item.quantidade + "x";
         carrinhoNome.innerText = item.produto.type + "\n" + item.produto.name;
         carrinhoPrice.innerText = "R$" + valorReal.toFixed(2);
@@ -1199,8 +1199,7 @@ function mostrarPedidos() {
         if (item.descricao) {
             carrinhoDescricao.innerText = item.descricao; // Adiciona a descrição ao carrinho
             carrinhoDescricao.style.fontStyle = "italic"; // Estilo em itálico para a descrição
-            carrinhoDescricao.style.color = "#white"; // Cor da descrição
-            carrinhoItem.appendChild(carrinhoDescricao); // Adiciona a descrição ao item do carrinho
+            carrinhoDescricao.style.color = "#fff"; // Cor da descrição
         }
 
         document.querySelector('.carrinho .total-itens h2').innerText = "R$" + totalItens.toFixed(2);
@@ -1209,6 +1208,7 @@ function mostrarPedidos() {
         carrinhodiv2.appendChild(carrinhoButton);
         carrinhodiv1.appendChild(carrinhoqt);
         carrinhodiv1.appendChild(carrinhoNome);
+        carrinhodiv1.appendChild(carrinhoDescricao); // Colocando a descrição abaixo do nome
         carrinhoItem.appendChild(carrinhodiv1);
         carrinhoItem.appendChild(carrinhodiv2);
 
@@ -1223,6 +1223,8 @@ function mostrarPedidos() {
         carrinhoProdutos.appendChild(carrinhoItem);
     });
 }
+
+
 
 document.addEventListener('DOMContentLoaded', function () {
     // Adiciona o evento ao botão de captura (que agora finaliza a compra)
@@ -1243,7 +1245,8 @@ function finalizarECapturarPedido() {
     });
 }
 
-// Função para capturar o pedido e enviar pelo WhatsApp
+let downloadFeito = false; // Variável para controlar o estado do download
+
 function capturarPedido() {
     return new Promise((resolve, reject) => {
         const botao = document.getElementById('botaoCaptura');
@@ -1257,56 +1260,87 @@ function capturarPedido() {
         botao.disabled = true;
         mensagemOrientacao.style.opacity = '0';
 
+        // Adiciona a classe para estilização durante a captura
+        elementoParaCaptura.classList.add('captura');
+
         // Captura o conteúdo da página usando html2canvas
-        html2canvas(elementoParaCaptura).then(canvas => {
-            // Converte a imagem para uma URL base64
-            const imagemDataURL = canvas.toDataURL('image/png');
+        html2canvas(elementoParaCaptura, {
+            backgroundColor: '#ffffff',
+            useCORS: true,
+            allowTaint: false,
+            scale: window.devicePixelRatio || 2, // Ajusta para a densidade de pixels do dispositivo
+            logging: true,
+            width: 1600, // Define uma largura fixa para a captura
+            height: elementoParaCaptura.scrollHeight, // Captura toda a altura do conteúdo
+        }).then(canvas => {
+            // Remove a classe de captura para restaurar o estilo original
+            elementoParaCaptura.classList.remove('captura');
 
-            // Remove qualquer link de download existente
-            const linkExistente = document.getElementById('linkDownload');
-            if (linkExistente) {
-                linkExistente.remove();
+            if (canvas) {
+                // Converte a imagem para uma URL base64
+                const imagemDataURL = canvas.toDataURL('image/png');
+
+                // Remove qualquer link de download existente
+                const linkExistente = document.getElementById('linkDownload');
+                if (linkExistente) {
+                    linkExistente.remove();
+                }
+
+                // Gera um nome de arquivo único com a data e hora atual
+                const agora = new Date();
+                const timestamp = `${agora.getFullYear()}${String(agora.getMonth() + 1).padStart(2, '0')}${String(agora.getDate()).padStart(2, '0')}_${String(agora.getHours()).padStart(2, '0')}${String(agora.getMinutes()).padStart(2, '0')}${String(agora.getSeconds()).padStart(2, '0')}`;
+                const nomeArquivo = `captura_${timestamp}.png`;
+
+                // Cria um link temporário para download da imagem
+                const link = document.createElement('a');
+                link.id = 'linkDownload';
+                link.href = imagemDataURL;
+                link.download = nomeArquivo;
+                link.textContent = `(${nomeArquivo})`;
+                containerControles.appendChild(link);
+
+                // Mensagem de orientação para o usuário
+                mensagemOrientacao.style.opacity = '1';
+
+                // Gera uma URL para enviar a mensagem pelo WhatsApp
+                const numeroWhatsApp = '5511913421009';
+                const mensagemTexto = encodeURIComponent('Olá! Este print é o meu pedido. Confira:');
+
+                // Abre o WhatsApp com a mensagem de texto
+                window.open(`https://wa.me/${numeroWhatsApp}?text=${mensagemTexto}`, '_blank');
+
+                // Adiciona um evento de clique para o link de download
+                link.addEventListener('click', () => {
+                    downloadFeito = true; // Marca que o download foi feito
+                    link.remove(); // Remove o link de download após ser clicado
+                });
+
+                // Oculta o loader e reabilita o botão
+                loader.style.display = 'none';
+                botao.disabled = false;
+
+                // Resolve a Promise após a captura e envio
+                resolve();
+            } else {
+                console.error('Erro ao gerar a imagem. Canvas está vazio.');
+                mensagemOrientacao.textContent = 'Ocorreu um erro ao capturar a tela. Por favor, tente novamente.';
+                mensagemOrientacao.style.opacity = '1';
+                loader.style.display = 'none';
+                botao.disabled = false;
+                reject();
             }
-
-            // Gera um nome de arquivo único com a data e hora atual
-            const agora = new Date();
-            const timestamp = `${agora.getFullYear()}${String(agora.getMonth() + 1).padStart(2, '0')}${String(agora.getDate()).padStart(2, '0')}_${String(agora.getHours()).padStart(2, '0')}${String(agora.getMinutes()).padStart(2, '0')}${String(agora.getSeconds()).padStart(2, '0')}`;
-            const nomeArquivo = `captura_${timestamp}.png`;
-
-            // Cria um link temporário para download da imagem
-            const link = document.createElement('a');
-            link.id = 'linkDownload';
-            link.href = imagemDataURL;
-            link.download = nomeArquivo;
-            link.textContent = `(${nomeArquivo})`;
-            containerControles.appendChild(link);
-
-            // Exibe uma mensagem de orientação para o usuário
-            mensagemOrientacao.style.opacity = '1';
-
-            // Gera uma URL para enviar a mensagem pelo WhatsApp
-            const numeroWhatsApp = '5511913421009'; // Substitua pelo número de telefone desejado
-            const mensagemTexto = encodeURIComponent('Olá Denize! Este print é o meu pedido.');
-
-            // Abre o WhatsApp com a mensagem de texto
-            window.open(`https://wa.me/${numeroWhatsApp}?text=${mensagemTexto}`, '_blank');
-
-            // Oculta o loader e reabilita o botão
-            loader.style.display = 'none';
-            botao.disabled = false;
-
-            // Resolve a Promise após a captura e envio
-            resolve();
         }).catch(() => {
-            // Em caso de erro, exibe uma mensagem de falha
             mensagemOrientacao.textContent = 'Ocorreu um erro ao capturar a tela. Por favor, tente novamente.';
             mensagemOrientacao.style.opacity = '1';
             loader.style.display = 'none';
             botao.disabled = false;
-            reject(); // Rejeita a Promise em caso de erro
+            elementoParaCaptura.classList.remove('captura'); // Remove a classe em caso de erro
+            reject();
         });
     });
 }
+
+
 
 // Função para finalizar a compra
 function finalizarCompra() {
@@ -1315,6 +1349,10 @@ function finalizarCompra() {
     produtosCarrinho = []; // Limpa o array em memória
     contagemCarrinho(); // Atualiza a contagem no display
     mostrarPedidos(); // Atualiza a exibição do carrinho
+
+    // Redefine o total
+    total = "------"; // Certifique-se de que a variável total está definida no escopo apropriado
+    document.querySelector('.contador-carrinho').innerText = total; // Atualiza a exibição do total
 }
 
 const menuItens = document.querySelectorAll('#header-menu a[href^="#"]'); //pega todos a
