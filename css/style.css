@@ -780,6 +780,18 @@ ul li a i {
     }
 }
 
+/* Estilo para o campo de descrição no modal */
+#produto-descricao {
+    width: 100%; /* Largura total do container */
+    height: 80px; /* Altura do campo */
+    padding: 10px; /* Espaçamento interno */
+    margin-top: 10px; /* Margem acima do campo */
+    border: 1px solid #ccc; /* Borda cinza clara */
+    border-radius: 4px; /* Bordas arredondadas */
+    font-size: 16px; /* Tamanho da fonte */
+    resize: none; /* Impede redimensionamento manual */
+}
+
 /* MODAL CARRINHO ---------------------------------------------------------------------*/
 .modal-carrinho {
     position: fixed;
@@ -805,6 +817,14 @@ ul li a i {
     animation-name: slidein;
     padding: 5%;
     overflow: scroll;
+}
+
+/* Estilo para a descrição no carrinho */
+.carrinho-item p {
+    font-size: 14px; /* Tamanho da fonte */
+    color: white; /* Cor do texto */
+    margin: 5px 0; /* Margens acima e abaixo */
+    font-family: "Unbounded", sans-serif;
 }
 
 .carrinho::-webkit-scrollbar {

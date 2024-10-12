@@ -364,6 +364,24 @@ hamburgueres.map((item, index) => {
 
         quantidade.innerHTML = numeroQuantidade;
 
+        // Verifica se o campo de descrição personalizada já existe
+        let descricaoPersonalizada = document.querySelector('#produto-descricao');
+        if (!descricaoPersonalizada) {
+            descricaoPersonalizada = document.createElement('textarea');
+            descricaoPersonalizada.id = 'produto-descricao';
+            descricaoPersonalizada.placeholder = 'Observação: ';
+            const descricaoPersonalizadaContainer = document.createElement('div');
+            descricaoPersonalizadaContainer.classList.add('descricao-personalizada');
+            descricaoPersonalizadaContainer.appendChild(descricaoPersonalizada);
+
+            // Adicionar o campo de descrição ao modal
+            const modalInfoArea = document.querySelector(".produto-informacoes-area1");
+            modalInfoArea.appendChild(descricaoPersonalizadaContainer);
+        }
+
+        // Limpa o campo de descrição ao abrir a modal
+        descricaoPersonalizada.value = ''; // Remova essa linha se quiser manter o texto ao abrir a modal novamente.
+
         buttonLess.addEventListener('click', () => {
             numeroQuantidade = numeroQuantidade - 1;
             if (numeroQuantidade <= 0) {
@@ -451,6 +469,24 @@ sorvetes.map((item, index) => {
         modalImg.src = sorvetes[index].img;
         quantidade.innerHTML = numeroQuantidade;
 
+        // Verifica se o campo de descrição personalizada já existe
+        let descricaoPersonalizada = document.querySelector('#produto-descricao');
+        if (!descricaoPersonalizada) {
+            descricaoPersonalizada = document.createElement('textarea');
+            descricaoPersonalizada.id = 'produto-descricao';
+            descricaoPersonalizada.placeholder = 'Observação: ';
+            const descricaoPersonalizadaContainer = document.createElement('div');
+            descricaoPersonalizadaContainer.classList.add('descricao-personalizada');
+            descricaoPersonalizadaContainer.appendChild(descricaoPersonalizada);
+
+            // Adicionar o campo de descrição ao modal
+            const modalInfoArea = document.querySelector(".produto-informacoes-area1");
+            modalInfoArea.appendChild(descricaoPersonalizadaContainer);
+        }
+
+        // Limpa o campo de descrição ao abrir a modal
+        descricaoPersonalizada.value = ''; // Remova essa linha se quiser manter o texto ao abrir a modal novamente.
+
         buttonLess.addEventListener('click', () => { //Botão de tirar 1 item do modal 1
             numeroQuantidade = numeroQuantidade - 1;
             if (numeroQuantidade <= 0) {
@@ -535,6 +571,24 @@ pasteis.map((item, index) => {
         modalImg.src = pasteis[index].img;
 
         quantidade.innerHTML = numeroQuantidade;
+
+        // Verifica se o campo de descrição personalizada já existe
+        let descricaoPersonalizada = document.querySelector('#produto-descricao');
+        if (!descricaoPersonalizada) {
+            descricaoPersonalizada = document.createElement('textarea');
+            descricaoPersonalizada.id = 'produto-descricao';
+            descricaoPersonalizada.placeholder = 'Observação: ';
+            const descricaoPersonalizadaContainer = document.createElement('div');
+            descricaoPersonalizadaContainer.classList.add('descricao-personalizada');
+            descricaoPersonalizadaContainer.appendChild(descricaoPersonalizada);
+
+            // Adicionar o campo de descrição ao modal
+            const modalInfoArea = document.querySelector(".produto-informacoes-area1");
+            modalInfoArea.appendChild(descricaoPersonalizadaContainer);
+        }
+
+        // Limpa o campo de descrição ao abrir a modal
+        descricaoPersonalizada.value = ''; // Remova essa linha se quiser manter o texto ao abrir a modal novamente.
 
         buttonLess.addEventListener('click', () => {
             numeroQuantidade = numeroQuantidade - 1;
@@ -623,6 +677,24 @@ pasteisEspeciais.map((item, index) => {
 
         quantidade.innerHTML = numeroQuantidade;
 
+        // Verifica se o campo de descrição personalizada já existe
+        let descricaoPersonalizada = document.querySelector('#produto-descricao');
+        if (!descricaoPersonalizada) {
+            descricaoPersonalizada = document.createElement('textarea');
+            descricaoPersonalizada.id = 'produto-descricao';
+            descricaoPersonalizada.placeholder = 'Observação: ';
+            const descricaoPersonalizadaContainer = document.createElement('div');
+            descricaoPersonalizadaContainer.classList.add('descricao-personalizada');
+            descricaoPersonalizadaContainer.appendChild(descricaoPersonalizada);
+
+            // Adicionar o campo de descrição ao modal
+            const modalInfoArea = document.querySelector(".produto-informacoes-area1");
+            modalInfoArea.appendChild(descricaoPersonalizadaContainer);
+        }
+
+        // Limpa o campo de descrição ao abrir a modal
+        descricaoPersonalizada.value = ''; // Remova essa linha se quiser manter o texto ao abrir a modal novamente.
+
         buttonLess.addEventListener('click', () => {
             numeroQuantidade = numeroQuantidade - 1;
             if (numeroQuantidade <= 0) {
@@ -707,6 +779,24 @@ bebidas.map((item, index) => {
         modalImg.src = bebidas[index].img;
 
         quantidade.innerHTML = numeroQuantidade;
+
+        // Verifica se o campo de descrição personalizada já existe
+        let descricaoPersonalizada = document.querySelector('#produto-descricao');
+        if (!descricaoPersonalizada) {
+            descricaoPersonalizada = document.createElement('textarea');
+            descricaoPersonalizada.id = 'produto-descricao';
+            descricaoPersonalizada.placeholder = 'Observação: ';
+            const descricaoPersonalizadaContainer = document.createElement('div');
+            descricaoPersonalizadaContainer.classList.add('descricao-personalizada');
+            descricaoPersonalizadaContainer.appendChild(descricaoPersonalizada);
+
+            // Adicionar o campo de descrição ao modal
+            const modalInfoArea = document.querySelector(".produto-informacoes-area1");
+            modalInfoArea.appendChild(descricaoPersonalizadaContainer);
+        }
+
+        // Limpa o campo de descrição ao abrir a modal
+        descricaoPersonalizada.value = ''; // Remova essa linha se quiser manter o texto ao abrir a modal novamente.
 
         buttonLess.addEventListener('click', () => {
             numeroQuantidade = numeroQuantidade - 1;
@@ -794,6 +884,24 @@ batatas.map((item, index) => {
         modalImg.src = batatas[index].img;
         quantidade.innerHTML = numeroQuantidade;
 
+        // Verifica se o campo de descrição personalizada já existe
+        let descricaoPersonalizada = document.querySelector('#produto-descricao');
+        if (!descricaoPersonalizada) {
+            descricaoPersonalizada = document.createElement('textarea');
+            descricaoPersonalizada.id = 'produto-descricao';
+            descricaoPersonalizada.placeholder = 'Observação: ';
+            const descricaoPersonalizadaContainer = document.createElement('div');
+            descricaoPersonalizadaContainer.classList.add('descricao-personalizada');
+            descricaoPersonalizadaContainer.appendChild(descricaoPersonalizada);
+
+            // Adicionar o campo de descrição ao modal
+            const modalInfoArea = document.querySelector(".produto-informacoes-area1");
+            modalInfoArea.appendChild(descricaoPersonalizadaContainer);
+        }
+
+        // Limpa o campo de descrição ao abrir a modal
+        descricaoPersonalizada.value = ''; // Remova essa linha se quiser manter o texto ao abrir a modal novamente.
+
         buttonLess.addEventListener('click', () => { //Botão de tirar 1 item do modal 1
             numeroQuantidade = numeroQuantidade - 1;
             if (numeroQuantidade <= 0) {
@@ -880,10 +988,28 @@ salgados.map((item, index) => {
         modalImg.src = salgados[index].img;
         quantidade.innerHTML = numeroQuantidade;
 
+        // Verifica se o campo de descrição personalizada já existe
+        let descricaoPersonalizada = document.querySelector('#produto-descricao');
+        if (!descricaoPersonalizada) {
+            descricaoPersonalizada = document.createElement('textarea');
+            descricaoPersonalizada.id = 'produto-descricao';
+            descricaoPersonalizada.placeholder = 'Observação: ';
+            const descricaoPersonalizadaContainer = document.createElement('div');
+            descricaoPersonalizadaContainer.classList.add('descricao-personalizada');
+            descricaoPersonalizadaContainer.appendChild(descricaoPersonalizada);
+
+            // Adicionar o campo de descrição ao modal
+            const modalInfoArea = document.querySelector(".produto-informacoes-area1");
+            modalInfoArea.appendChild(descricaoPersonalizadaContainer);
+        }
+
+        // Limpa o campo de descrição ao abrir a modal
+        descricaoPersonalizada.value = ''; // Remova essa linha se quiser manter o texto ao abrir a modal novamente.
+
         buttonLess.addEventListener('click', () => { //Botão de tirar 1 item do modal 1
             numeroQuantidade = numeroQuantidade - 1;
             if (numeroQuantidade <= 0) {
-                numeroQuantidade = 1
+                numeroQuantidade = 1;
             }
             quantidade.innerHTML = numeroQuantidade;
         });
@@ -893,16 +1019,15 @@ salgados.map((item, index) => {
             quantidade.innerHTML = numeroQuantidade;
         });
 
-
         buttonCancel.addEventListener('click', () => { //Botão cancelar do modal 1
             produtoModal.classList.remove("show");
+            descricaoPersonalizada.value = ''; // Limpar a descrição ao fechar a modal
         });
-
-
     });
 
     salgadosList.appendChild(salgadosDiv);
 });
+
 
 //EVENTOS ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -938,6 +1063,16 @@ botaoAddMaisItens.addEventListener('click', () => { //Botão adicionar mais iten
 function addCarrinho(keyEscolhido, itemEscolhido) {
     const compra = new Object();
     compra.quantidade = document.querySelector('.produto-quantidade .quantidade').innerText;
+    
+    // Obtenha a descrição do campo de texto
+    const descricaoInput = document.querySelector('#produto-descricao');
+    const descricaoPersonalizada = descricaoInput.value.trim(); // Remove espaços em branco
+
+    // Verifica se a descrição não está vazia
+    if (descricaoPersonalizada) {
+        compra.descricao = descricaoPersonalizada; // Adiciona a descrição ao objeto de compra
+    }
+
     if (itemEscolhido == 0) {
         compra.produto = hamburgueres[keyEscolhido];
         produtosCarrinho[keyCarrinho] = compra;
@@ -955,22 +1090,27 @@ function addCarrinho(keyEscolhido, itemEscolhido) {
         produtosCarrinho[keyCarrinho] = compra;
     }
     else if (itemEscolhido == 4) {
-        compra.produto = batatas[keyEscolhido];
+        compra.produto = bebidas[keyEscolhido];
         produtosCarrinho[keyCarrinho] = compra;
     }
     else if (itemEscolhido == 5) {
-        compra.produto = bebidas[keyEscolhido];
+        compra.produto = batatas[keyEscolhido];
         produtosCarrinho[keyCarrinho] = compra;
     }
     else if (itemEscolhido == 6) {
         compra.produto = salgados[keyEscolhido];
         produtosCarrinho[keyCarrinho] = compra;
     }
+
+    // Limpa o campo de descrição após adicionar ao carrinho
+    descricaoInput.value = ''; 
+
     keyCarrinho = keyCarrinho + 1;
 
     produtoModal.classList.remove("show");
     contagemCarrinho();
 }
+
 
 function contagemCarrinho() { //funcao que conta quantos itens tem no carrinho
     let qt = 0;
@@ -994,6 +1134,7 @@ function mostrarPedidos() {
         const carrinhoNome = document.createElement("h2");
         const carrinhodiv2 = document.createElement("div");
         const carrinhoPrice = document.createElement("h4");
+        const carrinhoDescricao = document.createElement("p"); // Novo elemento para a descrição
         const valorReal = item.quantidade * item.produto.price.toFixed(2);
         const carrinhoButton = document.createElement("button");
         const carrinhoSpan = document.createElement("span");
@@ -1006,6 +1147,14 @@ function mostrarPedidos() {
         carrinhoSpan.classList.add("material-symbols-outlined");
         carrinhoSpan.innerText = "delete_forever";
         totalItens = totalItens + valorReal;
+
+        // Exibe a descrição se estiver presente
+        if (item.descricao) {
+            carrinhoDescricao.innerText = item.descricao; // Adiciona a descrição ao carrinho
+            carrinhoDescricao.style.fontStyle = "italic"; // Estilo em itálico para a descrição
+            carrinhoDescricao.style.color = "#white"; // Cor da descrição
+        }
+
         document.querySelector('.carrinho .total-itens h2').innerText = "R$" + totalItens.toFixed(2);
         carrinhoButton.appendChild(carrinhoSpan);
         carrinhodiv2.appendChild(carrinhoPrice);
@@ -1015,13 +1164,17 @@ function mostrarPedidos() {
         carrinhoItem.appendChild(carrinhodiv1);
         carrinhoItem.appendChild(carrinhodiv2);
 
+        // Adiciona a descrição ao carrinho se estiver presente
+        if (item.descricao) {
+            carrinhoItem.appendChild(carrinhoDescricao);
+        }
+
         carrinhoButton.addEventListener('click', () => {
             item.quantidade = item.quantidade - 1;
             mostrarPedidos();
             produtosCarrinho.splice(index, 1);
             mostrarPedidos();
             contagemCarrinho();
-
         });
 
         carrinhoProdutos.appendChild(carrinhoItem);
