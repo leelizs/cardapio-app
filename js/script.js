@@ -993,7 +993,7 @@ salgados.map((item, index) => {
         if (!descricaoPersonalizada) {
             descricaoPersonalizada = document.createElement('textarea');
             descricaoPersonalizada.id = 'produto-descricao';
-            descricaoPersonalizada.placeholder = 'Observação: ';
+            descricaoPersonalizada.placeholder = 'Observação: "Sem bacon';
             const descricaoPersonalizadaContainer = document.createElement('div');
             descricaoPersonalizadaContainer.classList.add('descricao-personalizada');
             descricaoPersonalizadaContainer.appendChild(descricaoPersonalizada);
@@ -1031,11 +1031,51 @@ salgados.map((item, index) => {
 
 //EVENTOS ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-iconeCarrinho.addEventListener('click', () => { //Botao do carrinho para mostrar os pedidos
+document.addEventListener('DOMContentLoaded', function () {
+    loadCarrinhoFromLocalStorage(); // Chame esta função aqui
+    // Resto da inicialização da aplicação
+    iconeCarrinho.addEventListener('click', () => {
+        mostrarPedidos();
+    });
+    // Outras inicializações...
+});
+
+
+// Função para salvar os itens do carrinho no localStorage
+function saveCarrinhoToLocalStorage() {
+    localStorage.setItem('produtosCarrinho', JSON.stringify(produtosCarrinho));
+}
+
+// Função para carregar os itens do carrinho do localStorage
+
+function loadCarrinhoFromLocalStorage() {
+    const carrinhoSalvo = localStorage.getItem('produtosCarrinho');
+    if (carrinhoSalvo) {
+        try {
+            produtosCarrinho = JSON.parse(carrinhoSalvo);
+            keyCarrinho = produtosCarrinho.length; // Atualiza o índice do carrinho
+            contagemCarrinho(); // Atualiza a contagem
+            mostrarPedidos(); // Exibe os pedidos carregados
+            console.log('Carrinho carregado:', produtosCarrinho); // Adicionado para debug
+        } catch (error) {
+            console.error('Erro ao carregar o carrinho do localStorage:', error);
+            produtosCarrinho = []; // Reinicializa o carrinho em caso de erro
+        }
+    } else {
+        produtosCarrinho = []; // Inicia um carrinho vazio se não houver dados
+    }
+}
+
+
+// Chame essa função na inicialização da sua aplicação
+loadCarrinhoFromLocalStorage();
+
+iconeCarrinho.addEventListener('click', () => { // Botão do carrinho para mostrar os pedidos
+    console.log('Ícone do carrinho clicado.');
     mostrarPedidos();
 });
 
-todosButaoAdd.forEach((item) => { //Botão adicionar o item no carrinho
+todosButaoAdd.forEach((item) => { // Botão adicionar o item no carrinho
     item.addEventListener('click', () => {
         addCarrinho(keyEscolhido, itemEscolhido);
         produtoModal.classList.remove("show");
@@ -1043,74 +1083,80 @@ todosButaoAdd.forEach((item) => { //Botão adicionar o item no carrinho
     });
 });
 
-setaFecharCarrinho.addEventListener('click', () => { //Botao da seta fechar o carrinho
+setaFecharCarrinho.addEventListener('click', () => { // Botão da seta fechar o carrinho
     document.querySelector('.carrinho').style.animationName = 'slideout';
     setTimeout(() => {
         modalCarrinho.classList.remove("show");
     }, 500);
 });
 
-botaoAddMaisItens.addEventListener('click', () => { //Botão adicionar mais itens
+botaoAddMaisItens.addEventListener('click', () => { // Botão adicionar mais itens
     document.querySelector('.carrinho').style.animationName = 'slideout';
     setTimeout(() => {
         modalCarrinho.classList.remove("show");
     }, 500);
-
 });
 
-//FUNCOES ////////////////////////////////////////////////////////////////////////////////////////
+// FUNÇÕES ////////////////////////////////////////////////////////////////////////////////////////
 
 function addCarrinho(keyEscolhido, itemEscolhido) {
     const compra = new Object();
-    compra.quantidade = document.querySelector('.produto-quantidade .quantidade').innerText;
     
-    // Obtenha a descrição do campo de texto
+    // Verifique se o elemento existe antes de acessar o valor
+    const quantidadeElemento = document.querySelector('.produto-quantidade .quantidade');
+    if (quantidadeElemento) {
+        compra.quantidade = quantidadeElemento.innerText;
+    } else {
+        console.error('Elemento de quantidade não encontrado');
+        return; // Saia da função se o elemento não for encontrado
+    }
+
+    // Verifique se a descrição está sendo capturada corretamente
     const descricaoInput = document.querySelector('#produto-descricao');
-    const descricaoPersonalizada = descricaoInput.value.trim(); // Remove espaços em branco
+    const descricaoPersonalizada = descricaoInput ? descricaoInput.value.trim() : '';
 
     // Verifica se a descrição não está vazia
     if (descricaoPersonalizada) {
         compra.descricao = descricaoPersonalizada; // Adiciona a descrição ao objeto de compra
+    } else {
+        console.warn('Descrição do produto está vazia');
     }
 
-    if (itemEscolhido == 0) {
+    // Adiciona o produto ao carrinho com base no itemEscolhido
+    if (itemEscolhido === 0) {
         compra.produto = hamburgueres[keyEscolhido];
-        produtosCarrinho[keyCarrinho] = compra;
-    }
-    else if (itemEscolhido == 1) {
+    } else if (itemEscolhido === 1) {
         compra.produto = sorvetes[keyEscolhido];
-        produtosCarrinho[keyCarrinho] = compra;
-    }
-    else if (itemEscolhido == 2) {
+    } else if (itemEscolhido === 2) {
         compra.produto = pasteis[keyEscolhido];
-        produtosCarrinho[keyCarrinho] = compra;
-    }
-    else if (itemEscolhido == 3) {
+    } else if (itemEscolhido === 3) {
         compra.produto = pasteisEspeciais[keyEscolhido];
-        produtosCarrinho[keyCarrinho] = compra;
-    }
-    else if (itemEscolhido == 4) {
+    } else if (itemEscolhido === 4) {
         compra.produto = bebidas[keyEscolhido];
-        produtosCarrinho[keyCarrinho] = compra;
-    }
-    else if (itemEscolhido == 5) {
+    } else if (itemEscolhido === 5) {
         compra.produto = batatas[keyEscolhido];
-        produtosCarrinho[keyCarrinho] = compra;
-    }
-    else if (itemEscolhido == 6) {
+    } else if (itemEscolhido === 6) {
         compra.produto = salgados[keyEscolhido];
-        produtosCarrinho[keyCarrinho] = compra;
     }
+
+    // Verifique se a propriedade produto foi definida
+    if (!compra.produto) {
+        console.error('Produto não foi definido corretamente');
+        return; // Saia da função se o produto não for encontrado
+    }
+
+    produtosCarrinho[keyCarrinho] = compra; // Adiciona a compra ao carrinho
 
     // Limpa o campo de descrição após adicionar ao carrinho
-    descricaoInput.value = ''; 
+    if (descricaoInput) {
+        descricaoInput.value = '';
+    }
 
-    keyCarrinho = keyCarrinho + 1;
-
+    keyCarrinho++; // Atualiza o índice do carrinho
+    saveCarrinhoToLocalStorage(); // Salva o carrinho no localStorage
+    contagemCarrinho(); // Atualiza a contagem
     produtoModal.classList.remove("show");
-    contagemCarrinho();
 }
-
 
 function contagemCarrinho() { //funcao que conta quantos itens tem no carrinho
     let qt = 0;
@@ -1120,6 +1166,7 @@ function contagemCarrinho() { //funcao que conta quantos itens tem no carrinho
     })
     carrinhoQuantidade.innerText = qt;
 }
+
 
 function mostrarPedidos() {
     modalCarrinho.classList.add("show");
@@ -1153,6 +1200,7 @@ function mostrarPedidos() {
             carrinhoDescricao.innerText = item.descricao; // Adiciona a descrição ao carrinho
             carrinhoDescricao.style.fontStyle = "italic"; // Estilo em itálico para a descrição
             carrinhoDescricao.style.color = "#white"; // Cor da descrição
+            carrinhoItem.appendChild(carrinhoDescricao); // Adiciona a descrição ao item do carrinho
         }
 
         document.querySelector('.carrinho .total-itens h2').innerText = "R$" + totalItens.toFixed(2);
@@ -1164,21 +1212,109 @@ function mostrarPedidos() {
         carrinhoItem.appendChild(carrinhodiv1);
         carrinhoItem.appendChild(carrinhodiv2);
 
-        // Adiciona a descrição ao carrinho se estiver presente
-        if (item.descricao) {
-            carrinhoItem.appendChild(carrinhoDescricao);
-        }
-
         carrinhoButton.addEventListener('click', () => {
-            item.quantidade = item.quantidade - 1;
-            mostrarPedidos();
+            // Remove o item do carrinho e atualiza a exibição
             produtosCarrinho.splice(index, 1);
             mostrarPedidos();
             contagemCarrinho();
+            saveCarrinhoToLocalStorage(); // Atualiza o localStorage
         });
 
         carrinhoProdutos.appendChild(carrinhoItem);
     });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Adiciona o evento ao botão de captura (que agora finaliza a compra)
+    const botaoCaptura = document.getElementById('botaoCaptura');
+    if (botaoCaptura) {
+        botaoCaptura.addEventListener('click', finalizarECapturarPedido);
+    } else {
+        console.error('Elemento "botaoCaptura" não encontrado no DOM.');
+    }
+});
+
+// Função para capturar o pedido e finalizar a compra
+function finalizarECapturarPedido() {
+    // Captura o pedido antes de finalizar a compra
+    capturarPedido().then(() => {
+        // Após a captura, finaliza a compra
+        finalizarCompra();
+    });
+}
+
+// Função para capturar o pedido e enviar pelo WhatsApp
+function capturarPedido() {
+    return new Promise((resolve, reject) => {
+        const botao = document.getElementById('botaoCaptura');
+        const loader = document.getElementById('loader');
+        const mensagemOrientacao = document.getElementById('mensagemOrientacao');
+        const elementoParaCaptura = document.getElementById('conteudo');
+        const containerControles = document.getElementById('controles');
+
+        // Exibe o loader e desabilita o botão durante a captura
+        loader.style.display = 'block';
+        botao.disabled = true;
+        mensagemOrientacao.style.opacity = '0';
+
+        // Captura o conteúdo da página usando html2canvas
+        html2canvas(elementoParaCaptura).then(canvas => {
+            // Converte a imagem para uma URL base64
+            const imagemDataURL = canvas.toDataURL('image/png');
+
+            // Remove qualquer link de download existente
+            const linkExistente = document.getElementById('linkDownload');
+            if (linkExistente) {
+                linkExistente.remove();
+            }
+
+            // Gera um nome de arquivo único com a data e hora atual
+            const agora = new Date();
+            const timestamp = `${agora.getFullYear()}${String(agora.getMonth() + 1).padStart(2, '0')}${String(agora.getDate()).padStart(2, '0')}_${String(agora.getHours()).padStart(2, '0')}${String(agora.getMinutes()).padStart(2, '0')}${String(agora.getSeconds()).padStart(2, '0')}`;
+            const nomeArquivo = `captura_${timestamp}.png`;
+
+            // Cria um link temporário para download da imagem
+            const link = document.createElement('a');
+            link.id = 'linkDownload';
+            link.href = imagemDataURL;
+            link.download = nomeArquivo;
+            link.textContent = `(${nomeArquivo})`;
+            containerControles.appendChild(link);
+
+            // Exibe uma mensagem de orientação para o usuário
+            mensagemOrientacao.style.opacity = '1';
+
+            // Gera uma URL para enviar a mensagem pelo WhatsApp
+            const numeroWhatsApp = '5511913421009'; // Substitua pelo número de telefone desejado
+            const mensagemTexto = encodeURIComponent('Olá Denize! Este print é o meu pedido.');
+
+            // Abre o WhatsApp com a mensagem de texto
+            window.open(`https://wa.me/${numeroWhatsApp}?text=${mensagemTexto}`, '_blank');
+
+            // Oculta o loader e reabilita o botão
+            loader.style.display = 'none';
+            botao.disabled = false;
+
+            // Resolve a Promise após a captura e envio
+            resolve();
+        }).catch(() => {
+            // Em caso de erro, exibe uma mensagem de falha
+            mensagemOrientacao.textContent = 'Ocorreu um erro ao capturar a tela. Por favor, tente novamente.';
+            mensagemOrientacao.style.opacity = '1';
+            loader.style.display = 'none';
+            botao.disabled = false;
+            reject(); // Rejeita a Promise em caso de erro
+        });
+    });
+}
+
+// Função para finalizar a compra
+function finalizarCompra() {
+    // Limpa o carrinho no localStorage
+    localStorage.removeItem('produtosCarrinho');
+    produtosCarrinho = []; // Limpa o array em memória
+    contagemCarrinho(); // Atualiza a contagem no display
+    mostrarPedidos(); // Atualiza a exibição do carrinho
 }
 
 const menuItens = document.querySelectorAll('#header-menu a[href^="#"]'); //pega todos a
@@ -1204,61 +1340,3 @@ function scrollToIdOnClick(event) { //esse event e passado cada a cada vez que e
         behavior: "smooth",
     });
 }
-
-document.getElementById('botaoCaptura').addEventListener('click', function () {
-    const botao = document.getElementById('botaoCaptura');
-    const loader = document.getElementById('loader');
-    const mensagemOrientacao = document.getElementById('mensagemOrientacao');
-    const elementoParaCaptura = document.getElementById('conteudo');
-    const containerControles = document.getElementById('controles');
-
-    // Exibe o loader e desabilita o botão durante a captura
-    loader.style.display = 'block';
-    botao.disabled = true;
-    mensagemOrientacao.style.opacity = '0';
-
-    // Captura o conteúdo da página usando html2canvas
-    html2canvas(elementoParaCaptura).then(canvas => {
-        // Converte a imagem para uma URL base64
-        const imagemDataURL = canvas.toDataURL('image/png');
-
-        // Remove qualquer link de download existente
-        const linkExistente = document.getElementById('linkDownload');
-        if (linkExistente) {
-            linkExistente.remove();
-        }
-
-        // Gera um nome de arquivo único com a data e hora atual
-        const agora = new Date();
-        const timestamp = `${agora.getFullYear()}${String(agora.getMonth() + 1).padStart(2, '0')}${String(agora.getDate()).padStart(2, '0')}_${String(agora.getHours()).padStart(2, '0')}${String(agora.getMinutes()).padStart(2, '0')}${String(agora.getSeconds()).padStart(2, '0')}`;
-        const nomeArquivo = `captura_${timestamp}.png`;
-
-        // Cria um link temporário para download da imagem
-        const link = document.createElement('a');
-        link.id = 'linkDownload';
-        link.href = imagemDataURL;
-        link.download = nomeArquivo;
-        link.textContent = `(${nomeArquivo})`;
-        containerControles.appendChild(link)
-
-        // Exibe uma mensagem de orientação para o usuário
-        mensagemOrientacao.style.opacity = '1';
-
-        // Gera uma URL para enviar a mensagem pelo WhatsApp
-        const numeroWhatsApp = '5511913421009'; // Substitua pelo número de telefone desejado
-        const mensagemTexto = encodeURIComponent('Olá Denize! Este print é o meu pedido.');
-
-        // Abre o WhatsApp com a mensagem de texto
-        window.open(`https://wa.me/${numeroWhatsApp}?text=${mensagemTexto}`, '_blank');
-
-        // Oculta o loader e reabilita o botão
-        loader.style.display = 'none';
-        botao.disabled = false;
-    }).catch(() => {
-        // Em caso de erro, exibe uma mensagem de falha
-        mensagemOrientacao.textContent = 'Ocorreu um erro ao capturar a tela. Por favor, tente novamente.';
-        mensagemOrientacao.style.opacity = '1';
-        loader.style.display = 'none';
-        botao.disabled = false;
-    });
-});
