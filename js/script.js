@@ -369,7 +369,7 @@ hamburgueres.map((item, index) => {
         if (!descricaoPersonalizada) {
             descricaoPersonalizada = document.createElement('textarea');
             descricaoPersonalizada.id = 'produto-descricao';
-            descricaoPersonalizada.placeholder = 'Observação: ';
+            descricaoPersonalizada.placeholder = 'Observação: "Sem alface e tomate", por exemplo';
             const descricaoPersonalizadaContainer = document.createElement('div');
             descricaoPersonalizadaContainer.classList.add('descricao-personalizada');
             descricaoPersonalizadaContainer.appendChild(descricaoPersonalizada);
@@ -474,7 +474,7 @@ sorvetes.map((item, index) => {
         if (!descricaoPersonalizada) {
             descricaoPersonalizada = document.createElement('textarea');
             descricaoPersonalizada.id = 'produto-descricao';
-            descricaoPersonalizada.placeholder = 'Observação: ';
+            descricaoPersonalizada.placeholder = 'Observação: "Leite Condensado embaixo", por exemplo.';
             const descricaoPersonalizadaContainer = document.createElement('div');
             descricaoPersonalizadaContainer.classList.add('descricao-personalizada');
             descricaoPersonalizadaContainer.appendChild(descricaoPersonalizada);
@@ -780,23 +780,23 @@ bebidas.map((item, index) => {
 
         quantidade.innerHTML = numeroQuantidade;
 
-        // Verifica se o campo de descrição personalizada já existe
-        let descricaoPersonalizada = document.querySelector('#produto-descricao');
-        if (!descricaoPersonalizada) {
-            descricaoPersonalizada = document.createElement('textarea');
-            descricaoPersonalizada.id = 'produto-descricao';
-            descricaoPersonalizada.placeholder = 'Observação: ';
-            const descricaoPersonalizadaContainer = document.createElement('div');
-            descricaoPersonalizadaContainer.classList.add('descricao-personalizada');
-            descricaoPersonalizadaContainer.appendChild(descricaoPersonalizada);
+        // // Verifica se o campo de descrição personalizada já existe
+        // let descricaoPersonalizada = document.querySelector('#produto-descricao');
+        // if (!descricaoPersonalizada) {
+        //     descricaoPersonalizada = document.createElement('textarea');
+        //     descricaoPersonalizada.id = 'produto-descricao';
+        //     descricaoPersonalizada.placeholder = 'Observação: ';
+        //     const descricaoPersonalizadaContainer = document.createElement('div');
+        //     descricaoPersonalizadaContainer.classList.add('descricao-personalizada');
+        //     descricaoPersonalizadaContainer.appendChild(descricaoPersonalizada);
 
-            // Adicionar o campo de descrição ao modal
-            const modalInfoArea = document.querySelector(".produto-informacoes-area1");
-            modalInfoArea.appendChild(descricaoPersonalizadaContainer);
-        }
+        //     // Adicionar o campo de descrição ao modal
+        //     const modalInfoArea = document.querySelector(".produto-informacoes-area1");
+        //     modalInfoArea.appendChild(descricaoPersonalizadaContainer);
+        // }
 
-        // Limpa o campo de descrição ao abrir a modal
-        descricaoPersonalizada.value = ''; // Remova essa linha se quiser manter o texto ao abrir a modal novamente.
+        // // Limpa o campo de descrição ao abrir a modal
+        // descricaoPersonalizada.value = ''; // Remova essa linha se quiser manter o texto ao abrir a modal novamente.
 
         buttonLess.addEventListener('click', () => {
             numeroQuantidade = numeroQuantidade - 1;
@@ -889,7 +889,7 @@ batatas.map((item, index) => {
         if (!descricaoPersonalizada) {
             descricaoPersonalizada = document.createElement('textarea');
             descricaoPersonalizada.id = 'produto-descricao';
-            descricaoPersonalizada.placeholder = 'Observação: ';
+            descricaoPersonalizada.placeholder = 'Observação: "Sem mostarda", por exemplo';
             const descricaoPersonalizadaContainer = document.createElement('div');
             descricaoPersonalizadaContainer.classList.add('descricao-personalizada');
             descricaoPersonalizadaContainer.appendChild(descricaoPersonalizada);
@@ -993,7 +993,7 @@ salgados.map((item, index) => {
         if (!descricaoPersonalizada) {
             descricaoPersonalizada = document.createElement('textarea');
             descricaoPersonalizada.id = 'produto-descricao';
-            descricaoPersonalizada.placeholder = 'Observação: "Sem bacon';
+            descricaoPersonalizada.placeholder = 'Observação: ';
             const descricaoPersonalizadaContainer = document.createElement('div');
             descricaoPersonalizadaContainer.classList.add('descricao-personalizada');
             descricaoPersonalizadaContainer.appendChild(descricaoPersonalizada);
@@ -1028,50 +1028,10 @@ salgados.map((item, index) => {
     salgadosList.appendChild(salgadosDiv);
 });
 
-
 //EVENTOS ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-document.addEventListener('DOMContentLoaded', function () {
-    loadCarrinhoFromLocalStorage(); // Chame esta função aqui
-    // Resto da inicialização da aplicação
-    iconeCarrinho.addEventListener('click', () => {
-        mostrarPedidos();
-    });
-    // Outras inicializações...
-});
-
-
-// Função para salvar os itens do carrinho no localStorage
-function saveCarrinhoToLocalStorage() {
-    localStorage.setItem('produtosCarrinho', JSON.stringify(produtosCarrinho));
-}
-
-// Função para carregar os itens do carrinho do localStorage
-
-function loadCarrinhoFromLocalStorage() {
-    const carrinhoSalvo = localStorage.getItem('produtosCarrinho');
-    if (carrinhoSalvo) {
-        try {
-            produtosCarrinho = JSON.parse(carrinhoSalvo);
-            keyCarrinho = produtosCarrinho.length; // Atualiza o índice do carrinho
-            contagemCarrinho(); // Atualiza a contagem
-            mostrarPedidos(); // Exibe os pedidos carregados
-            console.log('Carrinho carregado:', produtosCarrinho); // Adicionado para debug
-        } catch (error) {
-            console.error('Erro ao carregar o carrinho do localStorage:', error);
-            produtosCarrinho = []; // Reinicializa o carrinho em caso de erro
-        }
-    } else {
-        produtosCarrinho = []; // Inicia um carrinho vazio se não houver dados
-    }
-}
-
-
-// Chame essa função na inicialização da sua aplicação
-loadCarrinhoFromLocalStorage();
-
 iconeCarrinho.addEventListener('click', () => { // Botão do carrinho para mostrar os pedidos
-    console.log('Ícone do carrinho clicado.');
+    //console.log('Ícone do carrinho clicado.');
     mostrarPedidos();
 });
 
@@ -1099,6 +1059,8 @@ botaoAddMaisItens.addEventListener('click', () => { // Botão adicionar mais ite
 
 // FUNÇÕES ////////////////////////////////////////////////////////////////////////////////////////
 
+let total = "------"; // Inicialização do total do carrinho
+
 function addCarrinho(keyEscolhido, itemEscolhido) {
     const compra = new Object();
 
@@ -1119,7 +1081,7 @@ function addCarrinho(keyEscolhido, itemEscolhido) {
     if (descricaoPersonalizada) {
         compra.descricao = descricaoPersonalizada; // Adiciona a descrição ao objeto de compra
     } else {
-        console.warn('Descrição do produto está vazia');
+        //console.warn('Descrição do produto está vazia');
     }
 
     // Adiciona o produto ao carrinho com base no itemEscolhido
@@ -1145,34 +1107,47 @@ function addCarrinho(keyEscolhido, itemEscolhido) {
         return; // Saia da função se o produto não for encontrado
     }
 
-    produtosCarrinho[keyCarrinho] = compra; // Adiciona a compra ao carrinho
+    produtosCarrinho.push(compra); // Adiciona a compra ao carrinho (alterado de keyCarrinho para push)
 
     // Limpa o campo de descrição após adicionar ao carrinho
     if (descricaoInput) {
         descricaoInput.value = '';
     }
 
-    keyCarrinho++; // Atualiza o índice do carrinho
+    keyCarrinho = produtosCarrinho.length; // Atualiza o índice do carrinho para o comprimento atual
     saveCarrinhoToLocalStorage(); // Salva o carrinho no localStorage
     contagemCarrinho(); // Atualiza a contagem
+    mostrarPedidos();
     produtoModal.classList.remove("show");
 }
 
-function contagemCarrinho() { //funcao que conta quantos itens tem no carrinho
+function contagemCarrinho() { // Função que conta quantos itens tem no carrinho
     let qt = 0;
-    produtosCarrinho.forEach((item) => {
-        qt = qt + parseInt(item.quantidade);
-
-    })
-    carrinhoQuantidade.innerText = qt;
+    // Verifica se produtosCarrinho está definido e não é nulo
+    if (Array.isArray(produtosCarrinho)) {
+        produtosCarrinho.forEach((item) => {
+            if (item.quantidade) { // Verifica se a quantidade existe
+                qt += parseInt(item.quantidade);
+            }
+        });
+    }
+    carrinhoQuantidade.innerText = qt; // Atualiza a contagem no display
 }
 
 function mostrarPedidos() {
-    modalCarrinho.classList.add("show");
-    document.querySelector('.carrinho').style.animationName = 'slidein';
     carrinhoProdutos.innerHTML = "";
     let totalItens = 0;
 
+    // Verifica se há itens no carrinho antes de exibi-lo
+    if (produtosCarrinho.length === 0) {
+        alert('Carrinho vazio, adicione algo para que possa ser exibido.');
+        modalCarrinho.classList.remove("show"); // Fecha o modal se estiver aberto
+        return; // Não faz nada se o carrinho estiver vazio
+    } else {
+        modalCarrinho.classList.add("show"); // Mostra o modal
+    }
+    document.querySelector('.carrinho').style.animationName = 'slidein';
+    
     produtosCarrinho.forEach((item, index) => {
         const carrinhoItem = document.createElement("div");
         const carrinhodiv1 = document.createElement("div");
@@ -1215,16 +1190,26 @@ function mostrarPedidos() {
         carrinhoButton.addEventListener('click', () => {
             // Remove o item do carrinho e atualiza a exibição
             produtosCarrinho.splice(index, 1);
+            saveCarrinhoToLocalStorage(); // Atualiza o localStorage
             mostrarPedidos();
             contagemCarrinho();
-            saveCarrinhoToLocalStorage(); // Atualiza o localStorage
+
+            // Verifica se o carrinho ficou vazio após a remoção
+            if (produtosCarrinho.length === 0) {
+                localStorage.removeItem('produtosCarrinho'); // Remove produtosCarrinho do localStorage
+                modalCarrinho.classList.remove("show"); // Fecha o modal se estiver vazio
+            }
+
         });
 
         carrinhoProdutos.appendChild(carrinhoItem);
     });
 }
 
-
+// Função para salvar os itens do carrinho no localStorage
+function saveCarrinhoToLocalStorage() {
+    localStorage.setItem('produtosCarrinho', JSON.stringify(produtosCarrinho));
+}
 
 document.addEventListener('DOMContentLoaded', function () {
     // Adiciona o evento ao botão de captura (que agora finaliza a compra)
@@ -1245,15 +1230,12 @@ function finalizarECapturarPedido() {
     });
 }
 
-let downloadFeito = false; // Variável para controlar o estado do download
-
 function capturarPedido() {
     return new Promise((resolve, reject) => {
         const botao = document.getElementById('botaoCaptura');
         const loader = document.getElementById('loader');
         const mensagemOrientacao = document.getElementById('mensagemOrientacao');
         const elementoParaCaptura = document.getElementById('conteudo');
-        const containerControles = document.getElementById('controles');
 
         // Exibe o loader e desabilita o botão durante a captura
         loader.style.display = 'block';
@@ -1269,7 +1251,6 @@ function capturarPedido() {
             useCORS: true,
             allowTaint: false,
             scale: window.devicePixelRatio || 2, // Ajusta para a densidade de pixels do dispositivo
-            logging: true,
             width: 1600, // Define uma largura fixa para a captura
             height: elementoParaCaptura.scrollHeight, // Captura toda a altura do conteúdo
         }).then(canvas => {
@@ -1280,27 +1261,19 @@ function capturarPedido() {
                 // Converte a imagem para uma URL base64
                 const imagemDataURL = canvas.toDataURL('image/png');
 
-                // Remove qualquer link de download existente
-                const linkExistente = document.getElementById('linkDownload');
-                if (linkExistente) {
-                    linkExistente.remove();
-                }
-
                 // Gera um nome de arquivo único com a data e hora atual
                 const agora = new Date();
                 const timestamp = `${agora.getFullYear()}${String(agora.getMonth() + 1).padStart(2, '0')}${String(agora.getDate()).padStart(2, '0')}_${String(agora.getHours()).padStart(2, '0')}${String(agora.getMinutes()).padStart(2, '0')}${String(agora.getSeconds()).padStart(2, '0')}`;
                 const nomeArquivo = `captura_${timestamp}.png`;
 
-                // Cria um link temporário para download da imagem
+                // Cria um link temporário para download da imagem e aciona automaticamente o download
                 const link = document.createElement('a');
-                link.id = 'linkDownload';
                 link.href = imagemDataURL;
                 link.download = nomeArquivo;
-                link.textContent = `(${nomeArquivo})`;
-                containerControles.appendChild(link);
-
-                // Mensagem de orientação para o usuário
-                mensagemOrientacao.style.opacity = '1';
+                link.style.display = 'none'; // Esconde o link
+                document.body.appendChild(link);
+                link.click(); // Inicia automaticamente o download
+                document.body.removeChild(link); // Remove o link após o download
 
                 // Gera uma URL para enviar a mensagem pelo WhatsApp
                 const numeroWhatsApp = '5511913421009';
@@ -1308,12 +1281,6 @@ function capturarPedido() {
 
                 // Abre o WhatsApp com a mensagem de texto
                 window.open(`https://wa.me/${numeroWhatsApp}?text=${mensagemTexto}`, '_blank');
-
-                // Adiciona um evento de clique para o link de download
-                link.addEventListener('click', () => {
-                    downloadFeito = true; // Marca que o download foi feito
-                    link.remove(); // Remove o link de download após ser clicado
-                });
 
                 // Oculta o loader e reabilita o botão
                 loader.style.display = 'none';
@@ -1340,8 +1307,6 @@ function capturarPedido() {
     });
 }
 
-
-
 // Função para finalizar a compra
 function finalizarCompra() {
     // Limpa o carrinho no localStorage
@@ -1354,6 +1319,50 @@ function finalizarCompra() {
     total = "------"; // Certifique-se de que a variável total está definida no escopo apropriado
     document.querySelector('.contador-carrinho').innerText = total; // Atualiza a exibição do total
 }
+
+
+// Função para carregar os itens do carrinho do localStorage
+
+function loadCarrinhoFromLocalStorage() {
+    const carrinhoSalvo = localStorage.getItem('produtosCarrinho');
+    if (carrinhoSalvo) {
+        try {
+            produtosCarrinho = JSON.parse(carrinhoSalvo);
+            // Verifica se os produtos carregados têm a propriedade "quantidade"
+            if (!produtosCarrinho.every(item => item.quantidade)) {
+                throw new Error("Um ou mais itens não têm a propriedade 'quantidade'");
+            }
+            keyCarrinho = produtosCarrinho.length; // Atualiza o índice do carrinho
+            contagemCarrinho(); // Atualiza a contagem
+            mostrarPedidos(); // Exibe os pedidos carregados
+            console.log('Carrinho carregado:', produtosCarrinho); // Adicionado para debug
+        } catch (error) {
+            console.error('Erro ao carregar o carrinho do localStorage:', error);
+            produtosCarrinho = []; // Reinicializa o carrinho em caso de erro
+        }
+    } else {
+        produtosCarrinho = []; // Inicia um carrinho vazio se não houver dados
+    }
+
+
+    // Se o carrinho estiver vazio, atualiza a exibição
+    if (produtosCarrinho.length === 0) {
+        document.querySelector('.contador-carrinho').innerText = "------"; // Exibe o total padrão
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    loadCarrinhoFromLocalStorage(); // Carrega o carrinho do localStorage ao iniciar
+
+    if (produtosCarrinho.length > 0) {
+        mostrarPedidos(); // Exibe o carrinho apenas se houver itens
+    }
+
+    // iconeCarrinho.addEventListener('click', () => {
+    //     mostrarPedidos(); // Exibe os pedidos quando o ícone do carrinho for clicado
+    // });
+    // // Outras inicializações...
+});
 
 const menuItens = document.querySelectorAll('#header-menu a[href^="#"]'); //pega todos a
 

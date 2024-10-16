@@ -27,7 +27,9 @@
 
 <body>
     <header id="header">
-        <img src="img/logo.png" alt="Ícone">
+        <a href="javascript:void(0)" onclick="refreshAndScrollToTop()">
+            <img src="img/logo.png" alt="Ícone">
+        </a>
         <div id="header-menu">
             <nav>
                 <ul>
@@ -120,7 +122,6 @@
         </nav>
     </div>
     <div id="inicio">
-
     </div>
     <div id="cardapio">
         <p>Cardápio</p>
@@ -330,9 +331,9 @@
                     <h2></h2>
                     <p></p>
                     <div class="produto-sorvete-tamanho">
-                        <button class="sorvete-tamanho-pequena">------</button>
-                        <button class="sorvete-tamanho-media">------</button>
-                        <button class="sorvete-tamanho-grande">------</button>
+                        <button class="sorvete-tamanho-pequena"></button>
+                        <button class="sorvete-tamanho-media"></button>
+                        <button class="sorvete-tamanho-grande"></button>
                     </div>
                 </div>
                 <div class="produto-informacoes-area2">
@@ -392,6 +393,16 @@
         </div>
     </div>
     </div>
+
+    <!-- faz com que ao clicar na imagem logo "familia de ouro", a página atualize e leve o usuário sempre ao topo da página -->
+    <script>
+        function refreshAndScrollToTop() {
+            // Atualiza a página
+            window.location.reload();
+            // Rola para o topo do site
+            window.scrollTo(0, 0);
+        }
+    </script>
     <script type="text/javascript" src="js/script.js"></script>
 </body>
 
