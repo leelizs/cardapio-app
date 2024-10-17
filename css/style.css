@@ -1298,11 +1298,20 @@ footer {
     overflow: visible; /* Permite que todo o conteúdo seja visível durante a captura */
 }
 
+#conteudo.captura .total-itens {
+    position: relative; /* Garante que o elemento seja tratado como parte do fluxo normal do conteúdo */
+    bottom: 0;
+    background-color: #371200; /* Mantém a cor de fundo */
+    padding: 10px;
+    border-top: 1px solid #ffffff; /* Linha para separar visualmente do conteúdo do carrinho */
+}
+
 .carrinho-conteudo {
     max-width: 100%; /* Garante que não ultrapasse a largura do carrinho */
     overflow: auto; /* Permite rolagem se necessário */
     padding: 0; /* Remove padding para o carrinho */
 }
+
 
 /* Media query para telas menores */
 @media (max-width: 800px) {

@@ -1236,6 +1236,7 @@ function capturarPedido() {
         const loader = document.getElementById('loader');
         const mensagemOrientacao = document.getElementById('mensagemOrientacao');
         const elementoParaCaptura = document.getElementById('conteudo');
+        const totalElement = document.querySelector('.total-itens'); // Seleciona o elemento total-itens
 
         // Exibe o loader e desabilita o botão durante a captura
         loader.style.display = 'block';
@@ -1245,6 +1246,13 @@ function capturarPedido() {
         // Adiciona a classe para estilização durante a captura
         elementoParaCaptura.classList.add('captura');
 
+        // Clona o total-itens e adiciona no final para garantir a visibilidade
+        const totalClone = totalElement.cloneNode(true);
+        elementoParaCaptura.appendChild(totalClone);
+
+        // Calcula a altura total do conteúdo para capturar todos os itens e o total
+        const alturaTotal = elementoParaCaptura.scrollHeight;
+
         // Captura o conteúdo da página usando html2canvas
         html2canvas(elementoParaCaptura, {
             backgroundColor: '#ffffff',
@@ -1252,10 +1260,13 @@ function capturarPedido() {
             allowTaint: false,
             scale: window.devicePixelRatio || 2, // Ajusta para a densidade de pixels do dispositivo
             width: 1600, // Define uma largura fixa para a captura
-            height: elementoParaCaptura.scrollHeight, // Captura toda a altura do conteúdo
+            height: alturaTotal, // Captura toda a altura do conteúdo, incluindo o total
         }).then(canvas => {
             // Remove a classe de captura para restaurar o estilo original
             elementoParaCaptura.classList.remove('captura');
+
+            // Remove o clone do total-itens após a captura
+            totalClone.remove();
 
             if (canvas) {
                 // Converte a imagem para uma URL base64
@@ -1302,6 +1313,7 @@ function capturarPedido() {
             loader.style.display = 'none';
             botao.disabled = false;
             elementoParaCaptura.classList.remove('captura'); // Remove a classe em caso de erro
+            totalClone.remove(); // Remove o clone em caso de erro
             reject();
         });
     });
