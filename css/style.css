@@ -622,11 +622,11 @@ ul li a i {
     display: flex;
     -webkit-animation: scale-in 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940);
     animation: scale-in 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940);
-
+    flex-wrap: wrap; /* Permite que os elementos se ajustem */
 }
 
 .produto-img {
-    height: 50vh;
+    height: auto; /* Alterado para auto para se ajustar ao conteúdo */
     width: 250px;
     background-color: #f4ebdc;
     border-radius: 40px;
@@ -640,8 +640,7 @@ ul li a i {
 }
 
 .produto-informacoes {
-    height: 50vh;
-    width: 400px;
+    flex: 1; /* Flexível, ocupando o espaço disponível */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -651,6 +650,8 @@ ul li a i {
     width: 100%;
     padding: 1rem 1.5rem;
     padding-top: 2.5rem;
+    overflow-y: auto; /* Permite rolagem se necessário */
+    max-height: 400px; /* Altura máxima para limitar a altura da área */
 }
 
 .produto-informacoes-area1 h2 {
@@ -673,7 +674,7 @@ ul li a i {
 }
 
 .produto-informacoes-area2 h3 {
-    color: #bf5900;
+    color: white;
     font-size: 0.9rem;
 }
 
@@ -732,11 +733,10 @@ ul li a i {
 
 #add {
     background-color: #5c2308;
-    color: #ee7700;
+    color: white;
     border-radius: 30px;
     padding: 1.2rem;
     transition: all ease 0.3s;
-
 }
 
 #add:hover {
@@ -754,6 +754,17 @@ ul li a i {
 .cancela:hover {
     color: #5c2308;
 }
+
+/* Estilos para listas de sabores e acompanhamentos */
+.sabores-list, .acompanhamentos-list {
+    padding: 0.5rem 1rem; /* Adiciona padding para espaçamento */
+    background-color: #f4ebdc; /* Cor de fundo para destacar */
+    border-radius: 10px; /* Bordas arredondadas */
+    margin-top: 0.5rem; /* Espaço acima */
+    max-height: 150px; /* Altura máxima */
+    overflow-y: auto; /* Permite rolagem se necessário */
+}
+
 
 @keyframes slidein {
     from {
@@ -952,7 +963,7 @@ ul li a i {
     /* Espaço entre nome e descrição */
     font-size: 0.9rem;
     /* Ajuste de tamanho da fonte da descrição */
-    color: #333;
+    color: white;
     /* Cor da descrição */
 }
 
@@ -1088,6 +1099,36 @@ footer {
     padding: 7rem;
     background-color: #371200;
 }
+
+.sabores-selecao, .acompanhamentos-selecao {
+    margin: 1rem 0;
+    padding: 1rem;
+    background-color: #f4ebdc;
+    border-radius: 10px;
+}
+
+.sabores-list, .acompanhamentos-list {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.ver-mais-sabores, .ver-mais-acompanhamentos {
+    margin-top: 0.5rem;
+    background-color: #5c2308;
+    color: #f4ebdc;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+.ver-mais-sabores:hover, .ver-mais-acompanhamentos:hover {
+    background-color: #371200;
+}
+
+
 
 /* RESPONSIVIDADE ---------------------------------------------------------------------*/
 @media (max-width: 1400px) {
@@ -1251,7 +1292,6 @@ footer {
         width: 100%;
     }
 }
-
 
 #botaoCaptura {
     padding: 1rem;

@@ -10,18 +10,18 @@ let hamburgueres = [
 
 
 let sorvetes = [
-    { id: 0, name: 'Copo Massa', img: 'imagens/sorvete.png', price: 4.00, description: '200ML', type: 'Sorvete' },
-    { id: 1, name: 'Copo Massa', img: 'imagens/sorvete.png', price: 6.00, description: '300ML', type: 'Sorvete' },
-    { id: 2, name: 'Copo Massa', img: 'imagens/sorvete.png', price: 8.00, description: '400ML', type: 'Sorvete' },
-    { id: 3, name: 'Copo Massa', img: 'imagens/sorvete.png', price: 10.00, description: '500ML', type: 'Sorvete' },
-    { id: 4, name: 'Açai', img: 'imagens/sorvete.png', price: 6.00, description: '200ML', type: 'Sorvete' },
-    { id: 5, name: 'Açai', img: 'imagens/sorvete.png', price: 8.00, description: '300ML', type: 'Sorvete' },
-    { id: 6, name: 'Açai', img: 'imagens/sorvete.png', price: 10.00, description: '400ML', type: 'Sorvete' },
-    { id: 7, name: 'Açai', img: 'imagens/sorvete.png', price: 13.00, description: '500ML', type: 'Sorvete' },
-    { id: 8, name: 'Cupuaçu', img: 'imagens/sorvete.png', price: 6.00, description: '200ML', type: 'Sorvete' },
-    { id: 9, name: 'Cupuaçu', img: 'imagens/sorvete.png', price: 8.00, description: '300ML', type: 'Sorvete' },
-    { id: 10, name: 'Cupuaçu', img: 'imagens/sorvete.png', price: 10.00, description: '400ML', type: 'Sorvete' },
-    { id: 11, name: 'Cupuaçu', img: 'imagens/sorvete.png', price: 13.00, description: '400ML', type: 'Sorvete' }
+    { id: 0, name: 'Massa 200ML', img: 'imagens/sorvete.png', price: 4.00, description: '200ML', type: 'Sorvete' },
+    { id: 1, name: 'Massa 300ML', img: 'imagens/sorvete.png', price: 6.00, description: '300ML', type: 'Sorvete' },
+    { id: 2, name: 'Massa 400ML', img: 'imagens/sorvete.png', price: 8.00, description: '400ML', type: 'Sorvete' },
+    { id: 3, name: 'Massa 500ML', img: 'imagens/sorvete.png', price: 10.00, description: '500ML', type: 'Sorvete' },
+    { id: 4, name: 'Açaí 200ML', img: 'imagens/sorvete.png', price: 6.00, description: '200ML', type: 'Sorvete' },
+    { id: 5, name: 'Açaí 300ML', img: 'imagens/sorvete.png', price: 8.00, description: '300ML', type: 'Sorvete' },
+    { id: 6, name: 'Açaí 400ML', img: 'imagens/sorvete.png', price: 10.00, description: '400ML', type: 'Sorvete' },
+    { id: 7, name: 'Açaí 500ML', img: 'imagens/sorvete.png', price: 13.00, description: '500ML', type: 'Sorvete' },
+    { id: 8, name: 'Cupuaçu 200ML', img: 'imagens/sorvete.png', price: 6.00, description: '200ML', type: 'Sorvete' },
+    { id: 9, name: 'Cupuaçu 300ML', img: 'imagens/sorvete.png', price: 8.00, description: '300ML', type: 'Sorvete' },
+    { id: 10, name: 'Cupuaçu 400ML', img: 'imagens/sorvete.png', price: 10.00, description: '400ML', type: 'Sorvete' },
+    { id: 11, name: 'Cupuaçu 500ML', img: 'imagens/sorvete.png', price: 13.00, description: '500ML', type: 'Sorvete' }
 ];
 
 let pasteis = [
