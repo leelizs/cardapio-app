@@ -205,7 +205,7 @@ sorvetes.map((item, index) => {
                 if (isAçaiOuCupuaçu) {
                     if (checkedSabores.length > 1) {
                         saborCheckbox.checked = false;
-                        alert('Para produtos de Açaí ou Cupuaçu, você só pode escolher mais 1 sabor.');
+                        alert('Para produtos de Açaí ou Cupuaçu, você só pode escolher 1 sabor.');
                     }
                 } else {
                     if (checkedSabores.length > 2) {

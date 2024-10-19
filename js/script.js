@@ -17,7 +17,6 @@ let itemEscolhido; //variavel que guarda o tipo de lanche escolhido, sorvete, ha
 //EVENTOS ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 iconeCarrinho.addEventListener('click', () => { // Botão do carrinho para mostrar os pedidos
-    //console.log('Ícone do carrinho clicado.');
     mostrarPedidos();
 });
 
@@ -112,9 +111,13 @@ function addCarrinho(keyEscolhido, itemEscolhido) {
         const saboresSelecionados = Array.from(document.querySelectorAll('.sabor-checkbox:checked')).map(cb => cb.value);
         const acompanhamentosSelecionados = Array.from(document.querySelectorAll('.acompanhamento-checkbox:checked')).map(cb => cb.value);
 
-        if (saboresSelecionados.length > 0) {
-            compra.sabores = saboresSelecionados; // Adiciona os sabores selecionados
+        if (saboresSelecionados.length === 0) {
+            alert('Por favor, selecione pelo menos um sabor antes de adicionar ao carrinho.');
+            return; // Impede de adicionar ao carrinho e mantém a modal aberta
         }
+
+        // Adiciona os sabores e acompanhamentos se houver seleção
+        compra.sabores = saboresSelecionados; // Adiciona os sabores selecionados
         if (acompanhamentosSelecionados.length > 0) {
             compra.acompanhamentos = acompanhamentosSelecionados; // Adiciona os acompanhamentos selecionados
             compra.precoAcompanhamentos = acompanhamentosSelecionados.length; // Contabiliza o custo dos acompanhamentos
@@ -139,8 +142,12 @@ function addCarrinho(keyEscolhido, itemEscolhido) {
     keyCarrinho = produtosCarrinho.length; // Atualiza o índice do carrinho para o comprimento atual
     saveCarrinhoToLocalStorage(); // Salva o carrinho no localStorage
     contagemCarrinho(); // Atualiza a contagem
-    mostrarPedidos();
-    produtoModal.classList.remove("show"); // Fecha a modal
+
+    // Chama mostrarPedidos apenas se houver pelo menos um sabor selecionado
+    if (compra.sabores.length > 0) {
+        mostrarPedidos(); // Chama mostrarPedidos apenas se a adição for bem-sucedida
+        produtoModal.classList.remove("show"); // Fecha a modal apenas após a adição
+    }
 }
 
 function contagemCarrinho() { // Função que conta quantos itens tem no carrinho
@@ -404,11 +411,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (produtosCarrinho.length > 0) {
         mostrarPedidos(); // Exibe o carrinho apenas se houver itens
     }
-
-    // iconeCarrinho.addEventListener('click', () => {
-    //     mostrarPedidos(); // Exibe os pedidos quando o ícone do carrinho for clicado
-    // });
-    // // Outras inicializações...
 });
 
 const menuItens = document.querySelectorAll('#header-menu a[href^="#"]'); //pega todos a
