@@ -40,8 +40,6 @@ document.querySelector('.sorvete-setaRigth-icone').addEventListener('click', () 
     }
 });
 
-// MAPEANDO LISTA DE SORVETE ///////////////////////////////////////////////////////////////////////////////////////////
-
 sorvetes.map((item, index) => {
     const sorveteList = document.querySelector('.sorvete-list');
     const sorveteDiv = document.createElement("div");
@@ -79,12 +77,12 @@ sorvetes.map((item, index) => {
         keyEscolhido = index;
         itemEscolhido = 1;
 
+        // Mostra a modal
         modalTamanho.style.display = 'flex';
-        e.preventDefault();
-
+        e.preventDefault(); // Impede a ação padrão do botão
         produtoModal.classList.add("show");
 
-        let numeroQuantidade = 1;
+        let numeroQuantidade = 1; // Define a quantidade inicial
         const modalTitle = document.querySelector(".produto-informacoes-area1 h2");
         const modalDescription = document.querySelector(".produto-informacoes-area1 p");
         const modalPrice = document.querySelector(".produto-preco h2");
@@ -94,11 +92,12 @@ sorvetes.map((item, index) => {
         const modalImg = document.querySelector('.produto-img img');
         const quantidade = document.querySelector('.produto-quantidade .quantidade');
 
-        modalTitle.innerHTML = sorvetes[index].name;
-        modalDescription.innerHTML = sorvetes[index].description;
-        modalPrice.innerHTML = 'R$' + sorvetes[index].price.toFixed(2);
-        modalImg.src = sorvetes[index].img;
-        quantidade.innerHTML = numeroQuantidade;
+        // Carrega os dados do sorvete selecionado
+        modalTitle.innerHTML = sorvetes[index].name; // Título do sorvete
+        modalDescription.innerHTML = sorvetes[index].description; // Descrição do sorvete
+        modalPrice.innerHTML = 'R$' + sorvetes[index].price.toFixed(2); // Preço do sorvete
+        modalImg.src = sorvetes[index].img; // Imagem do sorvete
+        quantidade.innerHTML = numeroQuantidade; // Quantidade
 
         // Verifica se o campo de descrição personalizada já existe
         let descricaoPersonalizada = document.querySelector('#produto-descricao');
@@ -125,7 +124,10 @@ sorvetes.map((item, index) => {
         // Adicionar novos event listeners
         buttonLess.addEventListener('click', handleButtonLess);
         buttonPlus.addEventListener('click', handleButtonPlus);
-        buttonCancel.addEventListener('click', handleButtonCancel);
+        buttonCancel.addEventListener('click', () => {
+            produtoModal.classList.remove("show"); // Fecha a modal
+            modalTamanho.style.display = 'none'; // Esconde o modal de tamanho
+        });
 
         // Configurar os sabores e acompanhamentos ao abrir a modal
         configurarSabores(sorvetes[index].name);

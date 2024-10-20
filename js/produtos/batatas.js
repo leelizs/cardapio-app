@@ -42,6 +42,38 @@ document.querySelector('.batatas-setaRigth-icone').addEventListener('click', () 
 
 // MAPEANDO LISTA DE BATATAS ///////////////////////////////////////////////////////////////////////////////////////////
 
+// Função para resetar os campos da modal
+function resetModalFields() {
+    // Limpar campos de descrição
+    const descricaoInput = document.querySelector('#produto-descricao');
+    if (descricaoInput) {
+        descricaoInput.value = ''; // Limpa a descrição
+    }
+
+    // Resetar a quantidade
+    document.querySelector('.produto-quantidade .quantidade').innerText = '1'; // Ou o valor padrão desejado
+
+    // Limpar título, descrição e preço
+    const modalTitle = document.querySelector(".produto-informacoes-area1 h2");
+    const modalDescription = document.querySelector(".produto-informacoes-area1 p");
+    const modalPrice = document.querySelector(".produto-preco h2");
+    const modalImg = document.querySelector('.produto-img img');
+
+    if (modalTitle) modalTitle.innerHTML = '';
+    if (modalDescription) modalDescription.innerHTML = '';
+    if (modalPrice) modalPrice.innerHTML = '';
+    if (modalImg) modalImg.src = ''; // Ou uma imagem placeholder padrão
+
+    // Remover event listeners se necessário
+    const buttonLess = document.querySelector('.quantidade-less');
+    const buttonPlus = document.querySelector('.quantidade-plus');
+    const buttonCancel = document.querySelector('.cancela');
+
+    if (buttonLess) buttonLess.removeEventListener('click', handleButtonLess);
+    if (buttonPlus) buttonPlus.removeEventListener('click', handleButtonPlus);
+    if (buttonCancel) buttonCancel.removeEventListener('click', handleButtonCancel);
+}
+
 batatas.map((item, index) => {
     const batatasList = document.querySelector('.batatas-list');
     const batatasDiv = document.createElement("div");
@@ -76,21 +108,25 @@ batatas.map((item, index) => {
 
     batatasDiv3.appendChild(batatasPrice);
     batatasDiv3.appendChild(batatasButton);
-    
+    batatasList.appendChild(batatasDiv);
+
     batatasButton.addEventListener('click', (e) => {
+        keyEscolhido = index;
+        itemEscolhido = 5;
         e.preventDefault();
 
         // Limpa dados anteriores da modal
         resetModalFields();
 
         // Define a modal atual
-        produtoModal.classList.add("show");
-        
+        const produtoModal = document.querySelector('.produto-modal');
+        if (produtoModal) {
+            produtoModal.classList.add("show");
+        }
+
         // Atribui informações do item à modal
         setModalData(item, index);
     });
-
-    batatasList.appendChild(batatasDiv);
 });
 
 // Função para definir os dados da modal
@@ -140,16 +176,4 @@ function handleButtonPlus() {
 
 function handleButtonCancel() {
     produtoModal.classList.remove("show");
-}
-
-// Função para resetar os campos da modal
-function resetModalFields() {
-    // Limpar campos de descrição
-    const descricaoInput = document.querySelector('#produto-descricao');
-    if (descricaoInput) {
-        descricaoInput.value = ''; // Limpa a descrição
-    }
-
-    // Resetar a quantidade
-    document.querySelector('.produto-quantidade .quantidade').innerText = '1'; // Ou o valor padrão desejado
 }

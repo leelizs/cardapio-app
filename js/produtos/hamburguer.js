@@ -76,12 +76,14 @@ hamburgueres.map((item, index) => {
 
     hamburguerDiv3.appendChild(hamburguerPrice);
     hamburguerDiv3.appendChild(hamburguerButton);
+
     hamburguerButton.addEventListener('click', (e) => {
         keyEscolhido = index;
         itemEscolhido = 0;
 
         e.preventDefault();
         modalTamanho.style.display = 'none';
+
         produtoModal.classList.add("show");
 
         let numeroQuantidade = 1;
