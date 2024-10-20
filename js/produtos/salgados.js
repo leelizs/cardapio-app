@@ -77,11 +77,33 @@ salgados.map((item, index) => {
     salgadosDiv3.appendChild(salgadosPrice);
     salgadosDiv3.appendChild(salgadosButton);
     salgadosButton.addEventListener('click', (e) => {
-        keyEscolhido = index;
+        e.preventDefault();
+
         itemEscolhido = 6;
 
+        if (itemEscolhido === 1) { // Quando o item é um sorvete
+            // Configura sabores e acompanhamentos apenas para sorvetes
+            configurarSabores(sorvetes[index].name);
+            configurarAcompanhamentos();
+        } else {
+            // Remove qualquer elemento relacionado a sabores/acompanhamentos
+            const saboresContainer = document.querySelector('#sabores-container');
+            if (saboresContainer) saboresContainer.remove();
+
+            const acompanhamentosContainer = document.querySelector('#acompanhamentos-container');
+            if (acompanhamentosContainer) acompanhamentosContainer.remove();
+
+            // Remove a descrição anterior
+            const descricaoPersonalizada = document.querySelector('#produto-descricao');
+            if (descricaoPersonalizada) {
+                descricaoPersonalizada.parentElement.remove(); // Remove o container da descrição
+            }
+        }
+
+        keyEscolhido = index;
+
         modalTamanho.style.display = 'none';
-        e.preventDefault();
+
 
         produtoModal.classList.add("show");
 

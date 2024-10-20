@@ -42,38 +42,6 @@ document.querySelector('.batatas-setaRigth-icone').addEventListener('click', () 
 
 // MAPEANDO LISTA DE BATATAS ///////////////////////////////////////////////////////////////////////////////////////////
 
-// Função para resetar os campos da modal
-function resetModalFields() {
-    // Limpar campos de descrição
-    const descricaoInput = document.querySelector('#produto-descricao');
-    if (descricaoInput) {
-        descricaoInput.value = ''; // Limpa a descrição
-    }
-
-    // Resetar a quantidade
-    document.querySelector('.produto-quantidade .quantidade').innerText = '1'; // Ou o valor padrão desejado
-
-    // Limpar título, descrição e preço
-    const modalTitle = document.querySelector(".produto-informacoes-area1 h2");
-    const modalDescription = document.querySelector(".produto-informacoes-area1 p");
-    const modalPrice = document.querySelector(".produto-preco h2");
-    const modalImg = document.querySelector('.produto-img img');
-
-    if (modalTitle) modalTitle.innerHTML = '';
-    if (modalDescription) modalDescription.innerHTML = '';
-    if (modalPrice) modalPrice.innerHTML = '';
-    if (modalImg) modalImg.src = ''; // Ou uma imagem placeholder padrão
-
-    // Remover event listeners se necessário
-    const buttonLess = document.querySelector('.quantidade-less');
-    const buttonPlus = document.querySelector('.quantidade-plus');
-    const buttonCancel = document.querySelector('.cancela');
-
-    if (buttonLess) buttonLess.removeEventListener('click', handleButtonLess);
-    if (buttonPlus) buttonPlus.removeEventListener('click', handleButtonPlus);
-    if (buttonCancel) buttonCancel.removeEventListener('click', handleButtonCancel);
-}
-
 batatas.map((item, index) => {
     const batatasList = document.querySelector('.batatas-list');
     const batatasDiv = document.createElement("div");
@@ -111,69 +79,90 @@ batatas.map((item, index) => {
     batatasList.appendChild(batatasDiv);
 
     batatasButton.addEventListener('click', (e) => {
-        keyEscolhido = index;
-        itemEscolhido = 5;
         e.preventDefault();
 
-        // Limpa dados anteriores da modal
-        resetModalFields();
+        itemEscolhido = 5;
 
-        // Define a modal atual
-        const produtoModal = document.querySelector('.produto-modal');
-        if (produtoModal) {
-            produtoModal.classList.add("show");
+        if (itemEscolhido === 1) { // Quando o item é um sorvete
+            // Configura sabores e acompanhamentos apenas para sorvetes
+            configurarSabores(sorvetes[index].name);
+            configurarAcompanhamentos();
+        } else {
+            // Remove qualquer elemento relacionado a sabores/acompanhamentos
+            const saboresContainer = document.querySelector('#sabores-container');
+            if (saboresContainer) saboresContainer.remove();
+
+            const acompanhamentosContainer = document.querySelector('#acompanhamentos-container');
+            if (acompanhamentosContainer) acompanhamentosContainer.remove();
+
+            // Remove a descrição anterior
+            const descricaoPersonalizada = document.querySelector('#produto-descricao');
+            if (descricaoPersonalizada) {
+                descricaoPersonalizada.parentElement.remove(); // Remove o container da descrição
+            }
         }
 
-        // Atribui informações do item à modal
-        setModalData(item, index);
+        keyEscolhido = index;
+
+        modalTamanho.style.display = 'none';
+
+        produtoModal.classList.add("show");
+
+        let numeroQuantidade = 1;
+        const modalTitle = document.querySelector(".produto-informacoes-area1 h2");
+        const modalDescription = document.querySelector(".produto-informacoes-area1 p");
+        const modalPrice = document.querySelector(".produto-preco h2");
+        const buttonCancel = document.querySelector('.cancela');
+        const buttonLess = document.querySelector('.quantidade-less');
+        const buttonPlus = document.querySelector('.quantidade-plus');
+        const buttonAdd = document.querySelector('#add');
+        const quantidade = document.querySelector('.produto-quantidade .quantidade');
+        const modalImg = document.querySelector('.produto-img img');
+        modalTitle.innerHTML = hamburgueres[index].name;
+        modalDescription.innerHTML = hamburgueres[index].description;
+        modalPrice.innerHTML = 'R$' + hamburgueres[index].price.toFixed(2);
+        modalImg.src = hamburgueres[index].img;
+
+        quantidade.innerHTML = numeroQuantidade;
+
+        // Atualiza a descrição para produtos que não são Massa, Açaí ou Cupuaçu
+        let descricaoPersonalizada = document.querySelector('#produto-descricao');
+        if (!descricaoPersonalizada) {
+            descricaoPersonalizada = document.createElement('textarea');
+            descricaoPersonalizada.id = 'produto-descricao';
+            descricaoPersonalizada.placeholder = 'Observação: "Sem mostarda", por exemplo';
+
+            const descricaoPersonalizadaContainer = document.createElement('div');
+            descricaoPersonalizadaContainer.classList.add('descricao-personalizada');
+            descricaoPersonalizadaContainer.appendChild(descricaoPersonalizada);
+
+            const modalInfoArea = document.querySelector(".produto-informacoes-area1");
+            modalInfoArea.appendChild(descricaoPersonalizadaContainer);
+        }
+
+        buttonLess.addEventListener('click', () => {
+            numeroQuantidade = numeroQuantidade - 1;
+            if (numeroQuantidade <= 0) {
+                numeroQuantidade = 1
+            }
+            quantidade.innerHTML = numeroQuantidade;
+        });
+
+        buttonPlus.addEventListener('click', () => {
+            numeroQuantidade = numeroQuantidade + 1;
+            quantidade.innerHTML = numeroQuantidade;
+        });
+
+
+        buttonCancel.addEventListener('click', () => {
+            produtoModal.classList.remove("show");
+        });
+
+
     });
+
+    batatasList.appendChild(batatasDiv);
+
 });
 
-// Função para definir os dados da modal
-function setModalData(item, index) {
-    const modalTitle = document.querySelector(".produto-informacoes-area1 h2");
-    const modalDescription = document.querySelector(".produto-informacoes-area1 p");
-    const modalPrice = document.querySelector(".produto-preco h2");
-    const buttonCancel = document.querySelector('.cancela');
-    const buttonLess = document.querySelector('.quantidade-less');
-    const buttonPlus = document.querySelector('.quantidade-plus');
-    const modalImg = document.querySelector('.produto-img img');
-    const quantidade = document.querySelector('.produto-quantidade .quantidade');
 
-    modalTitle.innerHTML = item.name;
-    modalDescription.innerHTML = item.description;
-    modalPrice.innerHTML = 'R$' + item.price.toFixed(2);
-    modalImg.src = item.img;
-    quantidade.innerHTML = '1';
-
-    // Adicionar event listeners
-    addModalEventListeners(buttonLess, buttonPlus, buttonCancel);
-}
-
-// Função para adicionar event listeners à modal
-function addModalEventListeners(buttonLess, buttonPlus, buttonCancel) {
-    buttonLess.removeEventListener('click', handleButtonLess);
-    buttonPlus.removeEventListener('click', handleButtonPlus);
-    buttonCancel.removeEventListener('click', handleButtonCancel);
-
-    buttonLess.addEventListener('click', handleButtonLess);
-    buttonPlus.addEventListener('click', handleButtonPlus);
-    buttonCancel.addEventListener('click', handleButtonCancel);
-}
-
-// Funções de manipulação de eventos
-function handleButtonLess() {
-    let numeroQuantidade = parseInt(document.querySelector('.produto-quantidade .quantidade').innerText);
-    numeroQuantidade = numeroQuantidade > 1 ? numeroQuantidade - 1 : 1;
-    document.querySelector('.produto-quantidade .quantidade').innerText = numeroQuantidade;
-}
-
-function handleButtonPlus() {
-    let numeroQuantidade = parseInt(document.querySelector('.produto-quantidade .quantidade').innerText);
-    numeroQuantidade++;
-    document.querySelector('.produto-quantidade .quantidade').innerText = numeroQuantidade;
-}
-
-function handleButtonCancel() {
-    produtoModal.classList.remove("show");
-}

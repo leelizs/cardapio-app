@@ -78,10 +78,31 @@ hamburgueres.map((item, index) => {
     hamburguerDiv3.appendChild(hamburguerButton);
 
     hamburguerButton.addEventListener('click', (e) => {
-        keyEscolhido = index;
+        e.preventDefault();
+
         itemEscolhido = 0;
 
-        e.preventDefault();
+        if (itemEscolhido === 1) { // Quando o item é um sorvete
+            // Configura sabores e acompanhamentos apenas para sorvetes
+            configurarSabores(sorvetes[index].name);
+            configurarAcompanhamentos();
+        } else {
+            // Remove qualquer elemento relacionado a sabores/acompanhamentos
+            const saboresContainer = document.querySelector('#sabores-container');
+            if (saboresContainer) saboresContainer.remove();
+
+            const acompanhamentosContainer = document.querySelector('#acompanhamentos-container');
+            if (acompanhamentosContainer) acompanhamentosContainer.remove();
+
+            // Remove a descrição anterior
+            const descricaoPersonalizada = document.querySelector('#produto-descricao');
+            if (descricaoPersonalizada) {
+                descricaoPersonalizada.parentElement.remove(); // Remove o container da descrição
+            }
+        }
+
+        keyEscolhido = index;
+
         modalTamanho.style.display = 'none';
 
         produtoModal.classList.add("show");
@@ -103,11 +124,9 @@ hamburgueres.map((item, index) => {
 
         quantidade.innerHTML = numeroQuantidade;
 
-        // Verifica se o campo de descrição personalizada já existe
+        // Atualiza a descrição para produtos que não são Massa, Açaí ou Cupuaçu
         let descricaoPersonalizada = document.querySelector('#produto-descricao');
-
         if (!descricaoPersonalizada) {
-            // Cria o campo de descrição se não existir
             descricaoPersonalizada = document.createElement('textarea');
             descricaoPersonalizada.id = 'produto-descricao';
             descricaoPersonalizada.placeholder = 'Observação: "Sem alface e tomate", por exemplo';
@@ -118,9 +137,6 @@ hamburgueres.map((item, index) => {
 
             const modalInfoArea = document.querySelector(".produto-informacoes-area1");
             modalInfoArea.appendChild(descricaoPersonalizadaContainer);
-        } else {
-            // Se o campo já existe, apenas limpa o valor
-            descricaoPersonalizada.value = ''; // Limpa a descrição ao abrir a modal
         }
 
         buttonLess.addEventListener('click', () => {

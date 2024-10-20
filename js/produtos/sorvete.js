@@ -32,7 +32,7 @@ document.querySelector('.sorvete-setaRigth-icone').addEventListener('click', () 
     }
     else {
         marginsorvete = marginsorvete - (window.innerWidth - 60);
-        let x = -(window.innerWidth * 9) - 10;
+        let x = -(window.innerWidth * 10) - 10;
         if (marginsorvete < x) {
             marginsorvete = 0;
         }
@@ -74,12 +74,34 @@ sorvetes.map((item, index) => {
     sorveteDiv3.appendChild(sorvetePrice);
     sorveteDiv3.appendChild(sorveteButton);
     sorveteButton.addEventListener('click', (e) => {
-        keyEscolhido = index;
+
+        e.preventDefault(); // Impede a ação padrão do botão
+
         itemEscolhido = 1;
+
+        if (itemEscolhido === 1) { // Quando o item é um sorvete
+            // Configura sabores e acompanhamentos apenas para sorvetes
+            configurarSabores(sorvetes[index].name);
+            configurarAcompanhamentos();
+        } else {
+            // Remove qualquer elemento relacionado a sabores/acompanhamentos
+            const saboresContainer = document.querySelector('#sabores-container');
+            if (saboresContainer) saboresContainer.remove();
+
+            const acompanhamentosContainer = document.querySelector('#acompanhamentos-container');
+            if (acompanhamentosContainer) acompanhamentosContainer.remove();
+
+            // Remove a descrição anterior
+            const descricaoPersonalizada = document.querySelector('#produto-descricao');
+            if (descricaoPersonalizada) {
+                descricaoPersonalizada.parentElement.remove(); // Remove o container da descrição
+            }
+        }
+
+        keyEscolhido = index;
 
         // Mostra a modal
         modalTamanho.style.display = 'flex';
-        e.preventDefault(); // Impede a ação padrão do botão
         produtoModal.classList.add("show");
 
         let numeroQuantidade = 1; // Define a quantidade inicial
@@ -99,12 +121,12 @@ sorvetes.map((item, index) => {
         modalImg.src = sorvetes[index].img; // Imagem do sorvete
         quantidade.innerHTML = numeroQuantidade; // Quantidade
 
-        // Verifica se o campo de descrição personalizada já existe
+        // Atualiza a descrição para produtos que não são Massa, Açaí ou Cupuaçu
         let descricaoPersonalizada = document.querySelector('#produto-descricao');
         if (!descricaoPersonalizada) {
             descricaoPersonalizada = document.createElement('textarea');
             descricaoPersonalizada.id = 'produto-descricao';
-            descricaoPersonalizada.placeholder = 'Observação: "Leite Condensado embaixo", por exemplo.';
+            descricaoPersonalizada.placeholder = 'Observação: "Leite condensado embaixo", por exemplo';
 
             const descricaoPersonalizadaContainer = document.createElement('div');
             descricaoPersonalizadaContainer.classList.add('descricao-personalizada');
@@ -112,8 +134,6 @@ sorvetes.map((item, index) => {
 
             const modalInfoArea = document.querySelector(".produto-informacoes-area1");
             modalInfoArea.appendChild(descricaoPersonalizadaContainer);
-        } else {
-            descricaoPersonalizada.value = ''; // Limpa a descrição ao abrir a modal
         }
 
         // Remover event listeners antigos antes de adicionar os novos
@@ -152,6 +172,10 @@ sorvetes.map((item, index) => {
     }
 
     function configurarSabores(produtoNome) {
+
+        if (!produtoNome.includes('Massa') && !produtoNome.includes('Açaí') && !produtoNome.includes('Cupuaçu')) {
+            return; // Retorna se não for Massa, Açaí ou Cupuaçu
+        }
         let saboresContainer = document.querySelector('#sabores-container');
 
         // Limpa sabores anteriores
@@ -313,5 +337,4 @@ sorvetes.map((item, index) => {
             acompanhamentosButton.innerText = isVisible ? 'Ver mais acompanhamentos' : 'Ver menos acompanhamentos';
         });
     }
-
 });

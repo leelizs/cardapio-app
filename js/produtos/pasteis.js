@@ -77,10 +77,31 @@ pasteis.map((item, index) => {
     pastelDiv3.appendChild(pastelPrice);
     pastelDiv3.appendChild(pastelButton);
     pastelButton.addEventListener('click', (e) => {
-        keyEscolhido = index;
-        itemEscolhido = 2;
-
         e.preventDefault();
+
+        itemEscolhido = 2;
+       
+        if (itemEscolhido === 1) { // Quando o item é um sorvete
+            // Configura sabores e acompanhamentos apenas para sorvetes
+            configurarSabores(sorvetes[index].name);
+            configurarAcompanhamentos();
+        } else {
+            // Remove qualquer elemento relacionado a sabores/acompanhamentos
+            const saboresContainer = document.querySelector('#sabores-container');
+            if (saboresContainer) saboresContainer.remove();
+
+            const acompanhamentosContainer = document.querySelector('#acompanhamentos-container');
+            if (acompanhamentosContainer) acompanhamentosContainer.remove();
+
+            // Remove a descrição anterior
+            const descricaoPersonalizada = document.querySelector('#produto-descricao');
+            if (descricaoPersonalizada) {
+                descricaoPersonalizada.parentElement.remove(); // Remove o container da descrição
+            }
+        }
+        
+        keyEscolhido = index;
+        
         modalTamanho.style.display = 'none';
         produtoModal.classList.add("show");
 

@@ -77,10 +77,31 @@ pasteisEspeciais.map((item, index) => {
     pasteisEspeciaisDiv3.appendChild(pasteisEspeciaisPrice);
     pasteisEspeciaisDiv3.appendChild(pasteisEspeciaisButton);
     pasteisEspeciaisButton.addEventListener('click', (e) => {
-        keyEscolhido = index;
+        e.preventDefault();
+
         itemEscolhido = 3;
 
-        e.preventDefault();
+        if (itemEscolhido === 1) { // Quando o item é um sorvete
+            // Configura sabores e acompanhamentos apenas para sorvetes
+            configurarSabores(sorvetes[index].name);
+            configurarAcompanhamentos();
+        } else {
+            // Remove qualquer elemento relacionado a sabores/acompanhamentos
+            const saboresContainer = document.querySelector('#sabores-container');
+            if (saboresContainer) saboresContainer.remove();
+
+            const acompanhamentosContainer = document.querySelector('#acompanhamentos-container');
+            if (acompanhamentosContainer) acompanhamentosContainer.remove();
+
+            // Remove a descrição anterior
+            const descricaoPersonalizada = document.querySelector('#produto-descricao');
+            if (descricaoPersonalizada) {
+                descricaoPersonalizada.parentElement.remove(); // Remove o container da descrição
+            }
+        }
+
+        keyEscolhido = index;
+
         modalTamanho.style.display = 'none';
         produtoModal.classList.add("show");
 
@@ -116,11 +137,8 @@ pasteisEspeciais.map((item, index) => {
 
             const modalInfoArea = document.querySelector(".produto-informacoes-area1");
             modalInfoArea.appendChild(descricaoPersonalizadaContainer);
-        } else {
-            // Se o campo já existe, apenas limpa o valor
-            descricaoPersonalizada.value = ''; // Limpa a descrição ao abrir a modal
         }
-
+        
         buttonLess.addEventListener('click', () => {
             numeroQuantidade = numeroQuantidade - 1;
             if (numeroQuantidade <= 0) {

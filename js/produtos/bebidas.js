@@ -77,10 +77,31 @@ bebidas.map((item, index) => {
     bebidasDiv3.appendChild(bebidasPrice);
     bebidasDiv3.appendChild(bebidasButton);
     bebidasButton.addEventListener('click', (e) => {
-        keyEscolhido = index;
+        e.preventDefault();
+
         itemEscolhido = 4;
 
-        e.preventDefault();
+        if (itemEscolhido === 1) { // Quando o item é um sorvete
+            // Configura sabores e acompanhamentos apenas para sorvetes
+            configurarSabores(sorvetes[index].name);
+            configurarAcompanhamentos();
+        } else {
+            // Remove qualquer elemento relacionado a sabores/acompanhamentos
+            const saboresContainer = document.querySelector('#sabores-container');
+            if (saboresContainer) saboresContainer.remove();
+
+            const acompanhamentosContainer = document.querySelector('#acompanhamentos-container');
+            if (acompanhamentosContainer) acompanhamentosContainer.remove();
+
+            // Remove a descrição anterior
+            const descricaoPersonalizada = document.querySelector('#produto-descricao');
+            if (descricaoPersonalizada) {
+                descricaoPersonalizada.parentElement.remove(); // Remove o container da descrição
+            }
+        }
+
+        keyEscolhido = index;
+
         modalTamanho.style.display = 'none';
         produtoModal.classList.add("show");
 
@@ -100,24 +121,6 @@ bebidas.map((item, index) => {
         modalImg.src = bebidas[index].img;
 
         quantidade.innerHTML = numeroQuantidade;
-
-        // // Verifica se o campo de descrição personalizada já existe
-        // let descricaoPersonalizada = document.querySelector('#produto-descricao');
-        // if (!descricaoPersonalizada) {
-        //     descricaoPersonalizada = document.createElement('textarea');
-        //     descricaoPersonalizada.id = 'produto-descricao';
-        //     descricaoPersonalizada.placeholder = 'Observação: ';
-        //     const descricaoPersonalizadaContainer = document.createElement('div');
-        //     descricaoPersonalizadaContainer.classList.add('descricao-personalizada');
-        //     descricaoPersonalizadaContainer.appendChild(descricaoPersonalizada);
-
-        //     // Adicionar o campo de descrição ao modal
-        //     const modalInfoArea = document.querySelector(".produto-informacoes-area1");
-        //     modalInfoArea.appendChild(descricaoPersonalizadaContainer);
-        // }
-
-        // // Limpa o campo de descrição ao abrir a modal
-        // descricaoPersonalizada.value = ''; // Remova essa linha se quiser manter o texto ao abrir a modal novamente.
 
         buttonLess.addEventListener('click', () => {
             numeroQuantidade = numeroQuantidade - 1;
