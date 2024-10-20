@@ -138,6 +138,8 @@ batatas.map((item, index) => {
 
             const modalInfoArea = document.querySelector(".produto-informacoes-area1");
             modalInfoArea.appendChild(descricaoPersonalizadaContainer);
+        } else {
+            descricaoPersonalizada.value = ''; // Limpa o conteúdo da descrição ao abrir a modal
         }
 
         buttonLess.addEventListener('click', () => {

@@ -140,8 +140,7 @@ salgados.map((item, index) => {
             const modalInfoArea = document.querySelector(".produto-informacoes-area1");
             modalInfoArea.appendChild(descricaoPersonalizadaContainer);
         } else {
-            // Se o campo já existe, apenas limpa o valor
-            descricaoPersonalizada.value = ''; // Limpa a descrição ao abrir a modal
+            descricaoPersonalizada.value = ''; // Limpa o conteúdo da descrição ao abrir a modal
         }
 
         buttonLess.addEventListener('click', () => { //Botão de tirar 1 item do modal 1
