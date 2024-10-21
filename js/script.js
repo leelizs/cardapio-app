@@ -182,14 +182,16 @@ function mostrarPedidos() {
     produtosCarrinho.forEach((item, index) => {
         const carrinhoItem = document.createElement("div");
         const carrinhodiv1 = document.createElement("div");
+        const carrinhodiv2 = document.createElement("div");
         const carrinhoqt = document.createElement("h3");
         const carrinhoNome = document.createElement("h2");
         const carrinhoDescricao = document.createElement("p"); // Novo elemento para a descrição
-        const carrinhodiv2 = document.createElement("div");
         const carrinhoPrice = document.createElement("h4");
-        const valorReal = (item.produto.price + item.precoAcompanhamentos) * item.quantidade; // Cálculo do preço total com acompanhamentos
         const carrinhoButton = document.createElement("button");
         const carrinhoSpan = document.createElement("span");
+
+        const valorReal = (item.produto.price + item.precoAcompanhamentos) * item.quantidade; // Cálculo do preço total com acompanhamentos
+        totalItens += valorReal; // Acumula o valor total dos itens
 
         carrinhoItem.classList.add("carrinho-item");
         carrinhodiv1.classList.add("carrinho-detalhes"); // Classe adicional para estilização
@@ -199,13 +201,17 @@ function mostrarPedidos() {
         carrinhoButton.classList.add("butao-delete");
         carrinhoSpan.classList.add("material-symbols-outlined");
         carrinhoSpan.innerText = "delete_forever"; // Ícone de delete
-        totalItens += valorReal; // Acumula o valor total dos itens
+
+        // Adiciona a quantidade à div de detalhes **antes** do nome do produto
+        carrinhodiv1.appendChild(carrinhoqt); // Exibe a quantidade acima do nome
+        carrinhodiv1.appendChild(carrinhoNome); // Adiciona o nome do produto
 
         // Exibe a descrição se estiver presente
         if (item.descricao) {
             carrinhoDescricao.innerText = item.descricao; // Adiciona a descrição ao carrinho
             carrinhoDescricao.style.fontStyle = "italic"; // Estilo em itálico para a descrição
             carrinhoDescricao.style.color = "#fff"; // Cor da descrição
+            carrinhodiv1.appendChild(carrinhoDescricao); // Coloca a descrição aqui
         }
 
         // Verifica se o produto é um sorvete antes de criar os campos de sabores e acompanhamentos
@@ -226,13 +232,12 @@ function mostrarPedidos() {
             }
         }
 
-        document.querySelector('.carrinho .total-itens h2').innerText = "R$" + totalItens.toFixed(2); // Atualiza o total no carrinho
-        carrinhoButton.appendChild(carrinhoSpan);
+        // Adiciona a div de preço e botão à segunda div
         carrinhodiv2.appendChild(carrinhoPrice);
         carrinhodiv2.appendChild(carrinhoButton);
-        carrinhodiv1.appendChild(carrinhoqt);
-        carrinhodiv1.appendChild(carrinhoNome);
-        carrinhodiv1.appendChild(carrinhoDescricao); // Colocando a descrição abaixo do nome
+        carrinhoButton.appendChild(carrinhoSpan);
+
+        // Adiciona a div de detalhes e a div de preço ao item
         carrinhoItem.appendChild(carrinhodiv1);
         carrinhoItem.appendChild(carrinhodiv2);
 
@@ -252,6 +257,9 @@ function mostrarPedidos() {
 
         carrinhoProdutos.appendChild(carrinhoItem); // Adiciona o item ao carrinho
     });
+
+    // Atualiza o total no carrinho
+    document.querySelector('.carrinho .total-itens h2').innerText = "R$" + totalItens.toFixed(2);
 
     // Criar e adicionar opções de Retirada e Entrega
     adicionarOpcoesEntrega(carrinhoProdutos);
@@ -366,7 +374,6 @@ function finalizarECapturarPedido() {
         informacaoEntrega.remove();
     });
 }
-
 
 function capturarPedido() {
     return new Promise((resolve, reject) => {
@@ -493,7 +500,6 @@ function capturarPedido() {
         });
     });
 }
-
 
 // Função para finalizar a compra
 function finalizarCompra() {
