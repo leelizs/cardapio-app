@@ -118,10 +118,10 @@ batatas.map((item, index) => {
         const buttonAdd = document.querySelector('#add');
         const quantidade = document.querySelector('.produto-quantidade .quantidade');
         const modalImg = document.querySelector('.produto-img img');
-        modalTitle.innerHTML = hamburgueres[index].name;
-        modalDescription.innerHTML = hamburgueres[index].description;
-        modalPrice.innerHTML = 'R$' + hamburgueres[index].price.toFixed(2);
-        modalImg.src = hamburgueres[index].img;
+        modalTitle.innerHTML = batatas[index].name;
+        modalDescription.innerHTML = batatas[index].description;
+        modalPrice.innerHTML = 'R$' + batatas[index].price.toFixed(2);
+        modalImg.src = batatas[index].img;
 
         quantidade.innerHTML = numeroQuantidade;
 
