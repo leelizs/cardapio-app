@@ -170,7 +170,7 @@ function mostrarPedidos() {
 
     // Verifica se há itens no carrinho antes de exibi-lo
     if (produtosCarrinho.length === 0) {
-        alert('Carrinho vazio, adicione algo para que possa ser exibido.');
+        alert('Nenhum item.');
         modalCarrinho.classList.remove("show"); // Fecha o modal se estiver aberto
         return; // Não faz nada se o carrinho estiver vazio
     } else {
@@ -252,6 +252,70 @@ function mostrarPedidos() {
 
         carrinhoProdutos.appendChild(carrinhoItem); // Adiciona o item ao carrinho
     });
+
+    // Criar e adicionar opções de Retirada e Entrega
+    adicionarOpcoesEntrega(carrinhoProdutos);
+}
+
+function adicionarOpcoesEntrega(container) {
+    // Verifica se as opções já existem para evitar duplicação
+    if (document.querySelector('.metodo-entrega')) return;
+
+    const metodoEntregaDiv = document.createElement("div");
+    metodoEntregaDiv.classList.add("metodo-entrega");
+
+    // Estilizando a opção de Retirar no Local
+    const retirarLocalContainer = document.createElement("div");
+    retirarLocalContainer.classList.add("opcao-entrega");
+
+    const retirarLocalInput = document.createElement("input");
+    retirarLocalInput.type = "radio";
+    retirarLocalInput.id = "retirarLocal";
+    retirarLocalInput.name = "metodoEntrega"; // Define o mesmo nome para que sejam parte do mesmo grupo
+
+    const retirarLocalLabel = document.createElement("label");
+    retirarLocalLabel.htmlFor = "retirarLocal";
+    retirarLocalLabel.innerText = "Retirar no Local";
+    retirarLocalLabel.classList.add("label-entrega");
+
+    retirarLocalContainer.appendChild(retirarLocalInput);
+    retirarLocalContainer.appendChild(retirarLocalLabel);
+    metodoEntregaDiv.appendChild(retirarLocalContainer);
+
+    // Estilizando a opção de Fazer Entrega em
+    const fazerEntregaContainer = document.createElement("div");
+    fazerEntregaContainer.classList.add("opcao-entrega");
+
+    const fazerEntregaInput = document.createElement("input");
+    fazerEntregaInput.type = "radio";
+    fazerEntregaInput.id = "fazerEntrega";
+    fazerEntregaInput.name = "metodoEntrega"; // Define o mesmo nome para que sejam parte do mesmo grupo
+
+    const fazerEntregaLabel = document.createElement("label");
+    fazerEntregaLabel.htmlFor = "fazerEntrega";
+    fazerEntregaLabel.innerText = "Fazer Entrega em:";
+    fazerEntregaLabel.classList.add("label-entrega");
+
+    const enderecoInput = document.createElement("input");
+    enderecoInput.id = "enderecoEntrega";
+    enderecoInput.placeholder = "Digite seu endereço";
+    enderecoInput.style.display = "none"; // Oculta o campo de endereço inicialmente
+    enderecoInput.classList.add("input-endereco"); // Classe para estilização
+
+    fazerEntregaInput.addEventListener('change', () => {
+        enderecoInput.style.display = "block"; // Mostra o campo de endereço
+    });
+
+    retirarLocalInput.addEventListener('change', () => {
+        enderecoInput.style.display = "none"; // Oculta o campo de endereço
+    });
+
+    fazerEntregaContainer.appendChild(fazerEntregaInput);
+    fazerEntregaContainer.appendChild(fazerEntregaLabel);
+    fazerEntregaContainer.appendChild(enderecoInput);
+    metodoEntregaDiv.appendChild(fazerEntregaContainer);
+
+    container.appendChild(metodoEntregaDiv); // Adiciona a seção de método de entrega ao carrinho
 }
 
 
@@ -272,12 +336,37 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Função para capturar o pedido e finalizar a compra
 function finalizarECapturarPedido() {
-    // Captura o pedido antes de finalizar a compra
+    const retirarLocalChecked = document.getElementById('retirarLocal')?.checked; // Usar optional chaining
+    const fazerEntregaChecked = document.getElementById('fazerEntrega')?.checked;
+    const enderecoEntrega = document.getElementById('enderecoEntrega')?.value || ''; // Pega o valor do input ou vazio
+
+    if (!retirarLocalChecked && !fazerEntregaChecked) {
+        alert('Por favor, selecione uma opção de recebimento.');
+        return;
+    }
+
+    const formaEntrega = retirarLocalChecked
+        ? "Retirar no Local - Av. das Monções, 846 - Parque Recanto Monica - 08592-150"
+        : `Fazer Entrega em: ${enderecoEntrega}`;
+
+    const elementoParaCaptura = document.getElementById('conteudo');
+    const informacaoEntrega = document.createElement('p');
+    informacaoEntrega.innerText = formaEntrega;
+
+    // Altera a cor do texto para branco
+    informacaoEntrega.style.color = 'white'; // Define a cor para branco
+
+    elementoParaCaptura.appendChild(informacaoEntrega);
+
     capturarPedido().then(() => {
-        // Após a captura, finaliza a compra
         finalizarCompra();
+        informacaoEntrega.remove(); // Remove a informação após finalizar a compra
+    }).catch(() => {
+        // Caso ocorra erro, remove a informação
+        informacaoEntrega.remove();
     });
 }
+
 
 function capturarPedido() {
     return new Promise((resolve, reject) => {
@@ -286,11 +375,29 @@ function capturarPedido() {
         const mensagemOrientacao = document.getElementById('mensagemOrientacao');
         const elementoParaCaptura = document.getElementById('conteudo');
         const totalElement = document.querySelector('.total-itens'); // Seleciona o elemento total-itens
+        const enderecoInput = document.querySelector('input[placeholder="Digite seu endereço"]'); // Campo de endereço
+        const metodoEntregaDiv = document.querySelector('.metodo-entrega'); // Div das opções de entrega
+        const originalDisplay = metodoEntregaDiv.style.display; // Armazena o estado original das opções de entrega
+
+        // Identifique os elementos "Retirar no Local" e "Fazer Entrega em"
+        const retirarNoLocalElement = document.querySelector('.retirar-local'); // Adapte para a sua classe ou ID
+        const fazerEntregaElement = document.querySelector('.fazer-entrega'); // Adapte para a sua classe ou ID
 
         // Exibe o loader e desabilita o botão durante a captura
         loader.style.display = 'block';
         botao.disabled = true;
         mensagemOrientacao.style.opacity = '0';
+
+        // Oculta as opções de entrega
+        metodoEntregaDiv.style.display = 'none'; // Oculta a div das opções de entrega
+
+        // Muda a cor para branco
+        if (retirarNoLocalElement) {
+            retirarNoLocalElement.style.color = 'white'; // Muda a cor para branco
+        }
+        if (fazerEntregaElement) {
+            fazerEntregaElement.style.color = 'white'; // Muda a cor para branco
+        }
 
         // Adiciona a classe para estilização durante a captura
         elementoParaCaptura.classList.add('captura');
@@ -313,6 +420,15 @@ function capturarPedido() {
         }).then(canvas => {
             // Remove a classe de captura para restaurar o estilo original
             elementoParaCaptura.classList.remove('captura');
+            metodoEntregaDiv.style.display = originalDisplay; // Restaura a visibilidade das opções de entrega
+
+            // Restaura a cor original
+            if (retirarNoLocalElement) {
+                retirarNoLocalElement.style.color = ''; // Restaura a cor original
+            }
+            if (fazerEntregaElement) {
+                fazerEntregaElement.style.color = ''; // Restaura a cor original
+            }
 
             // Remove o clone do total-itens após a captura
             totalClone.remove();
@@ -337,7 +453,15 @@ function capturarPedido() {
 
                 // Gera uma URL para enviar a mensagem pelo WhatsApp
                 const numeroWhatsApp = '5511913421009';
-                const mensagemTexto = encodeURIComponent('Olá! Este print é o meu pedido. Confira:');
+                let mensagemTexto = encodeURIComponent('Olá! Este print é o meu pedido. Confira:');
+
+                // Adiciona o endereço se a entrega for selecionada
+                if (enderecoInput.style.display === 'block' && enderecoInput.value.trim() !== '') {
+                    const endereco = encodeURIComponent(enderecoInput.value.trim());
+                    mensagemTexto += `%0AEntrega em: ${endereco}`;
+                } else {
+                    mensagemTexto += `%0ARetirar no local.`;
+                }
 
                 // Abre o WhatsApp com a mensagem de texto
                 window.open(`https://wa.me/${numeroWhatsApp}?text=${mensagemTexto}`, '_blank');
@@ -354,6 +478,7 @@ function capturarPedido() {
                 mensagemOrientacao.style.opacity = '1';
                 loader.style.display = 'none';
                 botao.disabled = false;
+                metodoEntregaDiv.style.display = originalDisplay; // Restaura em caso de erro
                 reject();
             }
         }).catch(() => {
@@ -363,10 +488,12 @@ function capturarPedido() {
             botao.disabled = false;
             elementoParaCaptura.classList.remove('captura'); // Remove a classe em caso de erro
             totalClone.remove(); // Remove o clone em caso de erro
+            metodoEntregaDiv.style.display = originalDisplay; // Restaura em caso de erro
             reject();
         });
     });
 }
+
 
 // Função para finalizar a compra
 function finalizarCompra() {

@@ -365,26 +365,32 @@
     <div class="modal-carrinho">
         <div class="carrinho">
             <div class="carrinho-seta">
-                <button><svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24">
+                <button>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24">
                         <path d="M7.33 24l-2.83-2.829 9.339-9.175-9.339-9.167 2.83-2.829 12.17 11.996z" />
-                    </svg></button>
+                    </svg>
+                </button>
                 <h3><span>Capture </span> o pedido e <br /> mande no nosso WhatsApp</h3>
             </div>
+
             <div id="conteudo" class="carrinho-conteudo">
                 <div class="carrinho-seupedido">
                     <h2>Seu Pedido</h2>
                 </div>
-                <div class="area-carrinho-pedidos">
+                <div class="area-carrinho-pedidos" id="carrinhoProdutos">
+                    <!-- Os itens do carrinho serão exibidos aqui -->
                 </div>
                 <div class="total-itens">
                     <h1>Total:</h1>
                     <h2 class="contador-carrinho">------</h2>
                 </div>
             </div>
+
             <div class="area-adicionar-mais-itens">
                 <button>Adicionar mais Itens</button>
                 <button id="botaoCaptura" aria-live="polite">Finalizar/Capturar</button>
             </div>
+
             <div class="area-adicionar-mais-itens">
                 <div id="loader" aria-hidden="true"></div>
                 <div id="controles"></div> <!-- Contêiner para links e mensagens -->
@@ -392,7 +398,7 @@
             </div>
         </div>
     </div>
-    </div>
+
 
     <!-- faz com que ao clicar na imagem logo "familia de ouro", a página atualize e leve o usuário sempre ao topo da página -->
     <script>

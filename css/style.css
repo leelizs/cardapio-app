@@ -810,6 +810,34 @@ ul li a i {
     /* Impede redimensionamento manual */
 }
 
+.metodo-entrega {
+    color: white;
+    margin-top: 20px; /* Espaçamento superior */
+    border-radius: 8px; /* Cantos arredondados */
+    padding: 10px; /* Espaçamento interno */
+    background-color: #5c2308; /* Cor de fundo suave */
+}
+
+.opcao-entrega {
+    margin-bottom: 10px; /* Espaçamento entre as opções */
+    display: flex; /* Flexbox para alinhar input e label */
+    align-items: center; /* Alinha verticalmente */
+}
+
+.label-entrega {
+    margin-left: 8px; /* Espaçamento à esquerda do label */
+    font-weight: bold; /* Estilo em negrito */
+}
+
+.input-endereco {
+    margin-top: 5px; /* Espaçamento acima do input de endereço */
+    padding: 8px; /* Espaçamento interno do input */
+    width: 100%; /* Ocupa toda a largura disponível */
+    border: 1px solid #ccc; /* Borda leve */
+    border-radius: 4px; /* Cantos arredondados */
+}
+
+
 .carrinho-item p {
     max-width: 100%;
     /* Limita a largura máxima */
