@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Você está offline</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f7f7f7;
+            color: #333;
+            text-align: center;
+        }
+
+        .container {
+            padding: 20px;
+            max-width: 400px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            border-radius: 8px;
+        }
+
+        h1 {
+            font-size: 2em;
+            color: #ff6b6b;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .icon-offline {
+            font-size: 80px;
+            color: #ff6b6b;
+            margin-bottom: 20px;
+            display: inline-block;
+            animation: spin 3s infinite linear;
+        }
+
+        /* Animação de girar a lupa em círculos */
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg) translateX(30px) rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg) translateX(30px) rotate(-360deg);
+            }
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.5em;
+            }
+
+            p {
+                font-size: 1em;
+            }
+
+            .icon-offline {
+                font-size: 60px;
+            }
+
+            button {
+                padding: 8px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon-offline">🔍</div>
+        <h1>Você está offline</h1>
+        <p>Verifique sua conexão com a internet e tente novamente.</p>
+        <button onclick="window.location.reload()">Tentar Novamente</button>
+    </div>
+</body>
+</html>
