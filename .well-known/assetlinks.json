@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "app.netlify.cardapiofamiliadeouro.twa",
+        "sha256_cert_fingerprints": ["7A:83:82:D4:F3:C2:9B:FB:40:4D:52:ED:DF:CC:EC:90:CA:09:10:F2:90:77:01:54:A0:8D:39:E5:7E:56:F1:3A"]
+      }
+    }]
