@@ -100,6 +100,29 @@ pasteisEspeciais.map((item, index) => {
             }
         }
 
+        if (itemEscolhido === 0 || itemEscolhido === 2 || itemEscolhido === 3) { // Quando o item é um hamburguer, pastel ou pastel especial
+            // Configura adicionais apenas para hamburguer
+            // Configura adicionais apenas para pastel
+            // Configura adicionais apenas para pastel especial
+            configurarAdicionais();
+        } else {
+            // Remove qualquer elemento relacionado a sabores/acompanhamentos
+            const saboresContainer = document.querySelector('#sabores-container');
+            if (saboresContainer) saboresContainer.remove();
+
+            const acompanhamentosContainer = document.querySelector('#acompanhamentos-container');
+            if (acompanhamentosContainer) acompanhamentosContainer.remove();
+
+            const adicionaisContainer = document.querySelector('#adicionais-container');
+            if (adicionaisContainer) adicionaisContainer.remove();
+
+            // Remove a descrição anterior
+            const descricaoPersonalizada = document.querySelector('#produto-descricao');
+            if (descricaoPersonalizada) {
+                descricaoPersonalizada.parentElement.remove(); // Remove o container da descrição
+            }
+        }
+
         keyEscolhido = index;
 
         modalTamanho.style.display = 'none';
@@ -161,6 +184,92 @@ pasteisEspeciais.map((item, index) => {
 
 
     });
+
+    function configurarAdicionais() {
+        let adicionaisContainer = document.querySelector('#adicionais-container');
+
+        // Limpa adicionais anteriores
+        if (adicionaisContainer) {
+            adicionaisContainer.remove();
+        }
+
+        adicionaisContainer = document.createElement('div');
+        adicionaisContainer.id = 'adicionais-container';
+        adicionaisContainer.classList.add('adicionais-selecao');
+
+        const adicionaisLabel = document.createElement('h3');
+        adicionaisLabel.innerText = 'Escolha até 2 adicionais (2,00 cada):';
+        adicionaisContainer.appendChild(adicionaisLabel);
+
+        const adicionaisButton = document.createElement('button');
+        adicionaisButton.innerText = 'Ver mais adicionais';
+        adicionaisButton.classList.add('ver-mais-adicionais');
+        adicionaisContainer.appendChild(adicionaisButton);
+
+        const adicionaisList = document.createElement('div');
+        adicionaisList.classList.add('adicionais-list');
+        adicionaisList.style.display = 'none';
+
+        const adicionais = ['Calabresa', 'Bacon em Tiras', 'Presunto Ralado', 'Frango Desfiado', 'Ovo', 'Hamburguer', 'Queijo'];
+        adicionais.forEach(adicional => {
+            const adicionalWrapper = document.createElement('div'); // Usei um div como wrapper
+            const adicionalCheckbox = document.createElement('input');
+            adicionalCheckbox.type = 'checkbox';
+            adicionalCheckbox.name = 'adicional';
+            adicionalCheckbox.value = adicional;
+            adicionalCheckbox.classList.add('adicional-checkbox');
+
+            const adicionalLabel = document.createElement('span');
+            adicionalLabel.style.marginLeft = '8px'; // Adiciona espaço entre o checkbox e o texto
+            adicionalLabel.innerText = adicional;
+
+            adicionalWrapper.appendChild(adicionalCheckbox);
+            adicionalWrapper.appendChild(adicionalLabel);
+
+            // Estilização para alinhar os itens
+            adicionalWrapper.style.display = 'flex';
+            adicionalWrapper.style.alignItems = 'center'; // Alinha o checkbox e o texto verticalmente
+            adicionalWrapper.style.marginBottom = '8px'; // Espaçamento entre os itens
+
+            adicionaisList.appendChild(adicionalWrapper);
+
+            // Adiciona um evento de mudança para controlar a seleção
+            adicionalCheckbox.addEventListener('change', () => {
+                const checkedCheckboxes = document.querySelectorAll('input[name="adicional"]:checked');
+
+                // Se mais de 2 forem selecionados
+                if (checkedCheckboxes.length > 2) {
+                    // Desmarca o último checkbox que foi marcado
+                    adicionalCheckbox.checked = false;
+                    // Alerta ao usuário
+                    alert('Você pode selecionar no máximo 2 adicionais.');
+                }
+
+                // Atualiza o estado de habilitação dos checkboxes
+                const allCheckboxes = document.querySelectorAll('input[name="adicional"]');
+                if (checkedCheckboxes.length >= 2) {
+                    allCheckboxes.forEach(checkbox => {
+                        if (!checkbox.checked) {
+                            checkbox.disabled = true;
+                        }
+                    });
+                } else {
+                    allCheckboxes.forEach(checkbox => {
+                        checkbox.disabled = false;
+                    });
+                }
+            });
+        });
+
+        adicionaisContainer.appendChild(adicionaisList);
+        document.querySelector(".produto-informacoes-area1").appendChild(adicionaisContainer);
+
+        adicionaisButton.addEventListener('click', () => {
+            const isVisible = adicionaisList.style.display === 'block';
+            adicionaisList.style.display = isVisible ? 'none' : 'block';
+            adicionaisButton.innerText = isVisible ? 'Ver mais adicionais' : 'Ver menos adicionais';
+        });
+    }
 
     pasteisEspeciaisList.appendChild(pasteisEspeciaisDiv);
 });

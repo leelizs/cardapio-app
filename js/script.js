@@ -105,6 +105,8 @@ function addCarrinho(keyEscolhido, itemEscolhido) {
     compra.sabores = [];
     compra.acompanhamentos = [];
     compra.precoAcompanhamentos = 0;
+    compra.adicionais = [];
+    compra.precoAdicionais = 0;
 
     // Captura os sabores e acompanhamentos apenas se for um sorvete
     if (itemEscolhido === 1) { // Se for sorvete
@@ -124,6 +126,16 @@ function addCarrinho(keyEscolhido, itemEscolhido) {
         }
     }
 
+    // Captura os adicionais apenas se for um hamburguer, pastel ou pastel especial
+    if (itemEscolhido === 0 || itemEscolhido === 2 || itemEscolhido === 3) { // Se for hamburguer, pastel ou pastel especial
+        const adicionaisSelecionados = Array.from(document.querySelectorAll('.adicional-checkbox:checked')).map(cb => cb.value);
+
+        if (adicionaisSelecionados.length > 0) {
+            compra.adicionais = adicionaisSelecionados; // Adiciona os adicionais selecionados
+            compra.precoAdicionais = adicionaisSelecionados.length; // Contabiliza o custo dos adicionais
+        }
+    }
+
     // Limpa os campos de descrição, sabores e acompanhamentos
     if (descricaoInput) {
         descricaoInput.value = ''; // Limpa a descrição
@@ -132,6 +144,7 @@ function addCarrinho(keyEscolhido, itemEscolhido) {
     // Limpa os checkboxes de sabores e acompanhamentos
     document.querySelectorAll('.sabor-checkbox').forEach(cb => cb.checked = false);
     document.querySelectorAll('.acompanhamento-checkbox').forEach(cb => cb.checked = false);
+    document.querySelectorAll('.adicional-checkbox').forEach(cb => cb.checked = false);
 
     // Adiciona a compra ao carrinho
     produtosCarrinho.push(compra);
@@ -190,14 +203,24 @@ function mostrarPedidos() {
         const carrinhoButton = document.createElement("button");
         const carrinhoSpan = document.createElement("span");
 
-        const valorReal = (item.produto.price + item.precoAcompanhamentos) * item.quantidade; // Cálculo do preço total com acompanhamentos
+        // Preço de cada acompanhamento ou adicional
+        const precoAcompanhamento = 1; // R$ 1,00 por acompanhamento
+        const precoAdicional = 2; // R$ 2,00 por adicional
+
+        // Total de acompanhamentos e adicionais selecionados
+        const totalAcompanhamentos = item.acompanhamentos ? item.acompanhamentos.length : 0; // Número de acompanhamentos (pode ser 0 se não houver)
+        const totalAdicionais = item.adicionais ? item.adicionais.length : 0; // Número de adicionais (pode ser 0 se não houver)
+
+        // Cálculo do valor total considerando acompanhamentos e/ou adicionais
+        const valorReal = (item.produto.price + (totalAcompanhamentos * precoAcompanhamento) + (totalAdicionais * precoAdicional)) * item.quantidade;
+
         totalItens += valorReal; // Acumula o valor total dos itens
 
         carrinhoItem.classList.add("carrinho-item");
         carrinhodiv1.classList.add("carrinho-detalhes"); // Classe adicional para estilização
         carrinhoqt.innerText = item.quantidade + "x"; // Exibe a quantidade
         carrinhoNome.innerText = item.produto.type + "\n" + item.produto.name; // Nome do produto
-        carrinhoPrice.innerText = "R$" + valorReal.toFixed(2); // Exibe o preço total
+        carrinhoPrice.innerText = "R$ " + valorReal.toFixed(2); // Exibe o preço total
         carrinhoButton.classList.add("butao-delete");
         carrinhoSpan.classList.add("material-symbols-outlined");
         carrinhoSpan.innerText = "delete_forever"; // Ícone de delete
@@ -232,6 +255,25 @@ function mostrarPedidos() {
             }
         }
 
+        // Verifica se o produto é um hamburguer ou pastel antes de criar os campos de adicionais
+        if (item && item.produto && item.produto.type) {
+            console.log("Tipo do produto:", item.produto.type);
+            if (item.produto.type.toLowerCase() === 'hamburguer' ||
+                item.produto.type.toLowerCase() === 'pastel' ||
+                item.produto.type.toLowerCase() === 'pasteis') {
+
+                const carrinhoAdicionais = document.createElement("p"); // Elemento para exibir adicionais
+
+                // Exibe os adicionais se estiver presente
+                console.log("Adicionais:", item.adicionais);
+                if (Array.isArray(item.adicionais) && item.adicionais.length > 0) {
+                    carrinhoAdicionais.innerText = "Adicionais: " + item.adicionais.join(', '); // Adiciona os Adicionais ao carrinho
+                    carrinhodiv1.appendChild(carrinhoAdicionais); // Adicionando os adicionais
+                }
+            }
+        }
+
+
         // Adiciona a div de preço e botão à segunda div
         carrinhodiv2.appendChild(carrinhoPrice);
         carrinhodiv2.appendChild(carrinhoButton);
@@ -259,7 +301,7 @@ function mostrarPedidos() {
     });
 
     // Atualiza o total no carrinho
-    document.querySelector('.carrinho .total-itens h2').innerText = "R$" + totalItens.toFixed(2);
+    document.querySelector('.carrinho .total-itens h2').innerText = "R$ " + totalItens.toFixed(2);
 
     // Criar e adicionar opções de Retirada e Entrega
     adicionarOpcoesEntrega(carrinhoProdutos);

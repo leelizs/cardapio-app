@@ -98,6 +98,29 @@ sorvetes.map((item, index) => {
             }
         }
 
+        if (itemEscolhido === 0 || itemEscolhido === 2 || itemEscolhido === 3) { // Quando o item é um hamburguer, pastel ou pastel especial
+            // Configura adicionais apenas para hamburguer
+            // Configura adicionais apenas para pastel
+            // Configura adicionais apenas para pastel especial
+            configurarAdicionais();
+        } else {
+            // Remove qualquer elemento relacionado a sabores/acompanhamentos
+            const saboresContainer = document.querySelector('#sabores-container');
+            if (saboresContainer) saboresContainer.remove();
+
+            const acompanhamentosContainer = document.querySelector('#acompanhamentos-container');
+            if (acompanhamentosContainer) acompanhamentosContainer.remove();
+
+            const adicionaisContainer = document.querySelector('#adicionais-container');
+            if (adicionaisContainer) adicionaisContainer.remove();
+
+            // Remove a descrição anterior
+            const descricaoPersonalizada = document.querySelector('#produto-descricao');
+            if (descricaoPersonalizada) {
+                descricaoPersonalizada.parentElement.remove(); // Remove o container da descrição
+            }
+        }
+
         keyEscolhido = index;
 
         // Mostra a modal

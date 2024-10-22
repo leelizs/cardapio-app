@@ -756,7 +756,7 @@ ul li a i {
 }
 
 /* Estilos para listas de sabores e acompanhamentos */
-.sabores-list, .acompanhamentos-list {
+.sabores-list, .acompanhamentos-list, .adicionais-list {
     padding: 0.5rem 1rem; /* Adiciona padding para espaçamento */
     background-color: #f4ebdc; /* Cor de fundo para destacar */
     border-radius: 10px; /* Bordas arredondadas */
@@ -1128,21 +1128,21 @@ footer {
     background-color: #371200;
 }
 
-.sabores-selecao, .acompanhamentos-selecao {
+.sabores-selecao, .acompanhamentos-selecao, .adicionais-selecao {
     margin: 1rem 0;
     padding: 1rem;
     background-color: #f4ebdc;
     border-radius: 10px;
 }
 
-.sabores-list, .acompanhamentos-list {
+.sabores-list, .acompanhamentos-list, .adicionais-list {
     margin-top: 0.5rem;
     padding: 0.5rem;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
-.ver-mais-sabores, .ver-mais-acompanhamentos {
+.ver-mais-sabores, .ver-mais-acompanhamentos, .ver-mais-adicionais {
     margin-top: 0.5rem;
     background-color: #5c2308;
     color: #f4ebdc;
@@ -1152,7 +1152,7 @@ footer {
     cursor: pointer;
 }
 
-.ver-mais-sabores:hover, .ver-mais-acompanhamentos:hover {
+.ver-mais-sabores:hover, .ver-mais-acompanhamentos:hover, .ver-mais-adicionais:hover {
     background-color: #371200;
 }
 
