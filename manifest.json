@@ -1,1 +1,33 @@
-{"theme_color":"#8936FF","background_color":"#2EC6FE","orientation":"portrait","display":"standalone","dir":"auto","lang":"pt-BR","name":"Lanchonete Familia de Ouro","short_name":"Lanchonete Ouro","description":"Um Cardápio para facilitar os pedidos de uma Lanchonete.","scope":"https://cardapiofamiliadeouro.netlify.app/","start_url":"https://cardapiofamiliadeouro.netlify.app/","id":"https://cardapiofamiliadeouro.netlify.app/"}
+{
+    "short_name": "Ouro",
+    "lang": "pt",
+    "dir": "auto",
+    "name": "Família de Ouro",
+    "background_color": "#ffffff",
+    "theme_color": "#ffffff",
+    "display": "standalone",
+    "orientation": "portrait",
+    "description": "Um Cardápio para facilitar o pedido de Lanches.",
+    "start_url": "https://cardapiofamiliadeouro.netlify.app/?launchedfrom=homescreen",
+    "scope": "https://cardapiofamiliadeouro.netlify.app",
+    "id": "https://cardapiofamiliadeouro.netlify.app/dHyyPKbDO6PUzwOyqpHp",
+    "prefer_related_applications": false,
+    "icons": [
+      {
+        "src": "https://pwa.xyz/v0/b/pwaa-8d87e.appspot.com/o/u6iofEmHk09AcehwWdR3%2FauHSmkEILEeqbPK.png?alt=media&amp;token=65ad00a8-8227-487f-b083-d58dad29afd8",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "any"
+      },
+      {
+        "src": "https://pwa.xyz/v0/b/pwaa-8d87e.appspot.com/o/u6iofEmHk09AcehwWdR3%2FshVfNBnEozFiCAT.png?alt=media&amp;token=0ef90028-ba0d-4583-8ee8-0ef76a1ad700",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "maskable"
+      }
+    ],
+    "categories": [
+      "food",
+      "shopping"
+    ]
+  }
