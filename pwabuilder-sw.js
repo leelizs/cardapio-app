@@ -2,7 +2,7 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
 
 // Altere a versão do cache sempre que fizer qualquer alteração no site
-const CACHE = "pwabuilder-page-v7"; // Mude este valor toda vez que atualizar algo
+const CACHE = "pwabuilder-page-v1"; // Mude este valor toda vez que atualizar algo
 
 const offlineFallbackPage = "offline.html";
 
@@ -52,14 +52,13 @@ self.addEventListener('fetch', (event) => {
 // Verifica novas atualizações e notifica o cliente
 self.addEventListener('updatefound', () => {
   const installingWorker = self.registration.installing;
+
   installingWorker.onstatechange = () => {
+    console.log('Estado do Service Worker:', installingWorker.state);
     if (installingWorker.state === 'installed' && self.clients) {
-      // Se o novo Service Worker foi instalado, mas ainda não está controlando a página
       if (self.registration.active) {
-        // Enviar uma mensagem para o cliente avisando sobre a atualização
         self.clients.matchAll({ includeUncontrolled: true }).then(clients => {
           clients.forEach(client => {
-            console.log('Enviando mensagem de nova versão para o cliente');
             client.postMessage({
               type: 'NEW_VERSION_AVAILABLE'
             });
@@ -69,4 +68,5 @@ self.addEventListener('updatefound', () => {
     }
   };
 });
+
 

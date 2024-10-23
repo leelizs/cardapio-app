@@ -1,19 +1,29 @@
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/pwabuilder-sw.js').then(registration => {
-    console.log('Service Worker registrado com sucesso:', registration);
+    registration.onupdatefound = () => {
+      const installingWorker = registration.installing;
 
-    // Escuta por mensagens do Service Worker
-    navigator.serviceWorker.addEventListener('message', (event) => {
-      if (event.data.type === 'NEW_VERSION_AVAILABLE') {
-        console.log('Nova versão disponível, exibindo notificação');
-        showUpdateNotification(); // Chama a função para exibir a notificação
-      }
-    });
+      installingWorker.onstatechange = () => {
+        if (installingWorker.state === 'installed') {
+          if (navigator.serviceWorker.controller) {
+            showUpdateNotification(); // Chama a função para mostrar a notificação na div
+          }
+        }
+      };
+    };
   }).catch(error => {
     console.log('Falha ao registrar o Service Worker:', error);
   });
+
+  // Ouvir mensagens do Service Worker
+  navigator.serviceWorker.onmessage = (event) => {
+    if (event.data && event.data.type === 'NEW_VERSION_AVAILABLE') {
+      showUpdateNotification(); // Também chama aqui se a notificação for enviada pelo Service Worker
+    }
+  };
 }
 
+// Função para exibir a notificação de atualização
 function showUpdateNotification() {
   const notification = document.createElement('div');
   notification.classList.add('update-notification');
@@ -30,6 +40,7 @@ function showUpdateNotification() {
     location.reload(); // Recarrega a página ao clicar no botão
   });
 }
+
 
 let produtosCarrinho = []; //Array que guarda os pedidos
 
