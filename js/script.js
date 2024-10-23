@@ -430,6 +430,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Função para capturar o pedido e finalizar a compra
 function finalizarECapturarPedido() {
+  // Verificar se está offline
+  if (!navigator.onLine) {
+    alert("Você está offline. Não é possível finalizar a compra sem conexão à internet.");
+    // Redireciona para a página offline, caso desejado
+    window.location.href = 'offline.html';
+    return;
+  }
+
   const retirarLocalChecked = document.getElementById('retirarLocal')?.checked; // Usar optional chaining
   const fazerEntregaChecked = document.getElementById('fazerEntrega')?.checked;
   const enderecoEntrega = document.getElementById('enderecoEntrega')?.value || ''; // Pega o valor do input ou vazio
