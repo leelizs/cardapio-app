@@ -430,48 +430,117 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Função para capturar o pedido e finalizar a compra
 function finalizarECapturarPedido() {
-  // Função auxiliar para verificar a conexão
+  // Função auxiliar para verificar conexão à internet com um request real
   function verificarConexao() {
-    if (!navigator.onLine) {
-      alert("Você está offline. Não é possível finalizar a compra sem conexão à internet.");
-      window.location.href = 'offline.html';
-      throw new Error("Conexão de internet perdida"); // Interrompe a execução da função
-    }
+    return new Promise((resolve, reject) => {
+      if (!navigator.onLine) {
+        reject("Você está offline. Não é possível finalizar a compra sem conexão à internet.");
+        return;
+      }
+
+      // Tenta fazer uma requisição real para verificar conexão com o servidor
+      fetch('https://www.google.com', { method: 'HEAD' })
+        .then(() => resolve()) // Se a requisição funcionar, está online
+        .catch(() => reject("Você está offline. Não é possível finalizar a compra sem conexão à internet.")); // Se a requisição falhar, assume que está offline
+    });
   }
 
-  // Verifica conexão antes de continuar
-  verificarConexao();
-
-  const retirarLocalChecked = document.getElementById('retirarLocal')?.checked;
-  const fazerEntregaChecked = document.getElementById('fazerEntrega')?.checked;
-  const enderecoEntrega = document.getElementById('enderecoEntrega')?.value || '';
-
-  if (!retirarLocalChecked && !fazerEntregaChecked) {
-    alert('Por favor, selecione uma opção de recebimento.');
-    return;
-  }
-
-  const formaEntrega = retirarLocalChecked
-    ? "Retirar no Local - Av. das Monções, 846 - Parque Recanto Monica - 08592-150"
-    : `Fazer Entrega em: ${enderecoEntrega}`;
-
-  const elementoParaCaptura = document.getElementById('conteudo');
-  const informacaoEntrega = document.createElement('p');
-  informacaoEntrega.innerText = formaEntrega;
-  informacaoEntrega.style.color = 'white';
-  elementoParaCaptura.appendChild(informacaoEntrega);
-
-  // Captura o pedido com uma verificação contínua de conexão durante o processo
-  capturarPedido()
+  // Chama a função verificarConexao e aguarda o resultado
+  verificarConexao()
     .then(() => {
-      verificarConexao(); // Verifica novamente a conexão antes de finalizar
-      finalizarCompra(); // Só finaliza se ainda estiver online
-      informacaoEntrega.remove();
+      // Código de verificação de opções de recebimento
+      const retirarLocalChecked = document.getElementById('retirarLocal')?.checked;
+      const fazerEntregaChecked = document.getElementById('fazerEntrega')?.checked;
+      const enderecoEntrega = document.getElementById('enderecoEntrega')?.value || '';
+
+      if (!retirarLocalChecked && !fazerEntregaChecked) {
+        alert('Por favor, selecione uma opção de recebimento.');
+        return;
+      }
+
+      const formaEntrega = retirarLocalChecked
+        ? "Retirar no Local - Av. das Monções, 846 - Parque Recanto Monica - 08592-150"
+        : `Fazer Entrega em: ${enderecoEntrega}`;
+
+      const elementoParaCaptura = document.getElementById('conteudo');
+      const informacaoEntrega = document.createElement('p');
+      informacaoEntrega.innerText = formaEntrega;
+      informacaoEntrega.style.color = 'white';
+      elementoParaCaptura.appendChild(informacaoEntrega);
+
+      // Captura o pedido após garantir que há conexão
+      capturarPedido()
+        .then(() => {
+          return verificarConexao(); // Verifica novamente antes de finalizar
+        })
+        .then(() => {
+          finalizarCompra(); // Só finaliza se a conexão for validada novamente
+          informacaoEntrega.remove();
+        })
+        .catch((error) => {
+          alert(error);
+          informacaoEntrega.remove();
+        });
     })
-    .catch(() => {
-      informacaoEntrega.remove();
+    .catch((error) => {
+      alert(error);
+      window.location.href = 'offline.html'; // Redireciona para página offline se não tiver internet
     });
 }
+// function finalizarECapturarPedido() {
+//   // Função auxiliar para verificar conexão à internet
+//   function verificarConexao() {
+//     return new Promise((resolve, reject) => {
+//       if (!navigator.onLine) {
+//         reject("Você está offline. Não é possível finalizar a compra sem conexão à internet.");
+//       } else {
+//         resolve(); // Se o navegador reportar que está online, continua
+//       }
+//     });
+//   }
+
+//   // Chama a função verificarConexao e aguarda o resultado
+//   verificarConexao()
+//     .then(() => {
+//       // Código de verificação de opções de recebimento
+//       const retirarLocalChecked = document.getElementById('retirarLocal')?.checked;
+//       const fazerEntregaChecked = document.getElementById('fazerEntrega')?.checked;
+//       const enderecoEntrega = document.getElementById('enderecoEntrega')?.value || '';
+
+//       if (!retirarLocalChecked && !fazerEntregaChecked) {
+//         alert('Por favor, selecione uma opção de recebimento.');
+//         return;
+//       }
+
+//       const formaEntrega = retirarLocalChecked
+//         ? "Retirar no Local - Av. das Monções, 846 - Parque Recanto Monica - 08592-150"
+//         : `Fazer Entrega em: ${enderecoEntrega}`;
+
+//       const elementoParaCaptura = document.getElementById('conteudo');
+//       const informacaoEntrega = document.createElement('p');
+//       informacaoEntrega.innerText = formaEntrega;
+//       informacaoEntrega.style.color = 'white';
+//       elementoParaCaptura.appendChild(informacaoEntrega);
+
+//       // Captura o pedido após garantir que há conexão
+//       capturarPedido()
+//         .then(() => {
+//           return verificarConexao(); // Verifica novamente antes de finalizar
+//         })
+//         .then(() => {
+//           finalizarCompra(); // Só finaliza se a conexão for validada novamente
+//           informacaoEntrega.remove();
+//         })
+//         .catch((error) => {
+//           alert(error);
+//           informacaoEntrega.remove();
+//         });
+//     })
+//     .catch((error) => {
+//       alert(error);
+//       window.location.href = 'offline.html'; // Redireciona para página offline se não tiver internet
+//     });
+// }
 
 function capturarPedido() {
   return new Promise((resolve, reject) => {
