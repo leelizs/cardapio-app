@@ -496,137 +496,159 @@ function capturarPedido() {
     const loader = document.getElementById('loader');
     const mensagemOrientacao = document.getElementById('mensagemOrientacao');
     const elementoParaCaptura = document.getElementById('conteudo');
-    const totalElement = document.querySelector('.total-itens'); // Seleciona o elemento total-itens
-    const enderecoInput = document.querySelector('input[placeholder="Digite seu endereço"]'); // Campo de endereço
-    const metodoEntregaDiv = document.querySelector('.metodo-entrega'); // Div das opções de entrega
-    const originalDisplay = metodoEntregaDiv.style.display; // Armazena o estado original das opções de entrega
+    const totalElement = document.querySelector('.total-itens');
+    const enderecoInput = document.querySelector('input[placeholder="Digite seu endereço"]');
+    const metodoEntregaDiv = document.querySelector('.metodo-entrega');
+    const originalDisplay = metodoEntregaDiv.style.display;
 
-    // Identifique os elementos "Retirar no Local" e "Fazer Entrega em"
-    const retirarNoLocalElement = document.querySelector('.retirar-local'); // Adapte para a sua classe ou ID
-    const fazerEntregaElement = document.querySelector('.fazer-entrega'); // Adapte para a sua classe ou ID
+    const retirarNoLocalElement = document.querySelector('.retirar-local');
+    const fazerEntregaElement = document.querySelector('.fazer-entrega');
 
-    // Exibe o loader e desabilita o botão durante a captura
-    loader.style.display = 'block';
-    botao.disabled = true;
-    mensagemOrientacao.style.opacity = '0';
-
-    // Oculta as opções de entrega
-    metodoEntregaDiv.style.display = 'none'; // Oculta a div das opções de entrega
-
-    // Muda a cor para branco
-    if (retirarNoLocalElement) {
-      retirarNoLocalElement.style.color = 'white'; // Muda a cor para branco
-    }
-    if (fazerEntregaElement) {
-      fazerEntregaElement.style.color = 'white'; // Muda a cor para branco
-    }
-
-    // Adiciona a classe para estilização durante a captura
-    elementoParaCaptura.classList.add('captura');
-
-    // Clona o total-itens e adiciona no final para garantir a visibilidade
-    const totalClone = totalElement.cloneNode(true);
-    elementoParaCaptura.appendChild(totalClone);
-
-    // Calcula a altura total do conteúdo para capturar todos os itens e o total
-    const alturaTotal = elementoParaCaptura.scrollHeight;
-
-    // Captura o conteúdo da página usando html2canvas
-    html2canvas(elementoParaCaptura, {
-      backgroundColor: '#ffffff',
-      useCORS: true,
-      allowTaint: false,
-      scale: window.devicePixelRatio || 2, // Ajusta para a densidade de pixels do dispositivo
-      width: 1600, // Define uma largura fixa para a captura
-      height: alturaTotal, // Captura toda a altura do conteúdo, incluindo o total
-    }).then(canvas => {
-      // Remove a classe de captura para restaurar o estilo original
-      elementoParaCaptura.classList.remove('captura');
-      metodoEntregaDiv.style.display = originalDisplay; // Restaura a visibilidade das opções de entrega
-
-      // Restaura a cor original
-      if (retirarNoLocalElement) {
-        retirarNoLocalElement.style.color = ''; // Restaura a cor original
-      }
-      if (fazerEntregaElement) {
-        fazerEntregaElement.style.color = ''; // Restaura a cor original
-      }
-
-      // Remove o clone do total-itens após a captura
-      totalClone.remove();
-
-      if (canvas) {
-        // Converte a imagem para uma URL base64
-        const imagemDataURL = canvas.toDataURL('image/png');
-
-        // Gera um nome de arquivo único com a data e hora atual
-        const agora = new Date();
-        const timestamp = `${agora.getFullYear()}${String(agora.getMonth() + 1).padStart(2, '0')}${String(agora.getDate()).padStart(2, '0')}_${String(agora.getHours()).padStart(2, '0')}${String(agora.getMinutes()).padStart(2, '0')}${String(agora.getSeconds()).padStart(2, '0')}`;
-        const nomeArquivo = `captura_${timestamp}.png`;
-
-        // Cria um link temporário para download da imagem e aciona automaticamente o download
-        const link = document.createElement('a');
-        link.href = imagemDataURL;
-        link.download = nomeArquivo;
-        link.style.display = 'none'; // Esconde o link
-        document.body.appendChild(link);
-        link.click(); // Inicia automaticamente o download
-        document.body.removeChild(link); // Remove o link após o download
-
-        // Gera uma URL para enviar a mensagem pelo WhatsApp
-        const numeroWhatsApp = '5511913421009';
-        let mensagemTexto = encodeURIComponent('Olá! Este print é o meu pedido. Confira:');
-
-        // Adiciona o endereço se a entrega for selecionada
-        if (enderecoInput.style.display === 'block' && enderecoInput.value.trim() !== '') {
-          const endereco = encodeURIComponent(enderecoInput.value.trim());
-          mensagemTexto += `%0AEntrega em: ${endereco}`;
+    // Função auxiliar para verificar conexão à internet
+    function verificarConexao() {
+      return new Promise((resolve, reject) => {
+        if (!navigator.onLine) {
+          reject("Você está offline. Não é possível capturar o pedido sem conexão à internet.");
         } else {
-          mensagemTexto += `%0ARetirar no local.`;
+          resolve(); // Se o navegador reportar que está online, continua
+        }
+      });
+    }
+
+    // Verifica a conexão antes de iniciar a captura
+    verificarConexao()
+      .then(() => {
+        loader.style.display = 'block';
+        botao.disabled = true;
+        mensagemOrientacao.style.opacity = '0';
+        metodoEntregaDiv.style.display = 'none';
+
+        if (retirarNoLocalElement) {
+          retirarNoLocalElement.style.color = 'white';
+        }
+        if (fazerEntregaElement) {
+          fazerEntregaElement.style.color = 'white';
         }
 
-        // Abre o WhatsApp com a mensagem de texto
-        window.open(`https://wa.me/${numeroWhatsApp}?text=${mensagemTexto}`, '_blank');
+        elementoParaCaptura.classList.add('captura');
+        const totalClone = totalElement.cloneNode(true);
+        elementoParaCaptura.appendChild(totalClone);
 
-        // Oculta o loader e reabilita o botão
+        const alturaTotal = elementoParaCaptura.scrollHeight;
+
+        // Captura o conteúdo da página usando html2canvas
+        html2canvas(elementoParaCaptura, {
+          backgroundColor: '#ffffff',
+          useCORS: true,
+          allowTaint: false,
+          scale: window.devicePixelRatio || 2,
+          width: 1600,
+          height: alturaTotal,
+        }).then(canvas => {
+          elementoParaCaptura.classList.remove('captura');
+          metodoEntregaDiv.style.display = originalDisplay;
+
+          if (retirarNoLocalElement) {
+            retirarNoLocalElement.style.color = '';
+          }
+          if (fazerEntregaElement) {
+            fazerEntregaElement.style.color = '';
+          }
+
+          totalClone.remove();
+
+          if (canvas) {
+            const imagemDataURL = canvas.toDataURL('image/png');
+            const agora = new Date();
+            const timestamp = `${agora.getFullYear()}${String(agora.getMonth() + 1).padStart(2, '0')}${String(agora.getDate()).padStart(2, '0')}_${String(agora.getHours()).padStart(2, '0')}${String(agora.getMinutes()).padStart(2, '0')}${String(agora.getSeconds()).padStart(2, '0')}`;
+            const nomeArquivo = `captura_${timestamp}.png`;
+
+            const link = document.createElement('a');
+            link.href = imagemDataURL;
+            link.download = nomeArquivo;
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            const numeroWhatsApp = '5511913421009';
+            let mensagemTexto = encodeURIComponent('Olá! Este print é o meu pedido. Confira:');
+
+            if (enderecoInput.style.display === 'block' && enderecoInput.value.trim() !== '') {
+              const endereco = encodeURIComponent(enderecoInput.value.trim());
+              mensagemTexto += `%0AEntrega em: ${endereco}`;
+            } else {
+              mensagemTexto += `%0ARetirar no local.`;
+            }
+
+            window.open(`https://wa.me/${numeroWhatsApp}?text=${mensagemTexto}`, '_blank');
+
+            loader.style.display = 'none';
+            botao.disabled = false;
+            resolve();
+          } else {
+            console.error('Erro ao gerar a imagem. Canvas está vazio.');
+            mensagemOrientacao.textContent = 'Ocorreu um erro ao capturar a tela. Por favor, tente novamente.';
+            mensagemOrientacao.style.opacity = '1';
+            loader.style.display = 'none';
+            botao.disabled = false;
+            metodoEntregaDiv.style.display = originalDisplay;
+            reject();
+          }
+        }).catch(() => {
+          mensagemOrientacao.textContent = 'Ocorreu um erro ao capturar a tela. Por favor, tente novamente.';
+          mensagemOrientacao.style.opacity = '1';
+          loader.style.display = 'none';
+          botao.disabled = false;
+          elementoParaCaptura.classList.remove('captura');
+          totalClone.remove();
+          metodoEntregaDiv.style.display = originalDisplay;
+          reject();
+        });
+      })
+      .catch(error => {
+        alert(error); // Exibe o erro se não estiver online
         loader.style.display = 'none';
         botao.disabled = false;
-
-        // Resolve a Promise após a captura e envio
-        resolve();
-      } else {
-        console.error('Erro ao gerar a imagem. Canvas está vazio.');
-        mensagemOrientacao.textContent = 'Ocorreu um erro ao capturar a tela. Por favor, tente novamente.';
-        mensagemOrientacao.style.opacity = '1';
-        loader.style.display = 'none';
-        botao.disabled = false;
-        metodoEntregaDiv.style.display = originalDisplay; // Restaura em caso de erro
-        reject();
-      }
-    }).catch(() => {
-      mensagemOrientacao.textContent = 'Ocorreu um erro ao capturar a tela. Por favor, tente novamente.';
-      mensagemOrientacao.style.opacity = '1';
-      loader.style.display = 'none';
-      botao.disabled = false;
-      elementoParaCaptura.classList.remove('captura'); // Remove a classe em caso de erro
-      totalClone.remove(); // Remove o clone em caso de erro
-      metodoEntregaDiv.style.display = originalDisplay; // Restaura em caso de erro
-      reject();
-    });
+        reject(); // Rejeita a promessa se não houver conexão
+      });
   });
 }
 
 // Função para finalizar a compra
 function finalizarCompra() {
-  // Limpa o carrinho no localStorage
-  localStorage.removeItem('produtosCarrinho');
-  produtosCarrinho = []; // Limpa o array em memória
-  contagemCarrinho(); // Atualiza a contagem no display
-  mostrarPedidos(); // Atualiza a exibição do carrinho
+  return new Promise((resolve, reject) => {
+    // Função auxiliar para verificar conexão à internet
+    function verificarConexao() {
+      return new Promise((resolve, reject) => {
+        if (!navigator.onLine) {
+          reject("Você está offline. Não é possível finalizar a compra sem conexão à internet.");
+        } else {
+          resolve(); // Se o navegador reportar que está online, continua
+        }
+      });
+    }
 
-  // Redefine o total
-  total = "------"; // Certifique-se de que a variável total está definida no escopo apropriado
-  document.querySelector('.contador-carrinho').innerText = total; // Atualiza a exibição do total
+    // Verifica a conexão antes de finalizar a compra
+    verificarConexao()
+      .then(() => {
+        // Limpa o carrinho no localStorage
+        localStorage.removeItem('produtosCarrinho');
+        produtosCarrinho = []; // Limpa o array em memória
+        contagemCarrinho(); // Atualiza a contagem no display
+        mostrarPedidos(); // Atualiza a exibição do carrinho
+
+        // Redefine o total
+        total = "------"; // Certifique-se de que a variável total está definida no escopo apropriado
+        document.querySelector('.contador-carrinho').innerText = total; // Atualiza a exibição do total
+
+        resolve(); // Resolve a promessa após finalizar a compra
+      })
+      .catch((error) => {
+        alert(error); // Exibe a mensagem de erro se não estiver online
+        reject(); // Rejeita a promessa se não houver conexão
+      });
+  });
 }
 
 // Função para carregar os itens do carrinho do localStorage
