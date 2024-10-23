@@ -5,7 +5,7 @@ if ('serviceWorker' in navigator) {
     // Escuta por mensagens do Service Worker
     navigator.serviceWorker.addEventListener('message', (event) => {
       if (event.data.type === 'NEW_VERSION_AVAILABLE') {
-        // Exibe a notificação
+        // Exibe a notificação de atualização
         showUpdateNotification();
       }
     });
