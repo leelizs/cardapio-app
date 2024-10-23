@@ -5,8 +5,8 @@ if ('serviceWorker' in navigator) {
     // Escuta por mensagens do Service Worker
     navigator.serviceWorker.addEventListener('message', (event) => {
       if (event.data.type === 'NEW_VERSION_AVAILABLE') {
-        // Exibe a notificação de atualização
-        showUpdateNotification();
+        console.log('Nova versão disponível, exibindo notificação');
+        showUpdateNotification(); // Chama a função para exibir a notificação
       }
     });
   }).catch(error => {
@@ -15,7 +15,6 @@ if ('serviceWorker' in navigator) {
 }
 
 function showUpdateNotification() {
-  // Criando uma notificação simples
   const notification = document.createElement('div');
   notification.classList.add('update-notification');
   notification.innerHTML = `

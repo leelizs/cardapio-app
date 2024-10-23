@@ -2,16 +2,18 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
 
 // Altere a versão do cache sempre que fizer qualquer alteração no site
-const CACHE = "pwabuilder-page-v3"; // Mude este valor toda vez que atualizar algo
+const CACHE = "pwabuilder-page-v7"; // Mude este valor toda vez que atualizar algo
 
 const offlineFallbackPage = "offline.html";
 
+// Evento de mensagem para o SKIP_WAITING
 self.addEventListener("message", (event) => {
   if (event.data && event.data.type === "SKIP_WAITING") {
     self.skipWaiting();
   }
 });
 
+// Ouvinte para a instalação do Service Worker
 self.addEventListener('install', async (event) => {
   event.waitUntil(
     caches.open(CACHE)
@@ -20,11 +22,12 @@ self.addEventListener('install', async (event) => {
   self.skipWaiting(); // Faz o Service Worker ativar imediatamente
 });
 
+// Ativação do navigation preload, se suportado
 if (workbox.navigationPreload.isSupported()) {
   workbox.navigationPreload.enable();
 }
 
-// Verifica se a requisição é de navegação e responde com a página offline em caso de falha
+// Ouvinte de fetch para servir página offline em falha de rede
 self.addEventListener('fetch', (event) => {
   if (event.request.mode === 'navigate') {
     event.respondWith((async () => {
@@ -56,6 +59,7 @@ self.addEventListener('updatefound', () => {
         // Enviar uma mensagem para o cliente avisando sobre a atualização
         self.clients.matchAll({ includeUncontrolled: true }).then(clients => {
           clients.forEach(client => {
+            console.log('Enviando mensagem de nova versão para o cliente');
             client.postMessage({
               type: 'NEW_VERSION_AVAILABLE'
             });
@@ -65,3 +69,4 @@ self.addEventListener('updatefound', () => {
     }
   };
 });
+
