@@ -430,19 +430,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Função para capturar o pedido e finalizar a compra
 function finalizarECapturarPedido() {
-  // Função auxiliar para verificar conexão à internet
-  function verificarConexao() {
-    return new Promise((resolve, reject) => {
-      if (!navigator.onLine) {
-        reject("Você está offline. Não é possível finalizar a compra sem conexão à internet.");
-      } else {
-        console.log("Conexão está disponível.");
-        resolve(); // Se o navegador reportar que está online, continua
-      }
-    });
-  }
-
-  // Chama a função verificarConexao e aguarda o resultado
   verificarConexao()
     .then(() => {
       // Código de verificação de opções de recebimento
@@ -457,9 +444,7 @@ function finalizarECapturarPedido() {
 
       const formaEntrega = retirarLocalChecked
         ? "Retirar no Local - Av. das Monções, 846 - Parque Recanto Monica - 08592-150"
-        : `Fazer Entrega em: ${enderecoEntrega}`; // Corrigido aqui com aspas
-
-      console.log("Forma de entrega:", formaEntrega); // Log para depuração
+        : `Fazer Entrega em: ${enderecoEntrega}`;
 
       const elementoParaCaptura = document.getElementById('conteudo');
       const informacaoEntrega = document.createElement('p');
@@ -470,21 +455,20 @@ function finalizarECapturarPedido() {
       // Captura o pedido após garantir que há conexão
       capturarPedido()
         .then(() => {
-          console.log("Pedido capturado com sucesso."); // Log para depuração
           return verificarConexao(); // Verifica novamente antes de finalizar
         })
         .then(() => {
-          finalizarCompra(); // Só finaliza se a conexão for validada novamente
-          informacaoEntrega.remove();
+          return finalizarCompra(); // Agora é uma Promise, então usamos return
+        })
+        .then(() => {
+          informacaoEntrega.remove(); // Remove a informação de entrega após finalizar
         })
         .catch((error) => {
-          console.error("Erro ao capturar o pedido:", error); // Log de erro
           alert(error);
           informacaoEntrega.remove();
         });
     })
     .catch((error) => {
-      console.error("Erro na verificação de conexão:", error); // Log de erro
       alert(error);
       window.location.href = 'offline.html'; // Redireciona para página offline se não tiver internet
     });
