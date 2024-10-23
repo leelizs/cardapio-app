@@ -29,6 +29,36 @@ body::-webkit-scrollbar-thumb {
     /* creates padding around scroll thumb */
 }
 
+.update-notification {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #323232;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    z-index: 1000;
+  }
+  
+  .update-notification .message {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .update-notification p {
+    margin: 0;
+  }
+  
+  #refresh-button {
+    background-color: #ff4081;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    cursor: pointer;
+  }  
+
 /* HEADER PC ---------------------------------------------------------------------*/
 #header {
     position: fixed;
