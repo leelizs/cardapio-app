@@ -430,17 +430,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Função para capturar o pedido e finalizar a compra
 function finalizarECapturarPedido() {
-  // Verificar se está offline
-  if (!navigator.onLine) {
-    alert("Você está offline. Não é possível finalizar a compra sem conexão à internet.");
-    // Redireciona para a página offline, caso desejado
-    window.location.href = 'offline.html';
-    return;
+  // Função auxiliar para verificar a conexão
+  function verificarConexao() {
+    if (!navigator.onLine) {
+      alert("Você está offline. Não é possível finalizar a compra sem conexão à internet.");
+      window.location.href = 'offline.html';
+      throw new Error("Conexão de internet perdida"); // Interrompe a execução da função
+    }
   }
 
-  const retirarLocalChecked = document.getElementById('retirarLocal')?.checked; // Usar optional chaining
+  // Verifica conexão antes de continuar
+  verificarConexao();
+
+  const retirarLocalChecked = document.getElementById('retirarLocal')?.checked;
   const fazerEntregaChecked = document.getElementById('fazerEntrega')?.checked;
-  const enderecoEntrega = document.getElementById('enderecoEntrega')?.value || ''; // Pega o valor do input ou vazio
+  const enderecoEntrega = document.getElementById('enderecoEntrega')?.value || '';
 
   if (!retirarLocalChecked && !fazerEntregaChecked) {
     alert('Por favor, selecione uma opção de recebimento.');
@@ -454,19 +458,19 @@ function finalizarECapturarPedido() {
   const elementoParaCaptura = document.getElementById('conteudo');
   const informacaoEntrega = document.createElement('p');
   informacaoEntrega.innerText = formaEntrega;
-
-  // Altera a cor do texto para branco
-  informacaoEntrega.style.color = 'white'; // Define a cor para branco
-
+  informacaoEntrega.style.color = 'white';
   elementoParaCaptura.appendChild(informacaoEntrega);
 
-  capturarPedido().then(() => {
-    finalizarCompra();
-    informacaoEntrega.remove(); // Remove a informação após finalizar a compra
-  }).catch(() => {
-    // Caso ocorra erro, remove a informação
-    informacaoEntrega.remove();
-  });
+  // Captura o pedido com uma verificação contínua de conexão durante o processo
+  capturarPedido()
+    .then(() => {
+      verificarConexao(); // Verifica novamente a conexão antes de finalizar
+      finalizarCompra(); // Só finaliza se ainda estiver online
+      informacaoEntrega.remove();
+    })
+    .catch(() => {
+      informacaoEntrega.remove();
+    });
 }
 
 function capturarPedido() {
