@@ -1,9 +1,9 @@
 // This is the "Offline page" service worker
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
 
-const CACHE = "pwabuilder-page";
+// Altere a versão do cache sempre que fizer qualquer alteração no site
+const CACHE = "pwabuilder-page-v1"; // Mude este valor toda vez que atualizar algo
 
-// TODO: replace the following with the correct offline fallback page i.e.: const offlineFallbackPage = "offline.html";
 const offlineFallbackPage = "offline.html";
 
 self.addEventListener("message", (event) => {
@@ -12,13 +12,12 @@ self.addEventListener("message", (event) => {
   }
 });
 
-// Cache a página offline durante a instalação
 self.addEventListener('install', async (event) => {
   event.waitUntil(
     caches.open(CACHE)
       .then((cache) => cache.add(offlineFallbackPage))
   );
-  self.skipWaiting(); // Faz o Service Worker ativar imediatamente após instalar
+  self.skipWaiting(); // Faz o Service Worker ativar imediatamente
 });
 
 if (workbox.navigationPreload.isSupported()) {
@@ -39,7 +38,6 @@ self.addEventListener('fetch', (event) => {
         const networkResp = await fetch(event.request);
         return networkResp;
       } catch (error) {
-
         const cache = await caches.open(CACHE);
         const cachedResp = await cache.match(offlineFallbackPage);
         return cachedResp;
