@@ -427,23 +427,20 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
+// Função auxiliar para verificar conexão à internet
 function verificarConexao() {
   return new Promise((resolve, reject) => {
     if (!navigator.onLine) {
-      reject("Você está offline. Não é possível capturar o pedido sem conexão à internet.");
-      return; // Se offline, rejeita a promessa
+      reject("Você está offline. Não é possível finalizar a compra sem conexão à internet.");
+    } else {
+      resolve(); // Se estiver online, resolve
     }
-
-    // Tenta fazer uma requisição real para verificar a conexão
-    fetch('https://www.google.com', { method: 'HEAD' })
-      .then(() => resolve()) // Se a requisição funcionar, resolve
-      .catch(() => reject("Você está offline. Não é possível capturar o pedido sem conexão à internet.")); // Se falhar, rejeita
   });
 }
 
-
 // Função para capturar o pedido e finalizar a compra
 function finalizarECapturarPedido() {
+  // Chama a função verificarConexao e aguarda o resultado
   verificarConexao()
     .then(() => {
       // Código de verificação de opções de recebimento
@@ -472,10 +469,8 @@ function finalizarECapturarPedido() {
           return verificarConexao(); // Verifica novamente antes de finalizar
         })
         .then(() => {
-          return finalizarCompra(); // Agora é uma Promise, então usamos return
-        })
-        .then(() => {
-          informacaoEntrega.remove(); // Remove a informação de entrega após finalizar
+          finalizarCompra(); // Só finaliza se a conexão for validada novamente
+          informacaoEntrega.remove();
         })
         .catch((error) => {
           alert(error);
@@ -489,22 +484,21 @@ function finalizarECapturarPedido() {
 }
 
 function capturarPedido() {
-  return new Promise((resolve, reject) => {
-    const botao = document.getElementById('botaoCaptura');
-    const loader = document.getElementById('loader');
-    const mensagemOrientacao = document.getElementById('mensagemOrientacao');
-    const elementoParaCaptura = document.getElementById('conteudo');
-    const totalElement = document.querySelector('.total-itens');
-    const enderecoInput = document.querySelector('input[placeholder="Digite seu endereço"]');
-    const metodoEntregaDiv = document.querySelector('.metodo-entrega');
-    const originalDisplay = metodoEntregaDiv.style.display;
+  return verificarConexao()
+    .then(() => {
+      return new Promise((resolve, reject) => {
+        const botao = document.getElementById('botaoCaptura');
+        const loader = document.getElementById('loader');
+        const mensagemOrientacao = document.getElementById('mensagemOrientacao');
+        const elementoParaCaptura = document.getElementById('conteudo');
+        const totalElement = document.querySelector('.total-itens');
+        const enderecoInput = document.querySelector('input[placeholder="Digite seu endereço"]');
+        const metodoEntregaDiv = document.querySelector('.metodo-entrega');
+        const originalDisplay = metodoEntregaDiv.style.display;
 
-    const retirarNoLocalElement = document.querySelector('.retirar-local');
-    const fazerEntregaElement = document.querySelector('.fazer-entrega');
+        const retirarNoLocalElement = document.querySelector('.retirar-local');
+        const fazerEntregaElement = document.querySelector('.fazer-entrega');
 
-    // Verifica a conexão antes de iniciar a captura
-    verificarConexao()
-      .then(() => {
         loader.style.display = 'block';
         botao.disabled = true;
         mensagemOrientacao.style.opacity = '0';
@@ -592,15 +586,9 @@ function capturarPedido() {
           metodoEntregaDiv.style.display = originalDisplay;
           reject();
         });
-      })
-      .catch(error => {
-        alert(error); // Exibe o erro se não estiver online
-        loader.style.display = 'none';
-        botao.disabled = false;
-        reject(); // Rejeita a promessa se não houver conexão
       });
-  });
-}
+    });
+};
 
 // Função para finalizar a compra
 function finalizarCompra() {
