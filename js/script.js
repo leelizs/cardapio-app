@@ -427,17 +427,20 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
-// Função auxiliar para verificar conexão à internet
 function verificarConexao() {
   return new Promise((resolve, reject) => {
     if (!navigator.onLine) {
       reject("Você está offline. Não é possível capturar o pedido sem conexão à internet.");
-      return;
-    } else {
-      resolve(); // Se o navegador reportar que está online, continua
+      return; // Se offline, rejeita a promessa
     }
+
+    // Tenta fazer uma requisição real para verificar a conexão
+    fetch('https://www.google.com', { method: 'HEAD' })
+      .then(() => resolve()) // Se a requisição funcionar, resolve
+      .catch(() => reject("Você está offline. Não é possível capturar o pedido sem conexão à internet.")); // Se falhar, rejeita
   });
 }
+
 
 // Função para capturar o pedido e finalizar a compra
 function finalizarECapturarPedido() {
