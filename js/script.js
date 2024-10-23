@@ -430,18 +430,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Função para capturar o pedido e finalizar a compra
 function finalizarECapturarPedido() {
-  // Função auxiliar para verificar conexão à internet com um request real
+  // Função auxiliar para verificar conexão à internet
   function verificarConexao() {
     return new Promise((resolve, reject) => {
       if (!navigator.onLine) {
         reject("Você está offline. Não é possível finalizar a compra sem conexão à internet.");
-        return;
+      } else {
+        console.log("Conexão está disponível.");
+        resolve(); // Se o navegador reportar que está online, continua
       }
-
-      // Tenta fazer uma requisição real para verificar conexão com o servidor
-      fetch('https://www.google.com', { method: 'HEAD' })
-        .then(() => resolve()) // Se a requisição funcionar, está online
-        .catch(() => reject("Você está offline. Não é possível finalizar a compra sem conexão à internet.")); // Se a requisição falhar, assume que está offline
     });
   }
 
@@ -460,7 +457,9 @@ function finalizarECapturarPedido() {
 
       const formaEntrega = retirarLocalChecked
         ? "Retirar no Local - Av. das Monções, 846 - Parque Recanto Monica - 08592-150"
-        : `Fazer Entrega em: ${enderecoEntrega}`;
+        : `Fazer Entrega em: ${enderecoEntrega}`; // Corrigido aqui com aspas
+
+      console.log("Forma de entrega:", formaEntrega); // Log para depuração
 
       const elementoParaCaptura = document.getElementById('conteudo');
       const informacaoEntrega = document.createElement('p');
@@ -471,6 +470,7 @@ function finalizarECapturarPedido() {
       // Captura o pedido após garantir que há conexão
       capturarPedido()
         .then(() => {
+          console.log("Pedido capturado com sucesso."); // Log para depuração
           return verificarConexao(); // Verifica novamente antes de finalizar
         })
         .then(() => {
@@ -478,69 +478,17 @@ function finalizarECapturarPedido() {
           informacaoEntrega.remove();
         })
         .catch((error) => {
+          console.error("Erro ao capturar o pedido:", error); // Log de erro
           alert(error);
           informacaoEntrega.remove();
         });
     })
     .catch((error) => {
+      console.error("Erro na verificação de conexão:", error); // Log de erro
       alert(error);
       window.location.href = 'offline.html'; // Redireciona para página offline se não tiver internet
     });
 }
-// function finalizarECapturarPedido() {
-//   // Função auxiliar para verificar conexão à internet
-//   function verificarConexao() {
-//     return new Promise((resolve, reject) => {
-//       if (!navigator.onLine) {
-//         reject("Você está offline. Não é possível finalizar a compra sem conexão à internet.");
-//       } else {
-//         resolve(); // Se o navegador reportar que está online, continua
-//       }
-//     });
-//   }
-
-//   // Chama a função verificarConexao e aguarda o resultado
-//   verificarConexao()
-//     .then(() => {
-//       // Código de verificação de opções de recebimento
-//       const retirarLocalChecked = document.getElementById('retirarLocal')?.checked;
-//       const fazerEntregaChecked = document.getElementById('fazerEntrega')?.checked;
-//       const enderecoEntrega = document.getElementById('enderecoEntrega')?.value || '';
-
-//       if (!retirarLocalChecked && !fazerEntregaChecked) {
-//         alert('Por favor, selecione uma opção de recebimento.');
-//         return;
-//       }
-
-//       const formaEntrega = retirarLocalChecked
-//         ? "Retirar no Local - Av. das Monções, 846 - Parque Recanto Monica - 08592-150"
-//         : `Fazer Entrega em: ${enderecoEntrega}`;
-
-//       const elementoParaCaptura = document.getElementById('conteudo');
-//       const informacaoEntrega = document.createElement('p');
-//       informacaoEntrega.innerText = formaEntrega;
-//       informacaoEntrega.style.color = 'white';
-//       elementoParaCaptura.appendChild(informacaoEntrega);
-
-//       // Captura o pedido após garantir que há conexão
-//       capturarPedido()
-//         .then(() => {
-//           return verificarConexao(); // Verifica novamente antes de finalizar
-//         })
-//         .then(() => {
-//           finalizarCompra(); // Só finaliza se a conexão for validada novamente
-//           informacaoEntrega.remove();
-//         })
-//         .catch((error) => {
-//           alert(error);
-//           informacaoEntrega.remove();
-//         });
-//     })
-//     .catch((error) => {
-//       alert(error);
-//       window.location.href = 'offline.html'; // Redireciona para página offline se não tiver internet
-//     });
-// }
 
 function capturarPedido() {
   return new Promise((resolve, reject) => {
