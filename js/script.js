@@ -412,7 +412,6 @@ function adicionarOpcoesEntrega(container) {
   container.appendChild(metodoEntregaDiv); // Adiciona a seção de método de entrega ao carrinho
 }
 
-
 // Função para salvar os itens do carrinho no localStorage
 function saveCarrinhoToLocalStorage() {
   localStorage.setItem('produtosCarrinho', JSON.stringify(produtosCarrinho));
@@ -427,6 +426,18 @@ document.addEventListener('DOMContentLoaded', function () {
     console.error('Elemento "botaoCaptura" não encontrado no DOM.');
   }
 });
+
+// Função auxiliar para verificar conexão à internet
+function verificarConexao() {
+  return new Promise((resolve, reject) => {
+    if (!navigator.onLine) {
+      reject("Você está offline. Não é possível capturar o pedido sem conexão à internet.");
+      return;
+    } else {
+      resolve(); // Se o navegador reportar que está online, continua
+    }
+  });
+}
 
 // Função para capturar o pedido e finalizar a compra
 function finalizarECapturarPedido() {
@@ -487,17 +498,6 @@ function capturarPedido() {
 
     const retirarNoLocalElement = document.querySelector('.retirar-local');
     const fazerEntregaElement = document.querySelector('.fazer-entrega');
-
-    // Função auxiliar para verificar conexão à internet
-    function verificarConexao() {
-      return new Promise((resolve, reject) => {
-        if (!navigator.onLine) {
-          reject("Você está offline. Não é possível capturar o pedido sem conexão à internet.");
-        } else {
-          resolve(); // Se o navegador reportar que está online, continua
-        }
-      });
-    }
 
     // Verifica a conexão antes de iniciar a captura
     verificarConexao()
@@ -602,17 +602,6 @@ function capturarPedido() {
 // Função para finalizar a compra
 function finalizarCompra() {
   return new Promise((resolve, reject) => {
-    // Função auxiliar para verificar conexão à internet
-    function verificarConexao() {
-      return new Promise((resolve, reject) => {
-        if (!navigator.onLine) {
-          reject("Você está offline. Não é possível finalizar a compra sem conexão à internet.");
-        } else {
-          resolve(); // Se o navegador reportar que está online, continua
-        }
-      });
-    }
-
     // Verifica a conexão antes de finalizar a compra
     verificarConexao()
       .then(() => {
