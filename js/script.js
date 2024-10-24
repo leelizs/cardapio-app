@@ -446,11 +446,16 @@ function finalizarECapturarPedido() {
       // Código de verificação de opções de recebimento
       const retirarLocalChecked = document.getElementById('retirarLocal')?.checked;
       const fazerEntregaChecked = document.getElementById('fazerEntrega')?.checked;
-      const enderecoEntrega = document.getElementById('enderecoEntrega')?.value || '';
+      const enderecoEntrega = document.getElementById('enderecoEntrega')?.value.trim(); // Remove espaços em branco
 
       if (!retirarLocalChecked && !fazerEntregaChecked) {
         alert('Por favor, selecione uma opção de recebimento.');
         return;
+      }
+
+      if (!enderecoEntrega) {
+        alert('Por favor, preencha o campo de endereço.');
+        return; // Interrompe a execução se o campo estiver vazio
       }
 
       const formaEntrega = retirarLocalChecked
