@@ -1,0 +1,11 @@
+Modal Sorvetes:
+    ☐ Escolher tamanho de copo (200, 300, 400, 500) ml
+    ☐ Escolher somente 1 tamanho de copo
+    ☐ O valor de cada copo ficará ao lado do ml - (200 ml) = 4.00 - Para produtos Açai ou Cupuaçu - (200ml) = 6.00
+    ☐ Atualizar em tempo real o Preço da modal, para que o usuário veja quanto está ficando. Isso inclui: tamanho do copo + acompanhamento
+    ☐ Só vai ser possível adicionar ao carrinho se tiver Sabor e Tamanho de copo preenchido.
+    ☐ No carrinho, aparecer Sabor, Tamanho de copo e Acompanhamento, se tiver um.
+
+Modal Salgados:
+    ☐ Poder escoher entre Coxinha, Risole, Bolinho de Queijo, Bolinho de Salsicha, Bolinho de Carne. e ao lado da escolha a quantidade de cada um
+    ☐ Atualizar em tempo real o Preço da modal, para que o usuário veja quanto está ficando dependendo da quantidade de salgados escolhidos
