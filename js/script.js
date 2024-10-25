@@ -155,11 +155,6 @@ function addCarrinho(keyEscolhido, itemEscolhido) {
   if (itemEscolhido === 1) { // Se for sorvete
     const tamanhosSelecionados = document.querySelector('input[name="tamanho"]:checked');
 
-    if (!tamanhosSelecionados) { // Corrigido: use `!` para verificar se o elemento não existe
-      alert('Por favor, selecione um tamanho antes de adicionar ao carrinho.');
-      return; // Impede de adicionar ao carrinho se não tiver um tamanho selecionado
-    }
-
     const precoTamanho = parseFloat(tamanhosSelecionados.value); // Pega o valor do preço do tamanho selecionado
     if (isNaN(precoTamanho)) {
       console.error('Preço do tamanho inválido');
@@ -232,7 +227,6 @@ function addCarrinho(keyEscolhido, itemEscolhido) {
     produtoModal.classList.remove("show");
   }
 }
-
 
 function contagemCarrinho() { // Função que conta quantos itens tem no carrinho
   let qt = 0;
@@ -310,7 +304,7 @@ function mostrarPedidos() {
 
     // Exibe a descrição se estiver presente
     if (item.descricao) {
-      carrinhoDescricao.innerText = item.descricao; // Adiciona a descrição ao carrinho
+      carrinhoDescricao.innerText = "Descrição: "+ item.descricao; // Adiciona a descrição ao carrinho
       carrinhoDescricao.style.fontStyle = "italic"; // Estilo em itálico para a descrição
       carrinhoDescricao.style.color = "#fff"; // Cor da descrição
       carrinhodiv1.appendChild(carrinhoDescricao); // Coloca a descrição aqui

@@ -260,7 +260,7 @@ sorvetes.map((item, index) => {
         saboresList.classList.add('sabores-list');
         saboresList.style.display = 'none';
 
-        const sabores = ['Lacta', 'Brigadeiro', 'Morango', 'Beijinho', 'Milho Verde', 'Paçoca', 'Lambada', 'Creme', 'Cupuaçu', 'Açaí'];
+        const sabores = ['Lacta', 'Brigadeiro', 'Morango', 'Beijinho', 'Milho Verde', 'Paçoca', 'Lambada', 'Creme'];
         sabores.forEach(sabor => {
             const saborWrapper = document.createElement('div'); // Usei um div como wrapper
             const saborCheckbox = document.createElement('input');
