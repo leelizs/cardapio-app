@@ -41,7 +41,6 @@ function showUpdateNotification() {
   });
 }
 
-
 let produtosCarrinho = []; //Array que guarda os pedidos
 
 const produtoModal = document.querySelector('.produto-modal');
@@ -152,8 +151,25 @@ function addCarrinho(keyEscolhido, itemEscolhido) {
   compra.adicionais = [];
   compra.precoAdicionais = 0;
 
-  // Captura os sabores e acompanhamentos apenas se for um sorvete
+  // Lógica para o sorvete
   if (itemEscolhido === 1) { // Se for sorvete
+    const tamanhosSelecionados = document.querySelector('input[name="tamanho"]:checked');
+
+    if (!tamanhosSelecionados) { // Corrigido: use `!` para verificar se o elemento não existe
+      alert('Por favor, selecione um tamanho antes de adicionar ao carrinho.');
+      return; // Impede de adicionar ao carrinho se não tiver um tamanho selecionado
+    }
+
+    const precoTamanho = parseFloat(tamanhosSelecionados.value); // Pega o valor do preço do tamanho selecionado
+    if (isNaN(precoTamanho)) {
+      console.error('Preço do tamanho inválido');
+      return; // Sai da função se o preço do tamanho não for válido
+    }
+    const indexTamanho = Array.from(document.querySelectorAll('input[name="tamanho"]')).indexOf(tamanhosSelecionados);
+    const tamanhoSelecionado = sorvetes[keyEscolhido].price[indexTamanho];
+    compra.size = tamanhoSelecionado.size; // Armazena o tamanho selecionado
+    compra.preco = precoTamanho; // Adiciona o preço ao objeto de compra
+
     const saboresSelecionados = Array.from(document.querySelectorAll('.sabor-checkbox:checked')).map(cb => cb.value);
     const acompanhamentosSelecionados = Array.from(document.querySelectorAll('.acompanhamento-checkbox:checked')).map(cb => cb.value);
 
@@ -191,7 +207,16 @@ function addCarrinho(keyEscolhido, itemEscolhido) {
   document.querySelectorAll('.adicional-checkbox').forEach(cb => cb.checked = false);
 
   // Adiciona a compra ao carrinho
-  produtosCarrinho.push(compra);
+  produtosCarrinho.push({
+    produto: compra.produto,
+    quantidade: compra.quantidade,
+    descricao: compra.descricao,
+    sabores: compra.sabores,
+    acompanhamentos: compra.acompanhamentos,
+    adicionais: compra.adicionais,
+    preco: compra.preco, // Adiciona o preço do tamanho aqui
+    size: compra.size // Adiciona o tamanho selecionado aqui
+  });
 
   // Atualiza o índice do carrinho e salva
   keyCarrinho = produtosCarrinho.length; // Atualiza o índice do carrinho para o comprimento atual
@@ -207,6 +232,7 @@ function addCarrinho(keyEscolhido, itemEscolhido) {
     produtoModal.classList.remove("show");
   }
 }
+
 
 function contagemCarrinho() { // Função que conta quantos itens tem no carrinho
   let qt = 0;
@@ -227,7 +253,7 @@ function mostrarPedidos() {
 
   // Verifica se há itens no carrinho antes de exibi-lo
   if (produtosCarrinho.length === 0) {
-    alert('Nenhum item.');
+    alert('Tente novamente.');
     modalCarrinho.classList.remove("show"); // Fecha o modal se estiver aberto
     return; // Não faz nada se o carrinho estiver vazio
   } else {
@@ -256,7 +282,16 @@ function mostrarPedidos() {
     const totalAdicionais = item.adicionais ? item.adicionais.length : 0; // Número de adicionais (pode ser 0 se não houver)
 
     // Cálculo do valor total considerando acompanhamentos e/ou adicionais
-    const valorReal = (item.produto.price + (totalAcompanhamentos * precoAcompanhamento) + (totalAdicionais * precoAdicional)) * item.quantidade;
+    const valorBase = parseFloat(item.produto.price) || 0; // Preço base do produto, convertido para float
+    // Substitua "valorSabor" por "valorTamanho" para refletir melhor o conteúdo
+    const valorTamanho = item.preco || 0; // Verifica se o tamanho existe e é um número
+
+    const valorReal = (
+      valorBase + // Preço base do produto
+      valorTamanho + // Preço do tamanho
+      (totalAcompanhamentos * precoAcompanhamento) + // Custo dos acompanhamentos
+      (totalAdicionais * precoAdicional) // Custo dos adicionais
+    ) * item.quantidade;
 
     totalItens += valorReal; // Acumula o valor total dos itens
 
@@ -285,6 +320,13 @@ function mostrarPedidos() {
     if (item.produto.type && item.produto.type.toLowerCase() === 'sorvete') {
       const carrinhoSabores = document.createElement("p"); // Elemento para exibir sabores
       const carrinhoAcompanhamentos = document.createElement("p"); // Elemento para exibir acompanhamentos
+      const carrinhoTamanho = document.createElement("p"); // Elemento para exibir o tamanho escolhido
+
+      // Exibe o tamanho escolhido
+      if (item.size) { // Verifica se o tamanho está definido
+        carrinhoTamanho.innerText = "Tamanho: " + item.size; // Adiciona o tamanho ao carrinho
+        carrinhodiv1.appendChild(carrinhoTamanho); // Adiciona o tamanho à div de detalhes
+      }
 
       // Exibe os sabores se estiver presente
       if (item.sabores && item.sabores.length > 0) {
@@ -301,7 +343,6 @@ function mostrarPedidos() {
 
     // Verifica se o produto é um hamburguer ou pastel antes de criar os campos de adicionais
     if (item && item.produto && item.produto.type) {
-      console.log("Tipo do produto:", item.produto.type);
       if (item.produto.type.toLowerCase() === 'hamburguer' ||
         item.produto.type.toLowerCase() === 'pastel' ||
         item.produto.type.toLowerCase() === 'pasteis') {
@@ -316,7 +357,6 @@ function mostrarPedidos() {
         }
       }
     }
-
 
     // Adiciona a div de preço e botão à segunda div
     carrinhodiv2.appendChild(carrinhoPrice);

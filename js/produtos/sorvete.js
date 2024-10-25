@@ -24,7 +24,7 @@ document.querySelector('.sorvete-setaLeft-icone').addEventListener('click', () =
 document.querySelector('.sorvete-setaRigth-icone').addEventListener('click', () => {
     if (window.innerWidth > 460) {
         let x = marginsorvete - 340;
-        if ((window.innerWidth - 4800) > x) {
+        if ((window.innerWidth - 2280) > x) {
             x = 0;
         }
         marginsorvete = x;
@@ -32,7 +32,7 @@ document.querySelector('.sorvete-setaRigth-icone').addEventListener('click', () 
     }
     else {
         marginsorvete = marginsorvete - (window.innerWidth - 60);
-        let x = -(window.innerWidth * 10) - 10;
+        let x = -(window.innerWidth * 2) - 10;
         if (marginsorvete < x) {
             marginsorvete = 0;
         }
@@ -84,6 +84,9 @@ sorvetes.map((item, index) => {
             configurarSabores(sorvetes[index].name);
             configurarAcompanhamentos();
         } else {
+            // Se não for um sorvete, remove qualquer elemento relacionado a tamanhos
+            tamanhoContainer.innerHTML = ''; // Limpa os tamanhos anteriores
+
             // Remove qualquer elemento relacionado a sabores/acompanhamentos
             const saboresContainer = document.querySelector('#sabores-container');
             if (saboresContainer) saboresContainer.remove();
@@ -97,6 +100,7 @@ sorvetes.map((item, index) => {
                 descricaoPersonalizada.parentElement.remove(); // Remove o container da descrição
             }
         }
+
 
         if (itemEscolhido === 0 || itemEscolhido === 2 || itemEscolhido === 3) { // Quando o item é um hamburguer, pastel ou pastel especial
             // Configura adicionais apenas para hamburguer
@@ -140,7 +144,6 @@ sorvetes.map((item, index) => {
         // Carrega os dados do sorvete selecionado
         modalTitle.innerHTML = sorvetes[index].name; // Título do sorvete
         modalDescription.innerHTML = sorvetes[index].description; // Descrição do sorvete
-        modalPrice.innerHTML = 'R$' + sorvetes[index].price.toFixed(2); // Preço do sorvete
         modalImg.src = sorvetes[index].img; // Imagem do sorvete
         quantidade.innerHTML = numeroQuantidade; // Quantidade
 
@@ -160,6 +163,36 @@ sorvetes.map((item, index) => {
         } else {
             descricaoPersonalizada.value = ''; // Limpa o conteúdo da descrição ao abrir a modal
         }
+
+        const tamanhoContainer = document.querySelector('.tamanhos-opcoes'); // Certifique-se de que esse elemento exista no seu HTML 
+        tamanhoContainer.innerHTML = ''; // Limpa os tamanhos anteriores
+        // Adiciona os tamanhos e preços
+        sorvetes[index].price.forEach((tamanho, i) => {
+            const tamanhoDiv = document.createElement('div');
+            tamanhoDiv.classList.add('tamanho-item');
+
+            // Alteração: o input deve estar fora do label para funcionar corretamente
+            tamanhoDiv.innerHTML = `
+        <label for="tamanho-${i}">
+            <input type="radio" id="tamanho-${i}" name="tamanho" value="${tamanho.value}" data-tamanho="${tamanho.size}">
+            <span>${tamanho.size} - R$${tamanho.value.toFixed(2)}</span>
+        </label>
+    `;
+
+            tamanhoContainer.appendChild(tamanhoDiv);
+
+            // Atualiza o preço na seleção de tamanho
+            const radio = tamanhoDiv.querySelector('input');
+            radio.addEventListener('change', () => {
+                modalPrice.innerHTML = 'R$' + tamanho.value.toFixed(2); // Preço do sorvete
+            });
+
+            // Seleciona o primeiro valor como padrão
+            if (i === 0) {
+                radio.checked = true;
+                modalPrice.innerHTML = 'R$' + tamanho.value.toFixed(2); // Preço do sorvete
+            }
+        });
 
         // Remover event listeners antigos antes de adicionar os novos
         buttonLess.removeEventListener('click', handleButtonLess);

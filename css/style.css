@@ -322,12 +322,6 @@ ul li a i {
     align-items: center;
 }
 
-.batatas-seta-right,
-.batatas-seta-left {
-    opacity: 0;
-}
-
-
 .salgados-seta-right,
 .batatas-seta-right,
 .bebidas-seta-right,
@@ -433,7 +427,6 @@ ul li a i {
     width: 1020px;
 }
 
-.batatas-list,
 .pastel-list {
     width: 3740px;
 }
@@ -695,6 +688,7 @@ ul li a i {
     font-size: 1rem;
 }
 
+/* Estilização da área do produto informações */
 .produto-informacoes-area2 {
     padding: 1rem 1.5rem;
     padding-top: 0;
@@ -894,6 +888,159 @@ ul li a i {
     font-style: italic;
 }
 
+/* Container geral para os elementos do produto */
+.produto-container {
+    display: flex;
+    flex-direction: column; /* Coloca os elementos em coluna */
+    gap: 20px; /* Espaçamento entre as seções */
+    margin: 20px; /* Margem geral */
+}
+
+/* Container dos tamanhos */
+.tamanhos-opcoes {
+    display: flex;
+    flex-direction: column; /* Opções na vertical */
+    gap: 15px; /* Espaçamento entre itens */
+    padding: 20px;
+    background-color: #f4ebdc;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-height: 300px; /* Define uma altura máxima para o container */
+    overflow-y: auto; /* Adiciona rolagem vertical se necessário */
+}
+
+/* Estilização para cada tamanho */
+.tamanho-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Ajusta a justificativa */
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    background-color: #f4ebdc;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.tamanho-item:hover {
+    background-color: #eaf6ff; /* Cor ao passar o mouse */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    transform: translateY(-3px); /* Leve elevação ao passar o mouse */
+}
+
+.tamanho-item input[type="radio"] {
+    display: none; /* Esconde o rádio padrão */
+}
+
+.tamanho-item label {
+    display: flex;
+    align-items: center;
+    cursor: pointer; /* Cursor de ponteiro para indicar interatividade */
+    font-size: 17px; /* Tamanho da fonte do label */
+    font-weight: 500; /* Peso da fonte */
+    color: #2c3e50; /* Cor do texto */
+    margin-right: auto; /* Força o label a ocupar o máximo possível do espaço */
+}
+
+/* Estilo do quadrado */
+.tamanho-item label::before {
+    content: ''; /* Gera o quadrado ao lado do texto */
+    width: 13px; /* Largura do quadrado */
+    height: 13px; /* Altura do quadrado */
+    border: 2px solid #3498db; /* Cor da borda */
+    border-radius: 2px; /* Bordas levemente arredondadas */
+    margin-right: 10px; /* Espaçamento entre o quadrado e o texto */
+    transition: background-color 0.3s, border-color 0.3s; /* Transição suave */
+    display: inline-block; /* Certifique-se de que é um bloco inline */
+    position: relative; /* Necessário para o posicionamento do check */
+}
+
+/* Mudança de estilo quando o input de rádio está selecionado */
+.tamanho-item input[type="radio"]:checked + label::before {
+    background-color: #3498db; /* Cor do quadrado quando selecionado */
+    border-color: #2980b9; /* Cor da borda quando selecionado */
+}
+
+/* Estilo do "check" */
+.tamanho-item input[type="radio"]:checked + span::after {
+    content: '✔'; /* Símbolo de check */
+    color: white; /* Cor do check */
+    position: absolute; /* Para posicionar corretamente dentro do quadrado */
+    left: 3px; /* Ajuste conforme necessário */
+    top: 1px; /* Ajuste conforme necessário */
+    font-size: 12px; /* Tamanho do check */
+    line-height: 13px; /* Alinha verticalmente o check no centro do quadrado */
+    font-weight: bold; /* Negrito para maior visibilidade */
+    display: inline-block; /* Certifique-se de que o check é um bloco inline */
+}
+
+/* Tamanho e cor do preço */
+.tamanho-preco {
+    font-size: 16px; /* Tamanho da fonte do preço */
+    color: #16a085; /* Cor do preço */
+    font-weight: 600; /* Peso da fonte */
+}
+
+/* Estilização da opção selecionada */
+.tamanho-item input[type="radio"]:checked + label {
+    font-weight: 700; /* Negrito quando selecionado */
+    color: #2980b9; /* Cor mais escura para destaque */
+}
+
+/* Estilização do preço ao selecionar */
+.tamanho-item input[type="radio"]:checked + label + .tamanho-preco {
+    color: #27ae60; /* Cor do preço ao selecionar */
+}
+
+
+/* Responsividade para dispositivos móveis */
+@media (max-width: 768px) {
+    .tamanhos-opcoes {
+        padding: 15px; /* Reduz o padding do container em telas menores */
+    }
+
+    .produto-preco {
+        padding: 15px; /* Ajusta o padding na área de preço em telas menores */
+    }
+
+    .tamanho-item {
+        padding: 12px; /* Reduz o padding em telas menores */
+        flex-direction: row; /* Mantém a flexão em linha para espaço melhor */
+    }
+
+    .tamanho-item label {
+        font-size: 15px; /* Reduz o tamanho da fonte do label */
+    }
+
+    .tamanho-preco {
+        font-size: 14px; /* Reduz o tamanho da fonte do preço */
+    }
+}
+
+@media (max-width: 480px) {
+    .tamanhos-opcoes {
+        padding: 10px; /* Reduz o padding do container em telas muito pequenas */
+    }
+
+    .produto-preco {
+        padding: 10px; /* Ajusta o padding na área de preço em telas muito pequenas */
+    }
+
+    .tamanho-item {
+        padding: 10px; /* Aumenta a responsividade em telas muito pequenas */
+        flex-direction: column; /* Alinha itens na vertical */
+        align-items: flex-start; /* Alinha à esquerda */
+    }
+
+    .tamanho-item label {
+        font-size: 14px; /* Reduz ainda mais o tamanho da fonte do label */
+    }
+
+    .tamanho-preco {
+        font-size: 13px; /* Reduz ainda mais o tamanho da fonte do preço */
+    }
+}
 
 /* MODAL CARRINHO ---------------------------------------------------------------------*/
 .modal-carrinho {
