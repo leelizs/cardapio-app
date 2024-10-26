@@ -304,7 +304,7 @@ function mostrarPedidos() {
 
     // Exibe a descrição se estiver presente
     if (item.descricao) {
-      carrinhoDescricao.innerText = "Descrição: "+ item.descricao; // Adiciona a descrição ao carrinho
+      carrinhoDescricao.innerText = "Descrição: " + item.descricao; // Adiciona a descrição ao carrinho
       carrinhoDescricao.style.fontStyle = "italic"; // Estilo em itálico para a descrição
       carrinhoDescricao.style.color = "#fff"; // Cor da descrição
       carrinhodiv1.appendChild(carrinhoDescricao); // Coloca a descrição aqui
@@ -487,9 +487,10 @@ function finalizarECapturarPedido() {
         return;
       }
 
-      if (!enderecoEntrega) {
+      // Verifica se o endereço está preenchido apenas se a opção de fazer entrega estiver selecionada
+      if (fazerEntregaChecked && !enderecoEntrega) {
         alert('Por favor, preencha o campo de endereço.');
-        return; // Interrompe a execução se o campo estiver vazio
+        return; // Interrompe a execução se o campo estiver vazio e fazerEntregaChecked está marcado
       }
 
       const formaEntrega = retirarLocalChecked
@@ -531,103 +532,107 @@ function capturarPedido() {
         const mensagemOrientacao = document.getElementById('mensagemOrientacao');
         const elementoParaCaptura = document.getElementById('conteudo');
         const totalElement = document.querySelector('.total-itens');
-        const enderecoInput = document.querySelector('input[placeholder="Digite seu endereço"]');
         const metodoEntregaDiv = document.querySelector('.metodo-entrega');
         const originalDisplay = metodoEntregaDiv.style.display;
-
-        const retirarNoLocalElement = document.querySelector('.retirar-local');
-        const fazerEntregaElement = document.querySelector('.fazer-entrega');
 
         loader.style.display = 'block';
         botao.disabled = true;
         mensagemOrientacao.style.opacity = '0';
         metodoEntregaDiv.style.display = 'none';
-
-        if (retirarNoLocalElement) {
-          retirarNoLocalElement.style.color = 'white';
-        }
-        if (fazerEntregaElement) {
-          fazerEntregaElement.style.color = 'white';
-        }
-
         elementoParaCaptura.classList.add('captura');
         const totalClone = totalElement.cloneNode(true);
         elementoParaCaptura.appendChild(totalClone);
 
-        const alturaTotal = elementoParaCaptura.scrollHeight;
-
-        // Captura o conteúdo da página usando html2canvas
         html2canvas(elementoParaCaptura, {
           backgroundColor: '#ffffff',
           useCORS: true,
           allowTaint: false,
           scale: window.devicePixelRatio || 2,
           width: 1600,
-          height: alturaTotal,
+          height: elementoParaCaptura.scrollHeight,
         }).then(canvas => {
-          elementoParaCaptura.classList.remove('captura');
-          metodoEntregaDiv.style.display = originalDisplay;
-
-          if (retirarNoLocalElement) {
-            retirarNoLocalElement.style.color = '';
-          }
-          if (fazerEntregaElement) {
-            fazerEntregaElement.style.color = '';
-          }
-
-          totalClone.remove();
-
           if (canvas) {
             const imagemDataURL = canvas.toDataURL('image/png');
-            const agora = new Date();
-            const timestamp = `${agora.getFullYear()}${String(agora.getMonth() + 1).padStart(2, '0')}${String(agora.getDate()).padStart(2, '0')}_${String(agora.getHours()).padStart(2, '0')}${String(agora.getMinutes()).padStart(2, '0')}${String(agora.getSeconds()).padStart(2, '0')}`;
-            const nomeArquivo = `captura_${timestamp}.png`;
-
             const link = document.createElement('a');
             link.href = imagemDataURL;
-            link.download = nomeArquivo;
+            link.download = `captura_${new Date().toISOString()}.png`;
             link.style.display = 'none';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
 
             const numeroWhatsApp = '5511913421009';
-            let mensagemTexto = encodeURIComponent('Olá! Este print é o meu pedido. Confira:');
+            let mensagemTexto = 'Olá! Aqui está o meu pedido:\n';
+            produtosCarrinho.forEach((item, index) => {
+              let precoTotalItem = 0;
+              let itemTexto = `${index + 1}. ${item.produto.type} - ${item.produto.name} - Quantidade: ${item.quantidade}`;
+              let precoSize; // Declare aqui para garantir que esteja acessível
 
-            if (enderecoInput.style.display === 'block' && enderecoInput.value.trim() !== '') {
-              const endereco = encodeURIComponent(enderecoInput.value.trim());
-              mensagemTexto += `%0AEntrega em: ${endereco}`;
-            } else {
-              mensagemTexto += `%0ARetirar no local.`;
+              // Verificando o tipo de produto e acessando o preço corretamente
+              if (item.produto.type === 'Sorvete') {
+                precoSize = item.produto.price.find(p => p.size === item.size); // Atribuição aqui
+
+                if (precoSize) {
+                  precoTotalItem += precoSize.value * item.quantidade;
+                  itemTexto += `, Tamanho: ${item.size}`;
+                } else {
+                  console.warn(`Tamanho não encontrado para Sorvete: ${item.size}`);
+                  itemTexto += `, Tamanho: Não especificado`;
+                }
+              } else {
+                // Para hamburguer e outros
+                if (item.produto.price !== undefined) {
+                  precoTotalItem += item.produto.price * item.quantidade;
+                } else {
+                  console.warn(`Preço não encontrado para ${item.produto.type}: ${item.produto.name}`);
+                }
+              }
+
+              if (item.descricao) itemTexto += `, Descrição: ${item.descricao}`;
+              if (item.sabores && item.sabores.length > 0) itemTexto += `, Sabores: ${item.sabores.join(', ')}`;
+
+              // Cálculo de acompanhamentos e adicionais
+              const precoAcompanhamentos = (item.acompanhamentos || []).reduce((acc, acomp) => acc + (acomp.preco || 0), 0);
+              const precoAdicionais = (item.adicionais || []).reduce((acc, add) => acc + (add.preco || 0), 0);
+              
+              // Atualiza o preço total
+              precoTotalItem += precoAcompanhamentos + precoAdicionais;
+
+              // Monta o texto final do item
+              const precoItem = item.produto.type === 'Sorvete' ? (precoSize ? precoSize.value : 0) : item.produto.price;
+              itemTexto += ` - Preço: R$ ${(precoItem * item.quantidade).toFixed(2)} + R$ ${precoAcompanhamentos.toFixed(2)} (acompanhamentos) + R$ ${precoAdicionais.toFixed(2)} (adicionais) = R$ ${precoTotalItem.toFixed(2)}`;
+              
+              mensagemTexto += itemTexto + "\n";
+            });
+
+            mensagemTexto += `Total do Pedido: ${totalElement.innerText}`;
+
+            const metodoEntrega = document.querySelector('input[name="metodoEntrega"]:checked');
+            if (metodoEntrega) {
+              mensagemTexto += metodoEntrega.id === 'retirarLocal' ? "\nMétodo de entrega: Retirar no local." : `\nMétodo de entrega: Entrega em - ${document.getElementById('enderecoEntrega').value.trim()}`;
             }
 
-            window.open(`https://wa.me/${numeroWhatsApp}?text=${mensagemTexto}`, '_blank');
-
-            loader.style.display = 'none';
-            botao.disabled = false;
+            window.open(`https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagemTexto)}`, '_blank');
             resolve();
           } else {
-            console.error('Erro ao gerar a imagem. Canvas está vazio.');
-            mensagemOrientacao.textContent = 'Ocorreu um erro ao capturar a tela. Por favor, tente novamente.';
-            mensagemOrientacao.style.opacity = '1';
-            loader.style.display = 'none';
-            botao.disabled = false;
-            metodoEntregaDiv.style.display = originalDisplay;
-            reject();
+            throw new Error('Erro ao gerar a imagem. Canvas está vazio.');
           }
-        }).catch(() => {
+        }).catch(error => {
           mensagemOrientacao.textContent = 'Ocorreu um erro ao capturar a tela. Por favor, tente novamente.';
           mensagemOrientacao.style.opacity = '1';
+          console.error(error.message);
+          reject();
+        }).finally(() => {
           loader.style.display = 'none';
           botao.disabled = false;
+          metodoEntregaDiv.style.display = originalDisplay;
           elementoParaCaptura.classList.remove('captura');
           totalClone.remove();
-          metodoEntregaDiv.style.display = originalDisplay;
-          reject();
         });
       });
     });
-};
+}
+
 
 // Função para finalizar a compra
 function finalizarCompra() {
