@@ -83,9 +83,14 @@ salgados.map((item, index) => {
 
         if (itemEscolhido === 1) { // Quando o item é um sorvete
             // Configura sabores e acompanhamentos apenas para sorvetes
+            configurarTamanhos(index); // Chama a nova função para configurar tamanhos
             configurarSabores(sorvetes[index].name);
             configurarAcompanhamentos();
         } else {
+            // Remove qualquer container de tamanhos existente
+            const tamanhoContainerExisting = document.querySelector('.tamanhos-opcoes');
+            if (tamanhoContainerExisting) tamanhoContainerExisting.remove(); // Remove o container de tamanhos, se existir
+
             // Remove qualquer elemento relacionado a sabores/acompanhamentos
             const saboresContainer = document.querySelector('#sabores-container');
             if (saboresContainer) saboresContainer.remove();

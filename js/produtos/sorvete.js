@@ -41,7 +41,6 @@ document.querySelector('.sorvete-setaRigth-icone').addEventListener('click', () 
 });
 
 const modalPrice = document.querySelector(".produto-preco h2");
-const tamanhoContainer = document.querySelector('.tamanhos-opcoes');
 
 sorvetes.map((item, index) => {
     const sorveteList = document.querySelector('.sorvete-list');
@@ -208,34 +207,52 @@ sorvetes.map((item, index) => {
     }
 
     function configurarTamanhos(index) {
-        sorvetes[index].price.forEach((tamanho, i) => {
+        const sorvete = sorvetes[index];
+        const areaInformacoes = document.querySelector('.produto-informacoes-area1');
+
+        // Verifica se a div 'tamanhos-opcoes' já existe e remove-a para evitar duplicatas
+        let tamanhoContainer = areaInformacoes.querySelector('#tamanhos-opcoes');
+        if (tamanhoContainer) {
+            tamanhoContainer.remove();
+        }
+
+        // Cria a nova div container de tamanhos
+        tamanhoContainer = document.createElement('div');
+        tamanhoContainer.id = 'tamanhos-opcoes';
+        tamanhoContainer.classList.add('tamanhos-opcoes');
+
+        // Itera sobre os tamanhos e cria cada item
+        sorvete.price.forEach((tamanho, i) => {
             const tamanhoDiv = document.createElement('div');
             tamanhoDiv.classList.add('tamanho-item');
 
-            // Alteração: o input deve estar fora do label para funcionar corretamente
+            // Estrutura do item de tamanho com o input fora do label
             tamanhoDiv.innerHTML = `
+                <input type="radio" id="tamanho-${i}" name="tamanho" value="${tamanho.value}" data-tamanho="${tamanho.size}">
                 <label for="tamanho-${i}">
-                    <input type="radio" id="tamanho-${i}" name="tamanho" value="${tamanho.value}" data-tamanho="${tamanho.size}">
                     <span>${tamanho.size} - R$${tamanho.value.toFixed(2)}</span>
                 </label>
             `;
 
-            tamanhoContainer.appendChild(tamanhoDiv);
+            tamanhoContainer.appendChild(tamanhoDiv); // Adiciona o tamanho ao container
 
             // Atualiza o preço na seleção de tamanho
             const radio = tamanhoDiv.querySelector('input');
             radio.addEventListener('change', () => {
-                modalPrice.innerHTML = 'R$' + tamanho.value.toFixed(2); // Preço do sorvete
+                document.querySelector('.produto-preco h2').innerHTML = 'R$' + parseFloat(radio.value).toFixed(2); // Preço do sorvete
             });
 
             // Seleciona o primeiro valor como padrão
             if (i === 0) {
                 radio.checked = true;
-                modalPrice.innerHTML = 'R$' + tamanho.value.toFixed(2); // Preço do sorvete
+                document.querySelector('.produto-preco h2').innerHTML = 'R$' + parseFloat(radio.value).toFixed(2); // Preço do sorvete
             }
         });
+
+        // Adiciona o tamanhoContainer ao HTML
+        areaInformacoes.appendChild(tamanhoContainer);
     }
-    
+
     function configurarSabores(produtoNome) {
 
         if (!produtoNome.includes('Massa') && !produtoNome.includes('Açaí') && !produtoNome.includes('Cupuaçu')) {
