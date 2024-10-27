@@ -563,26 +563,26 @@ function capturarPedido() {
 
             const numeroWhatsApp = '5511913421009';
             let mensagemTexto = 'Olá! Aqui está o meu pedido:\n';
+
             produtosCarrinho.forEach((item, index) => {
               let precoTotalItem = 0;
               let itemTexto = `${index + 1}. ${item.produto.type} - ${item.produto.name} - Quantidade: ${item.quantidade}`;
-              let precoSize; // Declare aqui para garantir que esteja acessível
+              let precoSize;
 
-              // Verificando o tipo de produto e acessando o preço corretamente
+              // Preço base do produto
               if (item.produto.type === 'Sorvete') {
-                precoSize = item.produto.price.find(p => p.size === item.size); // Atribuição aqui
+                precoSize = item.produto.price.find(p => p.size === item.size);
 
                 if (precoSize) {
-                  precoTotalItem += precoSize.value * item.quantidade;
+                  precoTotalItem += precoSize.value * item.quantidade; // Inclui o preço do sorvete
                   itemTexto += `, Tamanho: ${item.size}`;
                 } else {
                   console.warn(`Tamanho não encontrado para Sorvete: ${item.size}`);
                   itemTexto += `, Tamanho: Não especificado`;
                 }
               } else {
-                // Para hamburguer e outros
                 if (item.produto.price !== undefined) {
-                  precoTotalItem += item.produto.price * item.quantidade;
+                  precoTotalItem += item.produto.price * item.quantidade; // Inclui o preço do hamburguer ou pastel
                 } else {
                   console.warn(`Preço não encontrado para ${item.produto.type}: ${item.produto.name}`);
                 }
@@ -591,21 +591,33 @@ function capturarPedido() {
               if (item.descricao) itemTexto += `, Descrição: ${item.descricao}`;
               if (item.sabores && item.sabores.length > 0) itemTexto += `, Sabores: ${item.sabores.join(', ')}`;
 
-              // Cálculo de acompanhamentos e adicionais
-              const precoAcompanhamentos = (item.acompanhamentos || []).reduce((acc, acomp) => acc + (acomp.preco || 0), 0);
-              const precoAdicionais = (item.adicionais || []).reduce((acc, add) => acc + (add.preco || 0), 0);
-              
-              // Atualiza o preço total
-              precoTotalItem += precoAcompanhamentos + precoAdicionais;
+              // Preços dos acompanhamentos e adicionais
+              const precoAcompanhamento = 1; // R$ 1,00 por acompanhamento
+              const precoAdicional = 2; // R$ 2,00 por adicional
 
-              // Monta o texto final do item
+              // Adicionando os custos de acompanhamentos e adicionais ao total do item
+              const totalAcompanhamentos = item.acompanhamentos ? item.acompanhamentos.length : 0;
+              const totalAdicionais = item.adicionais ? item.adicionais.length : 0;
+
+              precoTotalItem += (totalAcompanhamentos * precoAcompanhamento);
+              precoTotalItem += (totalAdicionais * precoAdicional);
+
+              // Adicionando os acompanhamentos e adicionais ao texto do item
+              if (totalAcompanhamentos > 0) {
+                itemTexto += `, Acompanhamentos: ${item.acompanhamentos.join(', ')}`;
+              }
+              if (totalAdicionais > 0) {
+                itemTexto += `, Adicionais: ${item.adicionais.join(', ')}`;
+              }
+
+              // Monta o texto final do item com todos os detalhes e preços corretos
               const precoItem = item.produto.type === 'Sorvete' ? (precoSize ? precoSize.value : 0) : item.produto.price;
-              itemTexto += ` - Preço: R$ ${(precoItem * item.quantidade).toFixed(2)} + R$ ${precoAcompanhamentos.toFixed(2)} (acompanhamentos) + R$ ${precoAdicionais.toFixed(2)} (adicionais) = R$ ${precoTotalItem.toFixed(2)}`;
-              
+              itemTexto += ` - Preço Base: R$ ${(precoItem * item.quantidade).toFixed(2)} = Total Item: R$ ${precoTotalItem.toFixed(2)}`;
+
               mensagemTexto += itemTexto + "\n";
             });
 
-            mensagemTexto += `Total do Pedido: ${totalElement.innerText}`;
+            mensagemTexto += `${totalElement.innerText}`;
 
             const metodoEntrega = document.querySelector('input[name="metodoEntrega"]:checked');
             if (metodoEntrega) {
@@ -632,7 +644,6 @@ function capturarPedido() {
       });
     });
 }
-
 
 // Função para finalizar a compra
 function finalizarCompra() {

@@ -86,13 +86,22 @@ hamburgueres.map((item, index) => {
             // Configura sabores e acompanhamentos apenas para sorvetes
             configurarSabores(sorvetes[index].name);
             configurarAcompanhamentos();
+            configurarTamanhos(index); // Chama a nova função para configurar tamanhos
         } else {
+            // Limpa os tamanhos, sabores e acompanhamentos antes de mostrar a modal
+            const tamanhoContainer = document.querySelector('.tamanhos-opcoes');
+            if (tamanhoContainer) tamanhoContainer.innerHTML = ''; // Limpa tamanhos anteriores
+
             // Remove qualquer elemento relacionado a sabores/acompanhamentos
             const saboresContainer = document.querySelector('#sabores-container');
             if (saboresContainer) saboresContainer.remove();
 
             const acompanhamentosContainer = document.querySelector('#acompanhamentos-container');
             if (acompanhamentosContainer) acompanhamentosContainer.remove();
+
+            // Remove qualquer container de tamanhos existente
+            const tamanhoContainerExisting = document.querySelector('.tamanhos-opcoes');
+            if (tamanhoContainerExisting) tamanhoContainerExisting.remove(); // Remove o container de tamanhos, se existir
 
             // Remove a descrição anterior
             const descricaoPersonalizada = document.querySelector('#produto-descricao');
@@ -107,6 +116,10 @@ hamburgueres.map((item, index) => {
             // Configura adicionais apenas para pastel especial
             configurarAdicionais();
         } else {
+            // Limpa os tamanhos, sabores e acompanhamentos antes de mostrar a modal
+            const tamanhoContainer = document.querySelector('.tamanhos-opcoes');
+            if (tamanhoContainer) tamanhoContainer.innerHTML = ''; // Limpa tamanhos anteriores
+
             // Remove qualquer elemento relacionado a sabores/acompanhamentos
             const saboresContainer = document.querySelector('#sabores-container');
             if (saboresContainer) saboresContainer.remove();
@@ -116,6 +129,10 @@ hamburgueres.map((item, index) => {
 
             const adicionaisContainer = document.querySelector('#adicionais-container');
             if (adicionaisContainer) adicionaisContainer.remove();
+
+            // Remove qualquer container de tamanhos existente
+            const tamanhoContainerExisting = document.querySelector('.tamanhos-opcoes');
+            if (tamanhoContainerExisting) tamanhoContainerExisting.remove(); // Remove o container de tamanhos, se existir
 
             // Remove a descrição anterior
             const descricaoPersonalizada = document.querySelector('#produto-descricao');

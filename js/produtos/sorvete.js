@@ -40,6 +40,9 @@ document.querySelector('.sorvete-setaRigth-icone').addEventListener('click', () 
     }
 });
 
+const modalPrice = document.querySelector(".produto-preco h2");
+const tamanhoContainer = document.querySelector('.tamanhos-opcoes');
+
 sorvetes.map((item, index) => {
     const sorveteList = document.querySelector('.sorvete-list');
     const sorveteDiv = document.createElement("div");
@@ -81,11 +84,13 @@ sorvetes.map((item, index) => {
 
         if (itemEscolhido === 1) { // Quando o item é um sorvete
             // Configura sabores e acompanhamentos apenas para sorvetes
+            configurarTamanhos(index); // Chama a nova função para configurar tamanhos
             configurarSabores(sorvetes[index].name);
             configurarAcompanhamentos();
         } else {
-            // Se não for um sorvete, remove qualquer elemento relacionado a tamanhos
-            tamanhoContainer.innerHTML = ''; // Limpa os tamanhos anteriores
+            // Remove qualquer container de tamanhos existente
+            const tamanhoContainerExisting = document.querySelector('.tamanhos-opcoes');
+            if (tamanhoContainerExisting) tamanhoContainerExisting.remove(); // Remove o container de tamanhos, se existir
 
             // Remove qualquer elemento relacionado a sabores/acompanhamentos
             const saboresContainer = document.querySelector('#sabores-container');
@@ -101,13 +106,16 @@ sorvetes.map((item, index) => {
             }
         }
 
-
         if (itemEscolhido === 0 || itemEscolhido === 2 || itemEscolhido === 3) { // Quando o item é um hamburguer, pastel ou pastel especial
             // Configura adicionais apenas para hamburguer
             // Configura adicionais apenas para pastel
             // Configura adicionais apenas para pastel especial
             configurarAdicionais();
         } else {
+            // Remove qualquer container de tamanhos existente
+            const tamanhoContainerExisting = document.querySelector('.tamanhos-opcoes');
+            if (tamanhoContainerExisting) tamanhoContainerExisting.remove(); // Remove o container de tamanhos, se existir
+
             // Remove qualquer elemento relacionado a sabores/acompanhamentos
             const saboresContainer = document.querySelector('#sabores-container');
             if (saboresContainer) saboresContainer.remove();
@@ -134,7 +142,6 @@ sorvetes.map((item, index) => {
         let numeroQuantidade = 1; // Define a quantidade inicial
         const modalTitle = document.querySelector(".produto-informacoes-area1 h2");
         const modalDescription = document.querySelector(".produto-informacoes-area1 p");
-        const modalPrice = document.querySelector(".produto-preco h2");
         const buttonCancel = document.querySelector('.cancela');
         const buttonLess = document.querySelector('.quantidade-less');
         const buttonPlus = document.querySelector('.quantidade-plus');
@@ -164,36 +171,6 @@ sorvetes.map((item, index) => {
             descricaoPersonalizada.value = ''; // Limpa o conteúdo da descrição ao abrir a modal
         }
 
-        const tamanhoContainer = document.querySelector('.tamanhos-opcoes'); // Certifique-se de que esse elemento exista no seu HTML 
-        tamanhoContainer.innerHTML = ''; // Limpa os tamanhos anteriores
-        // Adiciona os tamanhos e preços
-        sorvetes[index].price.forEach((tamanho, i) => {
-            const tamanhoDiv = document.createElement('div');
-            tamanhoDiv.classList.add('tamanho-item');
-
-            // Alteração: o input deve estar fora do label para funcionar corretamente
-            tamanhoDiv.innerHTML = `
-        <label for="tamanho-${i}">
-            <input type="radio" id="tamanho-${i}" name="tamanho" value="${tamanho.value}" data-tamanho="${tamanho.size}">
-            <span>${tamanho.size} - R$${tamanho.value.toFixed(2)}</span>
-        </label>
-    `;
-
-            tamanhoContainer.appendChild(tamanhoDiv);
-
-            // Atualiza o preço na seleção de tamanho
-            const radio = tamanhoDiv.querySelector('input');
-            radio.addEventListener('change', () => {
-                modalPrice.innerHTML = 'R$' + tamanho.value.toFixed(2); // Preço do sorvete
-            });
-
-            // Seleciona o primeiro valor como padrão
-            if (i === 0) {
-                radio.checked = true;
-                modalPrice.innerHTML = 'R$' + tamanho.value.toFixed(2); // Preço do sorvete
-            }
-        });
-
         // Remover event listeners antigos antes de adicionar os novos
         buttonLess.removeEventListener('click', handleButtonLess);
         buttonPlus.removeEventListener('click', handleButtonPlus);
@@ -208,6 +185,7 @@ sorvetes.map((item, index) => {
         });
 
         // Configurar os sabores e acompanhamentos ao abrir a modal
+        configurarTamanhos(index);
         configurarSabores(sorvetes[index].name);
         configurarAcompanhamentos();
     });
@@ -229,6 +207,35 @@ sorvetes.map((item, index) => {
         produtoModal.classList.remove("show");
     }
 
+    function configurarTamanhos(index) {
+        sorvetes[index].price.forEach((tamanho, i) => {
+            const tamanhoDiv = document.createElement('div');
+            tamanhoDiv.classList.add('tamanho-item');
+
+            // Alteração: o input deve estar fora do label para funcionar corretamente
+            tamanhoDiv.innerHTML = `
+                <label for="tamanho-${i}">
+                    <input type="radio" id="tamanho-${i}" name="tamanho" value="${tamanho.value}" data-tamanho="${tamanho.size}">
+                    <span>${tamanho.size} - R$${tamanho.value.toFixed(2)}</span>
+                </label>
+            `;
+
+            tamanhoContainer.appendChild(tamanhoDiv);
+
+            // Atualiza o preço na seleção de tamanho
+            const radio = tamanhoDiv.querySelector('input');
+            radio.addEventListener('change', () => {
+                modalPrice.innerHTML = 'R$' + tamanho.value.toFixed(2); // Preço do sorvete
+            });
+
+            // Seleciona o primeiro valor como padrão
+            if (i === 0) {
+                radio.checked = true;
+                modalPrice.innerHTML = 'R$' + tamanho.value.toFixed(2); // Preço do sorvete
+            }
+        });
+    }
+    
     function configurarSabores(produtoNome) {
 
         if (!produtoNome.includes('Massa') && !produtoNome.includes('Açaí') && !produtoNome.includes('Cupuaçu')) {
