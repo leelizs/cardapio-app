@@ -85,7 +85,7 @@ sorvetes.map((item, index) => {
             // Configura sabores e acompanhamentos apenas para sorvetes
             configurarTamanhos(index); // Chama a nova função para configurar tamanhos
             configurarSabores(sorvetes[index].name);
-            configurarAcompanhamentos();
+            configurarAcompanhamentos(sorvetes[index].name);
         } else {
             // Remove qualquer container de tamanhos existente
             const tamanhoContainerExisting = document.querySelector('.tamanhos-opcoes');
@@ -186,7 +186,7 @@ sorvetes.map((item, index) => {
         // Configurar os sabores e acompanhamentos ao abrir a modal
         configurarTamanhos(index);
         configurarSabores(sorvetes[index].name);
-        configurarAcompanhamentos();
+        configurarAcompanhamentos(sorvetes[index].name);
     });
 
     // Funções de manipulação de eventos definidas fora do escopo para referência correta
@@ -252,7 +252,7 @@ sorvetes.map((item, index) => {
 
     function configurarSabores(produtoNome) {
 
-        if (!produtoNome.includes('Massa') && !produtoNome.includes('Açaí') && !produtoNome.includes('Cupuaçu')) {
+        if (!produtoNome.includes('Massa') && !produtoNome.includes('Açaí') && !produtoNome.includes('Cupuaçu') && !produtoNome.includes('Milk Shake')) {
             return; // Retorna se não for Massa, Açaí ou Cupuaçu
         }
         let saboresContainer = document.querySelector('#sabores-container');
@@ -267,7 +267,7 @@ sorvetes.map((item, index) => {
         saboresContainer.classList.add('sabores-selecao');
 
         // Atualiza a mensagem de acordo com o tipo de produto
-        const isAçaiOuCupuaçu = produtoNome.includes('Açaí') || produtoNome.includes('Cupuaçu');
+        const isAçaiOuCupuaçu = produtoNome.includes('Açaí') || produtoNome.includes('Cupuaçu') || produtoNome.includes('Milk Shake');
         const saboresLabel = document.createElement('h3');
         saboresLabel.innerText = isAçaiOuCupuaçu ? 'Escolha até 1 sabor:' : 'Escolha até 2 sabores:';
         saboresContainer.appendChild(saboresLabel);
@@ -310,7 +310,7 @@ sorvetes.map((item, index) => {
                 if (isAçaiOuCupuaçu) {
                     if (checkedSabores.length > 1) {
                         saborCheckbox.checked = false;
-                        alert('Para produtos de Açaí ou Cupuaçu, você só pode escolher 1 sabor.');
+                        alert('Para produtos Açaí, Cupuaçu ou Milk Shake, você só pode escolher 1 sabor.');
                     }
                 } else {
                     if (checkedSabores.length > 2) {
@@ -331,7 +331,11 @@ sorvetes.map((item, index) => {
         });
     }
 
-    function configurarAcompanhamentos() {
+    function configurarAcompanhamentos(produtoNome) {
+        if (!produtoNome.includes('Massa') && !produtoNome.includes('Açaí') && !produtoNome.includes('Cupuaçu')) {
+            return; // Retorna se não for Massa, Açaí ou Cupuaçu
+        }
+        
         let acompanhamentosContainer = document.querySelector('#acompanhamentos-container');
         if (acompanhamentosContainer) {
             acompanhamentosContainer.remove();

@@ -47,6 +47,18 @@ let sorvetes = [
         ],
         description: '',
         type: 'Sorvete'
+    },
+    {
+        id: 3,
+        name: 'Milk Shake',
+        img: 'imagens/sorvete.png',
+        price: [
+            { size: '300ml', value: 7.00 },
+            { size: '400ml', value: 9.00 },
+            { size: '500ml', value: 12.00 }
+        ],
+        description: '',
+        type: 'Sorvete'
     }
 ];
 
