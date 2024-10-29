@@ -51,39 +51,39 @@ let sorvetes = [
 ];
 
 let pasteis = [
-    { id: 0, name: 'Carne', img: 'imagens/pastel.png', price: 5.00, description: '', type: 'Pastel' },
-    { id: 1, name: 'Queijo', img: 'imagens/pastel.png', price: 5.00, description: '', type: 'Pastel' },
-    { id: 2, name: 'Calabresa', img: 'imagens/pastel.png', price: 5.00, description: '', type: 'Pastel' },
-    { id: 3, name: 'Frango', img: 'imagens/pastel.png', price: 5.00, description: '', type: 'Pastel' },
-    { id: 4, name: 'Pizza', img: 'imagens/pastel.png', price: 7.00, description: '', type: 'Pastel' },
-    { id: 5, name: 'Presunto C/ Queijo', img: 'imagens/pastel.png', price: 7.00, description: '', type: 'Pastel' },
-    { id: 6, name: 'Calabresa C/ Queijo', img: 'imagens/pastel.png', price: 7.00, description: '', type: 'Pastel' },
-    { id: 7, name: 'Carne C/ Queijo', img: 'imagens/pastel.png', price: 8.00, description: '', type: 'Pastel' },
-    { id: 8, name: 'Frango C/ Queijo', img: 'imagens/pastel.png', price: 8.00, description: '', type: 'Pastel' },
-    { id: 9, name: 'Bacon C/ Queijo', img: 'imagens/pastel.png', price: 8.00, description: '', type: 'Pastel' },
+    { id: 0, name: 'Carne', img: 'imagens/pastel.png', price: 5.00, description: 'Carne', type: 'Pastel' },
+    { id: 1, name: 'Queijo', img: 'imagens/pastel.png', price: 5.00, description: 'Queijo', type: 'Pastel' },
+    { id: 2, name: 'Calabresa', img: 'imagens/pastel.png', price: 5.00, description: 'Calabresa', type: 'Pastel' },
+    { id: 3, name: 'Frango', img: 'imagens/pastel.png', price: 5.00, description: 'Frango', type: 'Pastel' },
+    { id: 4, name: 'Pizza', img: 'imagens/pastel.png', price: 7.00, description: 'Pizza', type: 'Pastel' },
+    { id: 5, name: 'Presunto C/ Queijo', img: 'imagens/pastel.png', price: 7.00, description: 'Presunto C/ Queijo', type: 'Pastel' },
+    { id: 6, name: 'Calabresa C/ Queijo', img: 'imagens/pastel.png', price: 7.00, description: 'Calabresa C/ Queijo', type: 'Pastel' },
+    { id: 7, name: 'Carne C/ Queijo', img: 'imagens/pastel.png', price: 8.00, description: 'Carne C/ Queijo', type: 'Pastel' },
+    { id: 8, name: 'Frango C/ Queijo', img: 'imagens/pastel.png', price: 8.00, description: 'Frango C/ Queijo', type: 'Pastel' },
+    { id: 9, name: 'Bacon C/ Queijo', img: 'imagens/pastel.png', price: 8.00, description: 'Bacon C/ Queijo', type: 'Pastel' },
 ];
 
 let pasteisEspeciais = [
-    { id: 0, name: 'Queijo Burg', img: 'imagens/pastel.png', price: 9.00, description: '', type: 'Pasteis Especiais' },
-    { id: 1, name: 'Carne Burg', img: 'imagens/pastel.png', price: 10.00, description: '', type: 'Pasteis Especiais' },
-    { id: 2, name: 'Calabresa Burg', img: 'imagens/pastel.png', price: 10.00, description: ' ', type: 'Pasteis Especiais' },
-    { id: 3, name: 'Frango Burg', img: 'imagens/pastel.png', price: 10.00, description: ' ', type: 'Pasteis Especiais' },
-    { id: 4, name: 'Presunto Burg', img: 'imagens/pastel.png', price: 10.00, description: ' ', type: 'Pasteis Especiais' },
-    { id: 5, name: 'Bacon Burg', img: 'imagens/pastel.png', price: 10.00, description: ' ', type: 'Pasteis Especiais' },
+    { id: 0, name: 'Queijo Burg', img: 'imagens/pastel.png', price: 9.00, description: 'Hamburguer e Queijo', type: 'Pasteis Especiais' },
+    { id: 1, name: 'Carne Burg', img: 'imagens/pastel.png', price: 10.00, description: 'Hamburguer e Carne', type: 'Pasteis Especiais' },
+    { id: 2, name: 'Calabresa Burg', img: 'imagens/pastel.png', price: 10.00, description: 'Hamburguer e Calabresa', type: 'Pasteis Especiais' },
+    { id: 3, name: 'Frango Burg', img: 'imagens/pastel.png', price: 10.00, description: 'Hamburguer e Frango', type: 'Pasteis Especiais' },
+    { id: 4, name: 'Presunto Burg', img: 'imagens/pastel.png', price: 10.00, description: 'Hamburguer e Presunto', type: 'Pasteis Especiais' },
+    { id: 5, name: 'Bacon Burg', img: 'imagens/pastel.png', price: 10.00, description: 'Hamburguer e Bacon', type: 'Pasteis Especiais' },
 ];
 
 let batatas = [
-    { id: 0, name: 'Batata (P)', img: 'imagens/batataFritas.png', price: 7.00, description: '', type: 'Batatas' },
-    { id: 1, name: 'Batata (M)', img: 'imagens/batataFritas.png', price: 10.00, description: '', type: 'Batatas' },
-    { id: 2, name: 'Batata (G)', img: 'imagens/batataFritas.png', price: 15.00, description: '', type: 'Batatas' },
+    { id: 0, name: 'Batata (P)', img: 'imagens/batataFritas.png', price: 7.00, description: 'Maionese, Ketchup, Mostarda, Queijo Parmesão Ralado', type: 'Batatas' },
+    { id: 1, name: 'Batata (M)', img: 'imagens/batataFritas.png', price: 10.00, description: 'Maionese, Ketchup, Mostarda, Queijo Parmesão Ralado', type: 'Batatas' },
+    { id: 2, name: 'Batata (G)', img: 'imagens/batataFritas.png', price: 15.00, description: 'Maionese, Ketchup, Mostarda, Queijo Parmesão Ralado', type: 'Batatas' },
 ];
 
 let bebidas = [
-    { id: 0, name: 'Coca Cola', img: 'imagens/cocacola200ml.png', price: 3.00, description: '200ML', type: 'Refrigerante' },
-    { id: 1, name: 'Dollynho', img: 'imagens/dollynho.png', price: 3.50, description: '350ML', type: 'Refrigerante' },
-    { id: 2, name: 'Dolly', img: 'imagens/dolly2l.png', price: 6.50, description: '2L', type: 'Refrigerante' },
-    { id: 3, name: 'Fanta', img: 'imagens/fanta1l.png', price: 8.00, description: '1L', type: 'Refrigerante' },
-    { id: 4, name: 'Coca Cola', img: 'imagens/cocacola1l.png', price: 9.00, description: '1L', type: 'Refrigerante' },
+    { id: 0, name: 'Coca Cola 200ML', img: 'imagens/cocacola200ml.png', price: 3.00, description: '200ML', type: 'Refrigerante' },
+    { id: 1, name: 'Dollynho 350ML', img: 'imagens/dollynho.png', price: 3.50, description: '350ML', type: 'Refrigerante' },
+    { id: 2, name: 'Dolly 2L', img: 'imagens/dolly2l.png', price: 6.50, description: '2L', type: 'Refrigerante' },
+    { id: 3, name: 'Fanta 1L', img: 'imagens/fanta1l.png', price: 8.00, description: '1L', type: 'Refrigerante' },
+    { id: 4, name: 'Coca Cola 1L', img: 'imagens/cocacola1l.png', price: 9.00, description: '1L', type: 'Refrigerante' },
 ];
 
 

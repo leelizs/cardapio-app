@@ -340,7 +340,7 @@ function mostrarPedidos() {
     if (item && item.produto && item.produto.type) {
       if (item.produto.type.toLowerCase() === 'hamburguer' ||
         item.produto.type.toLowerCase() === 'pastel' ||
-        item.produto.type.toLowerCase() === 'pasteis') {
+        item.produto.type.toLowerCase() === 'pasteis especiais') {
 
         const carrinhoAdicionais = document.createElement("p"); // Elemento para exibir adicionais
 
