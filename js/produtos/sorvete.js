@@ -32,7 +32,7 @@ document.querySelector('.sorvete-setaRigth-icone').addEventListener('click', () 
     }
     else {
         marginsorvete = marginsorvete - (window.innerWidth - 60);
-        let x = -(window.innerWidth * 2) - 10;
+        let x = -(window.innerWidth * 3) - 10;
         if (marginsorvete < x) {
             marginsorvete = 0;
         }
