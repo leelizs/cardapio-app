@@ -206,50 +206,47 @@ sorvetes.map((item, index) => {
         produtoModal.classList.remove("show");
     }
 
+    let precoTamanhoSelecionado = 0; // Armazena o valor do copo selecionado
+
     function configurarTamanhos(index) {
         const sorvete = sorvetes[index];
         const areaInformacoes = document.querySelector('.produto-informacoes-area1');
 
-        // Verifica se a div 'tamanhos-opcoes' já existe e remove-a para evitar duplicatas
         let tamanhoContainer = areaInformacoes.querySelector('#tamanhos-opcoes');
         if (tamanhoContainer) {
             tamanhoContainer.remove();
         }
 
-        // Cria a nova div container de tamanhos
         tamanhoContainer = document.createElement('div');
         tamanhoContainer.id = 'tamanhos-opcoes';
         tamanhoContainer.classList.add('tamanhos-opcoes');
 
-        // Itera sobre os tamanhos e cria cada item
         sorvete.price.forEach((tamanho, i) => {
             const tamanhoDiv = document.createElement('div');
             tamanhoDiv.classList.add('tamanho-item');
 
-            // Estrutura do item de tamanho com o input fora do label
             tamanhoDiv.innerHTML = `
-                <input type="radio" id="tamanho-${i}" name="tamanho" value="${tamanho.value}" data-tamanho="${tamanho.size}">
-                <label for="tamanho-${i}">
-                    <span>${tamanho.size} - R$${tamanho.value.toFixed(2)}</span>
-                </label>
-            `;
+            <input type="radio" id="tamanho-${i}" name="tamanho" value="${tamanho.value}" data-tamanho="${tamanho.size}">
+            <label for="tamanho-${i}">
+                <span>${tamanho.size} - R$${tamanho.value.toFixed(2)}</span>
+            </label>
+        `;
 
-            tamanhoContainer.appendChild(tamanhoDiv); // Adiciona o tamanho ao container
+            tamanhoContainer.appendChild(tamanhoDiv);
 
-            // Atualiza o preço na seleção de tamanho
             const radio = tamanhoDiv.querySelector('input');
             radio.addEventListener('change', () => {
-                document.querySelector('.produto-preco h2').innerHTML = 'R$' + parseFloat(radio.value).toFixed(2); // Preço do sorvete
+                precoTamanhoSelecionado = parseFloat(radio.value); // Atualiza o valor do copo selecionado
+                atualizarPrecoTotal(); // Atualiza o preço total com o novo valor do tamanho
             });
 
-            // Seleciona o primeiro valor como padrão
             if (i === 0) {
                 radio.checked = true;
-                document.querySelector('.produto-preco h2').innerHTML = 'R$' + parseFloat(radio.value).toFixed(2); // Preço do sorvete
+                precoTamanhoSelecionado = parseFloat(radio.value); // Define o valor inicial do copo
+                atualizarPrecoTotal(); // Exibe o preço inicial
             }
         });
 
-        // Adiciona o tamanhoContainer ao HTML
         areaInformacoes.appendChild(tamanhoContainer);
     }
 
@@ -336,8 +333,6 @@ sorvetes.map((item, index) => {
 
     function configurarAcompanhamentos() {
         let acompanhamentosContainer = document.querySelector('#acompanhamentos-container');
-
-        // Limpa acompanhamentos anteriores
         if (acompanhamentosContainer) {
             acompanhamentosContainer.remove();
         }
@@ -361,7 +356,7 @@ sorvetes.map((item, index) => {
 
         const acompanhamentos = ['M&M', 'Sucrilho', 'Granola', 'Amendoim', 'Chocolate', 'Leite em Pó', 'Granulado'];
         acompanhamentos.forEach(acompanhamento => {
-            const acompanhamentoWrapper = document.createElement('div'); // Usei um div como wrapper
+            const acompanhamentoWrapper = document.createElement('div');
             const acompanhamentoCheckbox = document.createElement('input');
             acompanhamentoCheckbox.type = 'checkbox';
             acompanhamentoCheckbox.name = 'acompanhamento';
@@ -369,32 +364,25 @@ sorvetes.map((item, index) => {
             acompanhamentoCheckbox.classList.add('acompanhamento-checkbox');
 
             const acompanhamentoLabel = document.createElement('span');
-            acompanhamentoLabel.style.marginLeft = '8px'; // Adiciona espaço entre o checkbox e o texto
+            acompanhamentoLabel.style.marginLeft = '8px';
             acompanhamentoLabel.innerText = acompanhamento;
 
             acompanhamentoWrapper.appendChild(acompanhamentoCheckbox);
             acompanhamentoWrapper.appendChild(acompanhamentoLabel);
 
-            // Estilização para alinhar os itens
             acompanhamentoWrapper.style.display = 'flex';
-            acompanhamentoWrapper.style.alignItems = 'center'; // Alinha o checkbox e o texto verticalmente
-            acompanhamentoWrapper.style.marginBottom = '8px'; // Espaçamento entre os itens
+            acompanhamentoWrapper.style.alignItems = 'center';
+            acompanhamentoWrapper.style.marginBottom = '8px';
 
             acompanhamentosList.appendChild(acompanhamentoWrapper);
 
-            // Adiciona um evento de mudança para controlar a seleção
             acompanhamentoCheckbox.addEventListener('change', () => {
                 const checkedCheckboxes = document.querySelectorAll('input[name="acompanhamento"]:checked');
-
-                // Se mais de 2 forem selecionados
                 if (checkedCheckboxes.length > 2) {
-                    // Desmarca o último checkbox que foi marcado
                     acompanhamentoCheckbox.checked = false;
-                    // Alerta ao usuário
                     alert('Você pode selecionar no máximo 2 acompanhamentos.');
                 }
 
-                // Atualiza o estado de habilitação dos checkboxes
                 const allCheckboxes = document.querySelectorAll('input[name="acompanhamento"]');
                 if (checkedCheckboxes.length >= 2) {
                     allCheckboxes.forEach(checkbox => {
@@ -407,6 +395,8 @@ sorvetes.map((item, index) => {
                         checkbox.disabled = false;
                     });
                 }
+
+                atualizarPrecoTotal(); // Atualiza o preço total com base nos acompanhamentos selecionados
             });
         });
 
@@ -418,5 +408,21 @@ sorvetes.map((item, index) => {
             acompanhamentosList.style.display = isVisible ? 'none' : 'block';
             acompanhamentosButton.innerText = isVisible ? 'Ver mais acompanhamentos' : 'Ver menos acompanhamentos';
         });
+    }
+
+    // Função para obter o preço do acompanhamento
+    function obterPrecoAcompanhamento() {
+        return 1.00; // Cada acompanhamento custa R$1,00
+    }
+
+    // Atualiza o preço total combinando tamanho e acompanhamentos
+    function atualizarPrecoTotal() {
+        let precoAcompanhamentos = 0;
+
+        const checkedAcompanhamentos = document.querySelectorAll('input[name="acompanhamento"]:checked');
+        precoAcompanhamentos = checkedAcompanhamentos.length * 1.00; // Cada acompanhamento custa R$1,00
+
+        const precoTotal = precoTamanhoSelecionado + precoAcompanhamentos;
+        document.querySelector('.produto-preco h2').innerHTML = 'R$' + precoTotal.toFixed(2);
     }
 });

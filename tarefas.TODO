@@ -2,7 +2,7 @@ Modal Sorvetes:
     ✔ Escolher tamanho de copo (200, 300, 400, 500) ml @done(24-10-25 13:04)
     ✔ Escolher somente 1 tamanho de copo @done(24-10-25 13:04)
     ✔ O valor de cada copo ficará ao lado do ml - (200 ml) = 4.00 - Para produtos Açai ou Cupuaçu - (200ml) = 6.00 @done(24-10-25 13:04)
-    ☐ Atualizar em tempo real o Preço da modal, para que o usuário veja quanto está ficando. Isso inclui: tamanho do copo + acompanhamento
+    ✔ Atualizar em tempo real o Preço da modal, para que o usuário veja quanto está ficando. Isso inclui: tamanho do copo + acompanhamento @done(24-10-29 14:55)
     ✔ Só vai ser possível adicionar ao carrinho se tiver Sabor e Tamanho de copo preenchido. @done(24-10-25 13:04)
     ✔ No carrinho, aparecer Sabor, Tamanho de copo e Acompanhamento, se tiver um. @done(24-10-25 13:04)
 

@@ -168,9 +168,10 @@ function addCarrinho(keyEscolhido, itemEscolhido) {
     const saboresSelecionados = Array.from(document.querySelectorAll('.sabor-checkbox:checked')).map(cb => cb.value);
     const acompanhamentosSelecionados = Array.from(document.querySelectorAll('.acompanhamento-checkbox:checked')).map(cb => cb.value);
 
-    if (saboresSelecionados.length === 0) {
+    // Verifica se ao menos um sabor foi selecionado, exceto se for Açaí ou Cupuaçu
+    if (saboresSelecionados.length === 0 && compra.produto.name !== 'Açaí' && compra.produto.name !== 'Cupuaçu') {
       alert('Por favor, selecione pelo menos um sabor antes de adicionar ao carrinho.');
-      return; // Impede de adicionar ao carrinho e mantém a modal aberta
+      return;
     }
 
     // Adiciona os sabores e acompanhamentos se houver seleção
