@@ -98,8 +98,7 @@ let bebidas = [
     { id: 4, name: 'Coca Cola 1L', img: 'imagens/cocacola1l.png', price: 9.00, description: '1L', type: 'Refrigerante' },
 ];
 
-
 let salgados = [
-    { id: 0, name: 'Salgados Mini (UN)', img: 'imagens/salgado.png', price: 0.50, description: 'Coxinha, Risole, Bolinho de Queijo, Bolinho de Salsicha, Bolinho de Carne', type: 'Salgados' },
+    { id: 0, name: 'Salgados Mini (UN)', img: 'imagens/salgado.png', price: 0, description: 'Coxinha, Risole, Bolinho de Queijo, Bolinho de Salsicha, Bolinho de Carne', type: 'Salgados' },
     { id: 1, name: 'Cento de Salgados Mini', img: 'imagens/centosalgado.png', price: 45.00, description: 'Coxinha, Risole, Bolinho de Queijo, Bolinho de Salsicha, Bolinho de Carne', type: 'Salgados' }
 ];

@@ -861,6 +861,118 @@ ul li a i {
     border-radius: 4px; /* Cantos arredondados */
 }
 
+.tipos-salgados-container {
+    display: flex;
+    flex-direction: column; /* Para que cada linha de salgado fique em uma nova linha */
+    margin-top: 20px; /* Espaçamento no topo */
+}
+
+.salgado-row {
+    display: flex;
+    align-items: center; /* Alinha os itens verticalmente no centro */
+    border: 2px solid #f4ebdc; /* Cor da borda */
+    border-radius: 60px; /* Bordas arredondadas */
+    margin-bottom: 10px; /* Espaço entre as linhas de salgados */
+    overflow: hidden; /* Para manter o conteúdo dentro dos limites do container */
+    padding: 10px; /* Adicionando padding para melhor espaçamento interno */
+    gap: 10px; /* Espaço entre os elementos dentro da linha */
+}
+
+.salgado-quantidade {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centraliza o texto da quantidade */
+    color: #f4ebdc; /* Cor do texto da quantidade */
+    font-weight: 500;
+    font-size: 2rem; /* Tamanho da fonte */
+    margin: 0 1rem; /* Espaçamento horizontal */
+}
+
+/* Estilo do Nome e Preço do Salgado */
+.salgado-row span {
+    font-size: 1.5rem; /* Ajuste o tamanho da fonte para melhor responsividade */
+    color: #ffffff;
+    flex-grow: 1; /* Permitir que o texto cresça e ocupe o espaço disponível */
+    text-align: left; /* Alinhar o texto à esquerda */
+    min-width: 150px; /* Largura mínima para manter o alinhamento */
+    max-width: 200px; /* Largura máxima para evitar que nomes muito longos estiquem demais */
+    overflow: hidden; /* Esconde o texto que não cabe */
+    text-overflow: ellipsis; /* Adiciona reticências ao texto que não cabe */
+    white-space: nowrap; /* Impede a quebra de linha do texto */
+}
+
+.salgado-row button {
+    width: 50px;
+    height: 50px;
+    border: none;
+    cursor: pointer;
+    transition: all ease 0.3s;
+    background-color: #ee7700; /* Cor de fundo do botão */
+    color: #f4ebdc; /* Cor do texto do botão */
+    font-size: 2.2rem; /* Tamanho da fonte dos botões */
+    font-weight: 500; /* Peso da fonte */
+}
+
+.salgado-row button:hover {
+    background-color: #5c2308; /* Cor de fundo ao passar o mouse */
+}
+
+/* Estilo dos Botões de Quantidade */
+.botao-menor,
+.botao-maior {
+    background-color: #007BFF; /* Azul */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px; /* Pode manter o padding aqui */
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.botao-menor:hover,
+.botao-maior:hover {
+    background-color: #0056b3; /* Azul mais escuro ao passar o mouse */
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    .produto-modal {
+        width: 95%; /* Reduzir um pouco mais em telas pequenas */
+    }
+
+    .salgado-row {
+        flex-direction: row; /* Manter na mesma linha para dispositivos móveis */
+        align-items: center; /* Alinhar à esquerda */
+        padding: 5px; /* Reduzir o padding para tornar o quadrado menor */
+        gap: 5px; /* Diminuir o espaço entre os elementos */
+    }
+
+    .salgado-quantidade {
+        flex-direction: row; /* Exibir os botões lado a lado */
+        justify-content: center; /* Centraliza horizontalmente */
+        margin: 0; /* Remover margem vertical para um visual mais compacto */
+        gap: 5px; /* Espaço entre os botões */
+    }
+
+    .salgado-quantidade button {
+        width: 30px; /* Diminuindo o tamanho dos botões */
+        height: 30px; /* Diminuindo o tamanho dos botões */
+        font-size: 1.2rem; /* Ajustando o tamanho da fonte dos botões */
+        margin: 0; /* Remover margens para aproximar */
+    }
+
+    .salgado-row span {
+        margin-bottom: 0; /* Remover espaço entre o nome e a quantidade */
+        font-size: 1.2rem; /* Ajustando o tamanho da fonte para caber melhor */
+        min-width: 100px; /* Largura mínima para manter o alinhamento */
+        max-width: 150px; /* Largura máxima para evitar que nomes muito longos estiquem demais */
+        overflow: hidden; /* Esconde o texto que não cabe */
+        text-overflow: ellipsis; /* Adiciona reticências ao texto que não cabe */
+        white-space: nowrap; /* Impede a quebra de linha do texto */
+    }
+}
+
 
 .carrinho-item p {
     max-width: 100%;
