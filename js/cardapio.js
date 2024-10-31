@@ -99,6 +99,6 @@ let bebidas = [
 ];
 
 let salgados = [
-    { id: 0, name: 'Salgados Mini (UN)', img: 'imagens/salgado.png', price: 0, description: 'Coxinha, Risole, Bolinho de Queijo, Bolinho de Salsicha, Bolinho de Carne', type: 'Salgados' },
-    { id: 1, name: 'Cento de Salgados Mini', img: 'imagens/centosalgado.png', price: 45.00, description: 'Coxinha, Risole, Bolinho de Queijo, Bolinho de Salsicha, Bolinho de Carne', type: 'Salgados' }
+    { id: 0, name: 'Salgados Mini (UN)', img: 'imagens/salgado.png', price: 0.00, description: 'Coxinha, Risole, Bolinho de Queijo, Bolinho de Salsicha, Bolinho de Carne', type: 'Salgados', quantidade: 0 },
+    { id: 1, name: 'Cento de Salgados Mini', img: 'imagens/centosalgado.png', price: 45.00, description: 'Coxinha, Risole, Bolinho de Queijo, Bolinho de Salsicha, Bolinho de Carne', type: 'Salgados', quantidade: 0 }
 ];

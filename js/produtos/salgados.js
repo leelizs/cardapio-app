@@ -83,36 +83,29 @@ salgados.map((item, index) => {
         itemEscolhido = 6;
 
         if (itemEscolhido === 1) { // Quando o item é um sorvete
-            // Configura sabores e acompanhamentos apenas para sorvetes
-            configurarTamanhos(index); // Chama a nova função para configurar tamanhos
+            configurarTamanhos(index);
             configurarSabores(sorvetes[index].name);
             configurarAcompanhamentos();
         } else {
             // Remove qualquer container de tamanhos existente
             const tamanhoContainerExisting = document.querySelector('.tamanhos-opcoes');
-            if (tamanhoContainerExisting) tamanhoContainerExisting.remove(); // Remove o container de tamanhos, se existir
+            if (tamanhoContainerExisting) tamanhoContainerExisting.remove();
 
-            // Remove qualquer elemento relacionado a sabores/acompanhamentos
             const saboresContainer = document.querySelector('#sabores-container');
             if (saboresContainer) saboresContainer.remove();
 
             const acompanhamentosContainer = document.querySelector('#acompanhamentos-container');
             if (acompanhamentosContainer) acompanhamentosContainer.remove();
 
-            // Remove a descrição anterior
             const descricaoPersonalizada = document.querySelector('#produto-descricao');
             if (descricaoPersonalizada) {
-                descricaoPersonalizada.parentElement.remove(); // Remove o container da descrição
+                descricaoPersonalizada.parentElement.remove();
             }
         }
 
         if (itemEscolhido === 0 || itemEscolhido === 2 || itemEscolhido === 3) { // Quando o item é um hamburguer, pastel ou pastel especial
-            // Configura adicionais apenas para hamburguer
-            // Configura adicionais apenas para pastel
-            // Configura adicionais apenas para pastel especial
             configurarAdicionais();
         } else {
-            // Remove qualquer elemento relacionado a sabores/acompanhamentos
             const saboresContainer = document.querySelector('#sabores-container');
             if (saboresContainer) saboresContainer.remove();
 
@@ -122,16 +115,14 @@ salgados.map((item, index) => {
             const adicionaisContainer = document.querySelector('#adicionais-container');
             if (adicionaisContainer) adicionaisContainer.remove();
 
-            // Remove a descrição anterior
             const descricaoPersonalizada = document.querySelector('#produto-descricao');
             if (descricaoPersonalizada) {
-                descricaoPersonalizada.parentElement.remove(); // Remove o container da descrição
+                descricaoPersonalizada.parentElement.remove();
             }
         }
 
         keyEscolhido = index;
 
-        // Exibe a modal para o item selecionado
         modalTamanho.style.display = 'none';
         produtoModal.classList.add("show");
 
@@ -149,11 +140,9 @@ salgados.map((item, index) => {
         modalImg.src = salgados[index].img;
         quantidade.innerHTML = numeroQuantidade;
 
-        // Verifica se o campo de descrição personalizada já existe
         let descricaoPersonalizada = document.querySelector('#produto-descricao');
 
         if (!descricaoPersonalizada) {
-            // Cria o campo de descrição se não existir
             descricaoPersonalizada = document.createElement('textarea');
             descricaoPersonalizada.id = 'produto-descricao';
             descricaoPersonalizada.placeholder = 'Observação: ';
@@ -165,19 +154,17 @@ salgados.map((item, index) => {
             const modalInfoArea = document.querySelector(".produto-informacoes-area1");
             modalInfoArea.appendChild(descricaoPersonalizadaContainer);
         } else {
-            descricaoPersonalizada.value = ''; // Limpa o conteúdo da descrição ao abrir a modal
+            descricaoPersonalizada.value = '';
         }
 
-        // Cria o container para tipos de salgados com quantidade ao lado
         let tiposContainer = document.querySelector('.tipos-salgados-container');
         if (!tiposContainer) {
             tiposContainer = document.createElement('div');
             tiposContainer.classList.add('tipos-salgados-container');
             document.querySelector(".produto-informacoes-area1").appendChild(tiposContainer);
         }
-        tiposContainer.innerHTML = ''; // Limpa o container antes de adicionar os itens
+        tiposContainer.innerHTML = '';
 
-        // Itera pelos tipos de salgados e cria os inputs de quantidade
         const tiposSalgados = [
             { name: 'Coxinha', price: 0.50 },
             { name: 'Risole', price: 0.50 },
@@ -186,7 +173,6 @@ salgados.map((item, index) => {
             { name: 'Carne', price: 0.50 }
         ];
 
-        // Mantenha um objeto para armazenar os totais
         let totalSalgados = 0;
         const quantidadeInputs = {};
 
@@ -198,32 +184,32 @@ salgados.map((item, index) => {
             salgadoName.innerText = `${salgado.name}`;
             salgadoRow.appendChild(salgadoName);
 
-            // Adiciona botões de quantidade
             const buttonLess = document.createElement('button');
             buttonLess.innerText = '-';
-            buttonLess.classList.add('botao-menor'); // Correção da classe
+            buttonLess.classList.add('botao-menor');
 
             const salgadoQuantidade = document.createElement('span');
-            salgadoQuantidade.innerText = '0'; // Valor inicial
+            salgadoQuantidade.innerText = '0';
             salgadoQuantidade.classList.add('salgado-quantidade');
 
             const buttonPlus = document.createElement('button');
             buttonPlus.innerText = '+';
-            buttonPlus.classList.add('botao-maior'); // Correção da classe
+            buttonPlus.classList.add('botao-maior');
 
-            // Adiciona eventos aos botões
             buttonLess.addEventListener('click', () => {
                 let quantidade = parseInt(salgadoQuantidade.innerText) || 0;
-                quantidade = Math.max(0, quantidade - 1); // Não permitir valores negativos
+                quantidade = Math.max(0, quantidade - 1);
                 salgadoQuantidade.innerText = quantidade;
-                atualizarTotal(salgado, quantidade, salgadoIndex); // Passando o índice
+                atualizarTotal(salgado, quantidade, salgadoIndex);
+                calcularTotalSalgados(); // Recalcula o total
             });
 
             buttonPlus.addEventListener('click', () => {
                 let quantidade = parseInt(salgadoQuantidade.innerText) || 0;
-                quantidade += 1; // Aumenta a quantidade
+                quantidade += 1;
                 salgadoQuantidade.innerText = quantidade;
-                atualizarTotal(salgado, quantidade, salgadoIndex); // Passando o índice
+                atualizarTotal(salgado, quantidade, salgadoIndex);
+                calcularTotalSalgados(); // Recalcula o total
             });
 
             salgadoRow.appendChild(buttonLess);
@@ -234,16 +220,19 @@ salgados.map((item, index) => {
 
         const atualizarTotal = (salgado, quantidade, salgadoIndex) => {
             // Atualiza o totalSalgados ao mudar a quantidade
-            totalSalgados += (quantidade * salgado.price) - (quantidadeInputs[salgadoIndex] ? quantidadeInputs[salgadoIndex] * salgado.price : 0);
-            quantidadeInputs[salgadoIndex] = quantidade; // Armazena a quantidade atual para referência futura
+            if (quantidadeInputs[salgadoIndex] !== undefined) {
+                totalSalgados -= quantidadeInputs[salgadoIndex] * salgado.price; // Remove o preço anterior
+            }
+
+            totalSalgados += quantidade * salgado.price; // Adiciona o novo preço
+            quantidadeInputs[salgadoIndex] = quantidade; // Armazena a quantidade atual
+
             modalPrice.innerText = `R$${totalSalgados.toFixed(2)}`; // Atualiza o preço total na modal
         };
 
-        buttonCancel.addEventListener('click', () => { // Botão cancelar do modal 1
+        buttonCancel.addEventListener('click', () => {
             produtoModal.classList.remove("show");
-            descricaoPersonalizada.value = ''; // Limpar a descrição ao fechar a modal
+            descricaoPersonalizada.value = '';
         });
     });
-
-    salgadosList.appendChild(salgadosDiv);
 });

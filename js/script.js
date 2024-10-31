@@ -87,6 +87,36 @@ botaoAddMaisItens.addEventListener('click', () => { // Botão adicionar mais ite
 
 // FUNÇÕES ////////////////////////////////////////////////////////////////////////////////////////
 
+let totalSalgados = 0; // Variável global
+
+// Função ou lógica que calcula o total dos salgados
+function calcularTotalSalgados() {
+  const tiposSalgados = [
+    { name: 'Coxinha', price: 0.50 },
+    { name: 'Risole', price: 0.50 },
+    { name: 'Queijo', price: 0.50 },
+    { name: 'Salsicha', price: 0.50 },
+    { name: 'Carne', price: 0.50 }
+  ];
+
+  totalSalgados = 0; // Reinicializa o total
+  const quantidadeInputs = {}; // Armazena as quantidades
+
+  tiposSalgados.forEach((salgado, salgadoIndex) => {
+    const quantidadeElement = document.querySelector(`.salgado-row:nth-child(${salgadoIndex + 1}) .salgado-quantidade`);
+
+    if (quantidadeElement) {
+      const quantidade = parseInt(quantidadeElement.innerText) || 0;
+      totalSalgados += quantidade * salgado.price;
+      quantidadeInputs[salgadoIndex] = quantidade;
+    } else {
+      console.warn(`Elemento de quantidade para ${salgado.name} não encontrado.`);
+    }
+  });
+
+  return totalSalgados;
+}
+
 let total = "------"; // Inicialização do total do carrinho
 
 function addCarrinho(keyEscolhido, itemEscolhido) {
@@ -132,6 +162,7 @@ function addCarrinho(keyEscolhido, itemEscolhido) {
       break;
     case 6:
       compra.produto = salgados[keyEscolhido];
+      compra.totalSalgados = totalSalgados; // Adiciona o total dos salgados ao objeto
       break;
     default:
       console.error('Produto não reconhecido');
@@ -201,6 +232,9 @@ function addCarrinho(keyEscolhido, itemEscolhido) {
   document.querySelectorAll('.sabor-checkbox').forEach(cb => cb.checked = false);
   document.querySelectorAll('.acompanhamento-checkbox').forEach(cb => cb.checked = false);
   document.querySelectorAll('.adicional-checkbox').forEach(cb => cb.checked = false);
+
+  // Adiciona o preço total dos salgados (caso existam) ao preço final da compra
+  compra.preco = (compra.preco || 0) + (compra.totalSalgados || 0);
 
   // Adiciona a compra ao carrinho
   produtosCarrinho.push({
@@ -281,14 +315,31 @@ function mostrarPedidos() {
     // Substitua "valorSabor" por "valorTamanho" para refletir melhor o conteúdo
     const valorTamanho = item.preco || 0; // Verifica se o tamanho existe e é um número
 
-    const valorReal = (
-      valorBase + // Preço base do produto
-      valorTamanho + // Preço do tamanho
-      (totalAcompanhamentos * precoAcompanhamento) + // Custo dos acompanhamentos
-      (totalAdicionais * precoAdicional) // Custo dos adicionais
-    ) * item.quantidade;
+    // Calcula total de salgados se o item for um salgado
+    const totalSalgados = calcularTotalSalgados(item);
 
-    totalItens += valorReal; // Acumula o valor total dos itens
+    let valorReal;
+
+    // Verifica se o item é um salgado
+    if (item.produto.type && item.produto.type.toLowerCase() === 'salgado') {
+      valorReal = (
+        valorBase + // Deve ser o preço do salgado
+        (totalAcompanhamentos * precoAcompanhamento) +
+        (totalAdicionais * precoAdicional) +
+        totalSalgados // Adiciona total de salgados ao valor total
+      ) * item.quantidade; // Multiplicando pela quantidade
+    } else {
+      // Para outros tipos de produtos, você pode incluir o valorTamanho
+      valorReal = (
+        valorBase +
+        valorTamanho + // Somente se não for salgado
+        (totalAcompanhamentos * precoAcompanhamento) +
+        (totalAdicionais * precoAdicional)
+      ) * item.quantidade;
+    }
+
+    // Acumula o valor total dos itens
+    totalItens += valorReal;
 
     carrinhoItem.classList.add("carrinho-item");
     carrinhodiv1.classList.add("carrinho-detalhes"); // Classe adicional para estilização
