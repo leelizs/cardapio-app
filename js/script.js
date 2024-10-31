@@ -89,32 +89,30 @@ botaoAddMaisItens.addEventListener('click', () => { // Botão adicionar mais ite
 
 let totalSalgados = 0; // Variável global
 
-// Função ou lógica que calcula o total dos salgados
-function calcularTotalSalgados() {
-  const tiposSalgados = [
-    { name: 'Coxinha', price: 0.50 },
-    { name: 'Risole', price: 0.50 },
-    { name: 'Queijo', price: 0.50 },
-    { name: 'Salsicha', price: 0.50 },
-    { name: 'Carne', price: 0.50 }
-  ];
+//console.log("salgados:", salgados);
 
-  totalSalgados = 0; // Reinicializa o total
-  const quantidadeInputs = {}; // Armazena as quantidades
+// Função que calcula o total dos salgados
+function calcularTotalSalgados(keyEscolhido) {
+  keyEscolhido = parseInt(keyEscolhido);
+  //console.log("keyEscolhido na função:", keyEscolhido);
 
-  tiposSalgados.forEach((salgado, salgadoIndex) => {
-    const quantidadeElement = document.querySelector(`.salgado-row:nth-child(${salgadoIndex + 1}) .salgado-quantidade`);
+  if (isNaN(keyEscolhido) || salgados[keyEscolhido] === undefined) {
+    //console.error(`Salgado com índice ${keyEscolhido} não encontrado.`);
+    return 0; // Retorna 0 ou qualquer valor padrão
+  }
 
-    if (quantidadeElement) {
-      const quantidade = parseInt(quantidadeElement.innerText) || 0;
-      totalSalgados += quantidade * salgado.price;
-      quantidadeInputs[salgadoIndex] = quantidade;
-    } else {
-      console.warn(`Elemento de quantidade para ${salgado.name} não encontrado.`);
-    }
+  // Adicione este log
+  //console.log("Tipos de salgados:", salgados[keyEscolhido].tipos);
+
+  const salgadosSelecionados = salgados[keyEscolhido].tipos.map((salgado, index) => {
+    const quantidadeElement = document.querySelector(`.salgado-row:nth-child(${index + 1}) .salgado-quantidade`);
+    //console.log("Quantidade Element:", quantidadeElement);
+    const quantidade = quantidadeElement ? parseInt(quantidadeElement.innerText) || 0 : 0;
+    return { price: salgado.price, quantity: quantidade };
   });
 
-  return totalSalgados;
+  // Calcula o total
+  return salgadosSelecionados.reduce((total, salgado) => total + (salgado.price * salgado.quantity), 0);
 }
 
 let total = "------"; // Inicialização do total do carrinho
@@ -135,7 +133,6 @@ function addCarrinho(keyEscolhido, itemEscolhido) {
   const descricaoInput = document.querySelector('#produto-descricao');
   const descricaoPersonalizada = descricaoInput ? descricaoInput.value.trim() : '';
 
-  // Verifica se a descrição não está vazia
   if (descricaoPersonalizada) {
     compra.descricao = descricaoPersonalizada; // Adiciona a descrição ao objeto de compra
   }
@@ -162,7 +159,14 @@ function addCarrinho(keyEscolhido, itemEscolhido) {
       break;
     case 6:
       compra.produto = salgados[keyEscolhido];
-      compra.totalSalgados = totalSalgados; // Adiciona o total dos salgados ao objeto
+      compra.totalSalgados = calcularTotalSalgados(keyEscolhido); // Verifica a função para calcular o total
+
+      // Captura as quantidades de cada tipo de salgado
+      compra.salgados = salgados[keyEscolhido].tipos.map((salgado, index) => {
+        const quantidadeElement = document.querySelector(`.salgado-row:nth-child(${index + 1}) .salgado-quantidade`);
+        const quantidade = quantidadeElement ? parseInt(quantidadeElement.innerText) || 0 : 0;
+        return { nome: salgado.name, quantidade };
+      }).filter(s => s.quantidade > 0); // Filtra para incluir apenas os que têm quantidade > 0
       break;
     default:
       console.error('Produto não reconhecido');
@@ -244,6 +248,7 @@ function addCarrinho(keyEscolhido, itemEscolhido) {
     sabores: compra.sabores,
     acompanhamentos: compra.acompanhamentos,
     adicionais: compra.adicionais,
+    salgados: compra.salgados, // Adiciona os salgados ao carrinho
     preco: compra.preco, // Adiciona o preço do tamanho aqui
     size: compra.size // Adiciona o tamanho selecionado aqui
   });
@@ -316,7 +321,8 @@ function mostrarPedidos() {
     const valorTamanho = item.preco || 0; // Verifica se o tamanho existe e é um número
 
     // Calcula total de salgados se o item for um salgado
-    const totalSalgados = calcularTotalSalgados(item);
+    const totalSalgados = calcularTotalSalgados(keyEscolhido);
+    console.log("Total de salgados:", totalSalgados);
 
     let valorReal;
 
@@ -404,6 +410,37 @@ function mostrarPedidos() {
       }
     }
 
+    if (item.produto.type && item.produto.type.toLowerCase() === 'salgados') {
+      const carrinhoSalgados = document.createElement("p");
+
+      // Verifica se há tipos de salgados e monta a string de exibição
+      if (item.salgados && item.salgados.length > 0) {
+        const salgadosList = item.salgados.map(salgado => {
+          // Certifique-se de que 'salgado' contém um campo de 'nome' e 'quantidade'
+          const salgadoInfo = salgados.find(s => s.name === salgado.nome); // Mudou s.name para salgado.nome
+
+          if (salgadoInfo) {
+            // Verifica se os tipos estão definidos e retorna a quantidade
+            const tipo = salgadoInfo.tipos.find(t => t.name.toLowerCase() === salgado.nome.toLowerCase()); // Mudou s.name para salgado.nome
+            const price = tipo ? tipo.price * salgado.quantidade : 0;
+            return `${salgado.nome} (${salgado.quantidade}) - R$ ${price.toFixed(2)}`; // Mostra a quantidade e o preço
+          }
+
+          return `${salgado.nome} (${salgado.quantidade})`; //
+        }).join(', ');
+
+        // Verifica se a lista de salgados não está vazia
+        if (salgadosList) {
+          carrinhoSalgados.innerText = "Item: " + salgadosList;
+          carrinhodiv1.appendChild(carrinhoSalgados); // Adicionando os salgados
+        }
+      } else {
+        // Se não houver salgados, você pode querer adicionar uma mensagem padrão
+        carrinhoSalgados.innerText = "Salgados: Nenhum salgado selecionado";
+        carrinhodiv1.appendChild(carrinhoSalgados);
+      }
+    }
+
     // Adiciona a div de preço e botão à segunda div
     carrinhodiv2.appendChild(carrinhoPrice);
     carrinhodiv2.appendChild(carrinhoButton);
@@ -422,12 +459,12 @@ function mostrarPedidos() {
 
       // Verifica se o carrinho ficou vazio após a remoção
       if (produtosCarrinho.length === 0) {
-        localStorage.removeItem('produtosCarrinho'); // Remove produtosCarrinho do localStorage
-        modalCarrinho.classList.remove("show"); // Fecha o modal se estiver vazio
+        modalCarrinho.classList.remove("show"); // Fecha o modal
       }
     });
 
-    carrinhoProdutos.appendChild(carrinhoItem); // Adiciona o item ao carrinho
+    // Adiciona o item ao container do carrinho
+    carrinhoProdutos.appendChild(carrinhoItem);
   });
 
   // Atualiza o total no carrinho
@@ -614,32 +651,54 @@ function capturarPedido() {
             document.body.removeChild(link);
 
             const numeroWhatsApp = '5511913421009';
-            let mensagemTexto = 'Olá! Aqui está o meu pedido:\n';
+            let mensagemTexto = 'Olá Denize! Aqui está o meu pedido:\n';
 
             produtosCarrinho.forEach((item, index) => {
               let precoTotalItem = 0;
-              let itemTexto = `${index + 1}. ${item.produto.type} - ${item.produto.name} - Quantidade: ${item.quantidade}`;
-              let precoSize;
+              let itemTexto;
+
+              // Verifica se o produto é do tipo 'salgados' para formatar a string
+              if (item.produto.type.toLowerCase() === 'salgados') {
+                itemTexto = `${index + 1}. ${item.produto.type} - ${item.produto.name}`; // Sem quantidade
+              } else {
+                itemTexto = `${index + 1}. ${item.produto.type} - ${item.produto.name} - Quantidade: ${item.quantidade}`; // Com quantidade
+              }
+
+              let precoBase = 0;
 
               // Preço base do produto
               if (item.produto.type === 'Sorvete') {
-                precoSize = item.produto.price.find(p => p.size === item.size);
-
+                const precoSize = item.produto.price.find(p => p.size === item.size);
                 if (precoSize) {
-                  precoTotalItem += precoSize.value * item.quantidade; // Inclui o preço do sorvete
+                  precoBase = precoSize.value;
+                  precoTotalItem += precoBase * item.quantidade; // Inclui o preço do sorvete
                   itemTexto += `, Tamanho: ${item.size}`;
                 } else {
                   console.warn(`Tamanho não encontrado para Sorvete: ${item.size}`);
                   itemTexto += `, Tamanho: Não especificado`;
                 }
+              } else if (item.produto.type.toLowerCase() === 'salgados' && item.salgados) {
+                // Cálculo para salgados
+                const salgadosTotal = item.salgados.reduce((total, salgado) => {
+                  const salgadoInfo = salgados.find(s => s.nome === salgado.nome);
+                  if (salgadoInfo) {
+                    return total + (salgadoInfo.price * salgado.quantidade); // Preço baseado na quantidade
+                  }
+                  return total; // Retorna o total se não encontrar o salgado
+                }, 0);
+                precoTotalItem += salgadosTotal; // Adiciona o total dos salgados
+                itemTexto += `, Itens: ${item.salgados.map(salgado => `${salgado.nome} (${salgado.quantidade})`).join(', ')}`;
               } else {
-                if (item.produto.price !== undefined) {
-                  precoTotalItem += item.produto.price * item.quantidade; // Inclui o preço do hamburguer ou pastel
-                } else {
-                  console.warn(`Preço não encontrado para ${item.produto.type}: ${item.produto.name}`);
-                }
+                precoBase = item.produto.price || 0;
+                precoTotalItem += precoBase * item.quantidade; // Inclui o preço do hamburguer ou pastel
               }
 
+              // Adicionando a lógica para não incluir preço base e total se for salgado
+              if (item.produto.type.toLowerCase() !== 'salgados') {
+                itemTexto += ` - Preço Base: R$ ${(precoBase * item.quantidade).toFixed(2)} = Total Item: R$ ${precoTotalItem.toFixed(2)}`;
+              }
+
+              // Adicionando descrições e acompanhamentos
               if (item.descricao) itemTexto += `, Descrição: ${item.descricao}`;
               if (item.sabores && item.sabores.length > 0) itemTexto += `, Sabores: ${item.sabores.join(', ')}`;
 
@@ -661,10 +720,6 @@ function capturarPedido() {
               if (totalAdicionais > 0) {
                 itemTexto += `, Adicionais: ${item.adicionais.join(', ')}`;
               }
-
-              // Monta o texto final do item com todos os detalhes e preços corretos
-              const precoItem = item.produto.type === 'Sorvete' ? (precoSize ? precoSize.value : 0) : item.produto.price;
-              itemTexto += ` - Preço Base: R$ ${(precoItem * item.quantidade).toFixed(2)} = Total Item: R$ ${precoTotalItem.toFixed(2)}`;
 
               mensagemTexto += itemTexto + "\n";
             });
