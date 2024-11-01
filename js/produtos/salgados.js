@@ -142,83 +142,109 @@ salgados.forEach((item, index) => {
         // Usando o índice do salgados para preencher as informações do modal
         modalTitle.innerHTML = salgados[keyEscolhido].name;
         modalDescription.innerHTML = salgados[keyEscolhido].description;
-        modalPrice.innerHTML = 'R$' + salgados[keyEscolhido].tipos[0].price.toFixed(2); // Exibe o preço do primeiro tipo
         modalImg.src = salgados[keyEscolhido].img;
         quantidade.innerHTML = numeroQuantidade;
 
-        // Inicializa o total de salgados como 0
-        let totalSalgados = 0;
-        const quantidadeInputs = {};
+        // Atualiza a descrição para produtos que não são Massa, Açaí ou Cupuaçu
+        let descricaoPersonalizada = document.querySelector('#produto-descricao');
+        if (!descricaoPersonalizada) {
+            descricaoPersonalizada = document.createElement('textarea');
+            descricaoPersonalizada.id = 'produto-descricao';
+            descricaoPersonalizada.placeholder = 'Observação: ';
 
-        let tiposContainer = document.querySelector('.tipos-salgados-container');
-        if (!tiposContainer) {
-            tiposContainer = document.createElement('div');
-            tiposContainer.classList.add('tipos-salgados-container');
-            document.querySelector(".produto-informacoes-area1").appendChild(tiposContainer);
+            const descricaoPersonalizadaContainer = document.createElement('div');
+            descricaoPersonalizadaContainer.classList.add('descricao-personalizada');
+            descricaoPersonalizadaContainer.appendChild(descricaoPersonalizada);
+
+            const modalInfoArea = document.querySelector(".produto-informacoes-area1");
+            modalInfoArea.appendChild(descricaoPersonalizadaContainer);
+        } else {
+            descricaoPersonalizada.value = ''; // Limpa o conteúdo da descrição ao abrir a modal
         }
-        tiposContainer.innerHTML = '';
 
-        // Adiciona os tipos de salgados
-        item.tipos.forEach((salgado, salgadoIndex) => {
-            const salgadoRow = document.createElement('div');
-            salgadoRow.classList.add('salgado-row');
+        // Lógica condicional para diferentes tipos de modal
+        if (salgados[keyEscolhido].id === 1) { // "Cento de Salgados Mini"
+            modalPrice.innerHTML = '45.00';
 
-            const salgadoName = document.createElement('span');
-            salgadoName.innerText = `${salgado.name}`;
-            salgadoRow.appendChild(salgadoName);
+            // Ocultar container de tipos, se existir
+            const tiposContainer = document.querySelector('.tipos-salgados-container');
+            if (tiposContainer) tiposContainer.style.display = 'none';
+        } else {
+            modalPrice.innerHTML = 'R$' + salgados[keyEscolhido].tipos[0].price.toFixed(2); // Exibe o preço do primeiro tipo
 
-            const buttonLess = document.createElement('button');
-            buttonLess.innerText = '-';
-            buttonLess.classList.add('botao-menor');
+            // Inicializa o total de salgados como 0
+            let totalSalgados = 0;
+            const quantidadeInputs = {};
 
-            const salgadoQuantidade = document.createElement('span');
-            salgadoQuantidade.innerText = '0';
-            salgadoQuantidade.classList.add('salgado-quantidade');
-
-            const buttonPlus = document.createElement('button');
-            buttonPlus.innerText = '+';
-            buttonPlus.classList.add('botao-maior');
-
-            buttonLess.addEventListener('click', () => {
-                let quantidade = parseInt(salgadoQuantidade.innerText) || 0;
-                quantidade = Math.max(0, quantidade - 1);
-                salgadoQuantidade.innerText = quantidade;
-                atualizarTotal(salgado, quantidade, salgadoIndex);
-            });
-
-            buttonPlus.addEventListener('click', () => {
-                let quantidade = parseInt(salgadoQuantidade.innerText) || 0;
-                quantidade += 1;
-                salgadoQuantidade.innerText = quantidade;
-                atualizarTotal(salgado, quantidade, salgadoIndex);
-            });
-
-            salgadoRow.appendChild(buttonLess);
-            salgadoRow.appendChild(salgadoQuantidade);
-            salgadoRow.appendChild(buttonPlus);
-            tiposContainer.appendChild(salgadoRow);
-        });
-
-        const atualizarTotal = (salgado, quantidade, salgadoIndex) => {
-            // Atualiza o totalSalgados ao mudar a quantidade
-            if (quantidadeInputs[salgadoIndex] !== undefined) {
-                totalSalgados -= quantidadeInputs[salgadoIndex] * salgado.price; // Remove o preço anterior
+            let tiposContainer = document.querySelector('.tipos-salgados-container');
+            if (!tiposContainer) {
+                tiposContainer = document.createElement('div');
+                tiposContainer.classList.add('tipos-salgados-container');
+                document.querySelector(".produto-informacoes-area1").appendChild(tiposContainer);
             }
+            tiposContainer.innerHTML = '';
 
-            // Adiciona o novo preço baseado na quantidade
-            totalSalgados += quantidade * salgado.price; // Adiciona o novo preço
-            quantidadeInputs[salgadoIndex] = quantidade; // Armazena a quantidade atual
+            // Adiciona os tipos de salgados
+            item.tipos.forEach((salgado, salgadoIndex) => {
+                const salgadoRow = document.createElement('div');
+                salgadoRow.classList.add('salgado-row');
 
-            // Atualiza o preço total na modal
-            modalPrice.innerText = `R$${totalSalgados.toFixed(2)}`; // Exibe o preço formatado
-        };
+                const salgadoName = document.createElement('span');
+                salgadoName.innerText = `${salgado.name}`;
+                salgadoRow.appendChild(salgadoName);
 
-        // Chama a função inicialmente para definir o preço como 0
-        modalPrice.innerText = `R$${totalSalgados.toFixed(2)}`; // Exibe o preço inicial como 0
+                const buttonLess = document.createElement('button');
+                buttonLess.innerText = '-';
+                buttonLess.classList.add('botao-menor');
+
+                const salgadoQuantidade = document.createElement('span');
+                salgadoQuantidade.innerText = '0';
+                salgadoQuantidade.classList.add('salgado-quantidade');
+
+                const buttonPlus = document.createElement('button');
+                buttonPlus.innerText = '+';
+                buttonPlus.classList.add('botao-maior');
+
+                buttonLess.addEventListener('click', () => {
+                    let quantidade = parseInt(salgadoQuantidade.innerText) || 0;
+                    quantidade = Math.max(0, quantidade - 1);
+                    salgadoQuantidade.innerText = quantidade;
+                    atualizarTotal(salgado, quantidade, salgadoIndex);
+                });
+
+                buttonPlus.addEventListener('click', () => {
+                    let quantidade = parseInt(salgadoQuantidade.innerText) || 0;
+                    quantidade += 1;
+                    salgadoQuantidade.innerText = quantidade;
+                    atualizarTotal(salgado, quantidade, salgadoIndex);
+                });
+
+                salgadoRow.appendChild(buttonLess);
+                salgadoRow.appendChild(salgadoQuantidade);
+                salgadoRow.appendChild(buttonPlus);
+                tiposContainer.appendChild(salgadoRow);
+            });
+
+            const atualizarTotal = (salgado, quantidade, salgadoIndex) => {
+                // Atualiza o totalSalgados ao mudar a quantidade
+                if (quantidadeInputs[salgadoIndex] !== undefined) {
+                    totalSalgados -= quantidadeInputs[salgadoIndex] * salgado.price; // Remove o preço anterior
+                }
+
+                // Adiciona o novo preço baseado na quantidade
+                totalSalgados += quantidade * salgado.price; // Adiciona o novo preço
+                quantidadeInputs[salgadoIndex] = quantidade; // Armazena a quantidade atual
+
+                // Atualiza o preço total na modal
+                modalPrice.innerText = `R$${totalSalgados.toFixed(2)}`; // Exibe o preço formatado
+            };
+
+            // Chama a função inicialmente para definir o preço como 0
+            modalPrice.innerText = `R$${totalSalgados.toFixed(2)}`; // Exibe o preço inicial como 0
+        }
 
         buttonCancel.addEventListener('click', () => {
             produtoModal.classList.remove("show");
-            descricaoPersonalizada.value = '';
         });
     });
 });

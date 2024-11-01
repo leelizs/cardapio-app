@@ -121,13 +121,7 @@ let salgados = [
         description: 'Coxinha, Risole, Bolinho de Queijo, Bolinho de Salsicha, Bolinho de Carne',
         type: 'Salgados',
         quantidade: 0,
-        tipos: [
-            { name: 'Coxinha', price: 0.50 },
-            { name: 'Risole', price: 0.50 },
-            { name: 'Queijo', price: 0.50 },
-            { name: 'Salsicha', price: 0.50 },
-            { name: 'Carne', price: 0.50 }
-        ]
+        tipos: [],
+        price: 45.00 // Valor fixo para "Cento de Salgados Mini"
     }
 ];
-

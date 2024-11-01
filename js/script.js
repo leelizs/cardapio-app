@@ -157,16 +157,28 @@ function addCarrinho(keyEscolhido, itemEscolhido) {
     case 5:
       compra.produto = batatas[keyEscolhido];
       break;
-    case 6:
+    case 6: // Caso seja "salgados"
       compra.produto = salgados[keyEscolhido];
-      compra.totalSalgados = calcularTotalSalgados(keyEscolhido); // Verifica a função para calcular o total
 
-      // Captura as quantidades de cada tipo de salgado
-      compra.salgados = salgados[keyEscolhido].tipos.map((salgado, index) => {
-        const quantidadeElement = document.querySelector(`.salgado-row:nth-child(${index + 1}) .salgado-quantidade`);
-        const quantidade = quantidadeElement ? parseInt(quantidadeElement.innerText) || 0 : 0;
-        return { nome: salgado.name, quantidade };
-      }).filter(s => s.quantidade > 0); // Filtra para incluir apenas os que têm quantidade > 0
+      // Para "Cento de Salgados Mini", não precisa selecionar tipos
+      if (salgados[keyEscolhido].id === 1) {
+        compra.salgados = [{ nome: "Cento de Salgados Mini", quantidade: 1 }]; // Adiciona um item ao carrinho
+      } else {
+        compra.totalSalgados = calcularTotalSalgados(keyEscolhido);
+
+        // Captura os salgados selecionados com quantidade maior que 0
+        compra.salgados = salgados[keyEscolhido].tipos.map((salgado, index) => {
+          const quantidadeElement = document.querySelector(`.salgado-row:nth-child(${index + 1}) .salgado-quantidade`);
+          const quantidade = quantidadeElement ? parseInt(quantidadeElement.innerText) || 0 : 0;
+          return { nome: salgado.name, quantidade };
+        }).filter(s => s.quantidade > 0);
+
+        // Verifica se ao menos um salgado foi selecionado
+        if (compra.salgados.length === 0) {
+          alert("Por favor, selecione pelo menos um salgado antes de adicionar ao carrinho.");
+          return; // Sai da função sem adicionar ao carrinho
+        }
+      }
       break;
     default:
       console.error('Produto não reconhecido');
@@ -413,31 +425,31 @@ function mostrarPedidos() {
     if (item.produto.type && item.produto.type.toLowerCase() === 'salgados') {
       const carrinhoSalgados = document.createElement("p");
 
-      // Verifica se há tipos de salgados e monta a string de exibição
-      if (item.salgados && item.salgados.length > 0) {
-        const salgadosList = item.salgados.map(salgado => {
-          // Certifique-se de que 'salgado' contém um campo de 'nome' e 'quantidade'
-          const salgadoInfo = salgados.find(s => s.name === salgado.nome); // Mudou s.name para salgado.nome
-
-          if (salgadoInfo) {
-            // Verifica se os tipos estão definidos e retorna a quantidade
-            const tipo = salgadoInfo.tipos.find(t => t.name.toLowerCase() === salgado.nome.toLowerCase()); // Mudou s.name para salgado.nome
-            const price = tipo ? tipo.price * salgado.quantidade : 0;
-            return `${salgado.nome} (${salgado.quantidade}) - R$ ${price.toFixed(2)}`; // Mostra a quantidade e o preço
-          }
-
-          return `${salgado.nome} (${salgado.quantidade})`; //
-        }).join(', ');
-
-        // Verifica se a lista de salgados não está vazia
-        if (salgadosList) {
-          carrinhoSalgados.innerText = "Item: " + salgadosList;
-          carrinhodiv1.appendChild(carrinhoSalgados); // Adicionando os salgados
-        }
+      // Verifica se o produto é "Cento de Salgados Mini"
+      if (item.produto.name === 'Cento de Salgados Mini') {
       } else {
-        // Se não houver salgados, você pode querer adicionar uma mensagem padrão
-        carrinhoSalgados.innerText = "Salgados: Nenhum salgado selecionado";
-        carrinhodiv1.appendChild(carrinhoSalgados);
+        // Para outros salgados, exibe a lista
+        if (item.salgados && item.salgados.length > 0) {
+          const salgadosList = item.salgados.map(salgado => {
+            const salgadoInfo = salgados.find(s => s.name === salgado.nome);
+
+            if (salgadoInfo) {
+              const tipo = salgadoInfo.tipos.find(t => t.name.toLowerCase() === salgado.nome.toLowerCase());
+              const price = tipo ? tipo.price * salgado.quantidade : 0;
+              return `${salgado.nome} (${salgado.quantidade}) - R$ ${price.toFixed(2)}`;
+            }
+
+            return `${salgado.nome} (${salgado.quantidade})`;
+          }).join(', ');
+
+          if (salgadosList) {
+            carrinhoSalgados.innerText = "Item: " + salgadosList;
+            carrinhodiv1.appendChild(carrinhoSalgados);
+          }
+        } else {
+          carrinhoSalgados.innerText = "Salgados: Nenhum salgado selecionado";
+          carrinhodiv1.appendChild(carrinhoSalgados);
+        }
       }
     }
 
@@ -451,16 +463,20 @@ function mostrarPedidos() {
     carrinhoItem.appendChild(carrinhodiv2);
 
     // Evento para remover item do carrinho
+    // Evento para remover item do carrinho
     carrinhoButton.addEventListener('click', () => {
       produtosCarrinho.splice(index, 1); // Remove o item do carrinho
-      saveCarrinhoToLocalStorage(); // Atualiza o localStorage
-      mostrarPedidos(); // Atualiza a exibição do carrinho
-      contagemCarrinho();
 
       // Verifica se o carrinho ficou vazio após a remoção
       if (produtosCarrinho.length === 0) {
+        localStorage.removeItem('produtosCarrinho'); // Remove a variável do localStorage
         modalCarrinho.classList.remove("show"); // Fecha o modal
+      } else {
+        saveCarrinhoToLocalStorage(); // Atualiza o localStorage
       }
+
+      mostrarPedidos(); // Atualiza a exibição do carrinho
+      contagemCarrinho();
     });
 
     // Adiciona o item ao container do carrinho

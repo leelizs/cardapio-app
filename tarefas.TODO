@@ -7,5 +7,5 @@ Modal Sorvetes:
     ✔ No carrinho, aparecer Sabor, Tamanho de copo e Acompanhamento, se tiver um. @done(24-10-25 13:04)
 
 Modal Salgados:
-    ☐ Poder escoher entre Coxinha, Risole, Bolinho de Queijo, Bolinho de Salsicha, Bolinho de Carne. e ao lado da escolha a quantidade de cada um
-    ☐ Atualizar em tempo real o Preço da modal, para que o usuário veja quanto está ficando dependendo da quantidade de salgados escolhidos
+    ✔ Poder escoher entre Coxinha, Risole, Bolinho de Queijo, Bolinho de Salsicha, Bolinho de Carne. e ao lado da escolha a quantidade de cada um @done(24-11-01 15:35)
+    ✔ Atualizar em tempo real o Preço da modal, para que o usuário veja quanto está ficando dependendo da quantidade de salgados escolhidos @done(24-11-01 15:35)
