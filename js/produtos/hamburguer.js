@@ -114,7 +114,7 @@ hamburgueres.map((item, index) => {
             // Configura adicionais apenas para hamburguer
             // Configura adicionais apenas para pastel
             // Configura adicionais apenas para pastel especial
-            configurarAdicionais();
+            configurarAdicionais(index);
         } else {
             // Limpa os tamanhos, sabores e acompanhamentos antes de mostrar a modal
             const tamanhoContainer = document.querySelector('.tamanhos-opcoes');
@@ -202,7 +202,7 @@ hamburgueres.map((item, index) => {
 
     });
 
-    function configurarAdicionais() {
+    function configurarAdicionais(index) {
         let adicionaisContainer = document.querySelector('#adicionais-container');
 
         // Limpa adicionais anteriores
@@ -227,8 +227,39 @@ hamburgueres.map((item, index) => {
         adicionaisList.classList.add('adicionais-list');
         adicionaisList.style.display = 'none';
 
-        const adicionais = ['Calabresa', 'Bacon em Tiras', 'Presunto Ralado', 'Frango Desfiado', 'Ovo', 'Hamburguer', 'Queijo'];
-        adicionais.forEach(adicional => {
+        // Variável para armazenar os adicionais permitidos
+        let adicionaisPermitidos = [];
+        const nomeHamburguer = hamburgueres[index].name;
+
+        // Verificação baseada no nome do hamburguer
+        switch (nomeHamburguer) {
+            case 'X-Burguer':
+                adicionaisPermitidos = ['Hamburguer', 'Queijo'];
+                break;
+            case 'X-Salada':
+                adicionaisPermitidos = ['Hamburguer', 'Queijo'];
+                break;
+            case 'X-Egg':
+                adicionaisPermitidos = ['Hamburguer', 'Queijo', 'Ovo'];
+                break;
+            case 'X-Calabresa':
+                adicionaisPermitidos = ['Hamburguer', 'Queijo', 'Calabresa', 'Ovo'];
+                break;
+            case 'X-Bacon':
+                adicionaisPermitidos = ['Hamburguer', 'Queijo', 'Bacon', 'Calabresa', 'Ovo'];
+                break;
+            case 'X-Tudo':
+                adicionaisPermitidos = ['Hamburguer', 'Queijo', 'Bacon', 'Calabresa', 'Omelete de Presunto e Queijo'];
+                break;
+            case 'X-Especial':
+                adicionaisPermitidos = ['Hamburguer', 'Queijo', 'Bacon', 'Calabresa', 'Omelete de Presunto e Queijo'];
+                break;
+            default:
+                adicionaisPermitidos = ['Hamburguer', 'Queijo']; // Adicionais padrão
+                break;
+        }
+
+        adicionaisPermitidos.forEach(adicional => {
             const adicionalWrapper = document.createElement('div'); // Usei um div como wrapper
             const adicionalCheckbox = document.createElement('input');
             adicionalCheckbox.type = 'checkbox';
