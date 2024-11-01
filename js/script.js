@@ -41,6 +41,22 @@ function showUpdateNotification() {
   });
 }
 
+function openMap() {
+  document.getElementById("mapModal").style.display = "block";
+}
+
+function closeMap() {
+  document.getElementById("mapModal").style.display = "none";
+}
+
+// Fecha o modal se o usuário clicar fora da área de conteúdo
+window.onclick = function (event) {
+  const modal = document.getElementById("mapModal");
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
 let produtosCarrinho = []; //Array que guarda os pedidos
 
 const produtoModal = document.querySelector('.produto-modal');

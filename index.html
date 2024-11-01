@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Familia de Ouro</title>
+    <title>Família de Ouro</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
@@ -326,7 +326,9 @@
         <div class="footer-container">
             <div class="footer-section">
                 <h3>Contato</h3>
-                <p>Endereço: Av. das Monções, 846 - Parque Recanto Monica - 08592-150</p>
+                <!-- Endereço com ação de clique para abrir o modal com o mapa -->
+                <p>Endereço: <a href="javascript:void(0);" onclick="openMap()">Av. das Monções, 846 - Parque Recanto
+                        Monica - 08592-150</a></p>
                 <p>Telefone: <a href="tel:+11913421009">(11) 91342-1009</a></p>
                 <p>Email: <a href="mailto:contato@lanchonete.com">contato@lanchonete.com</a></p>
                 <p>Horário: Terça - Quarta: 12h - 18h e Quinta - Domingo: 12h - 22h</p>
@@ -334,19 +336,33 @@
             <div class="footer-section">
                 <h3>Redes Sociais</h3>
                 <a href="https://api.whatsapp.com/send/?phone=5511913421009&text=Salvando%20seu%20Contato%20pelo%20Site"
-                    target="_blank">WhatsApp</a>
+                    target="_blank">
+                    <i class="fab fa-whatsapp fa-2x"></i> <!-- Ícone do WhatsApp -->
+                </a>
             </div>
             <div class="footer-section">
                 <h3>Links Rápidos</h3>
                 <ul>
-                    <li><a href="javascript:void(0)" onclick="refreshAndScrollToTop()">Volte ao Inicio</a></li>
+                    <li><a href="javascript:void(0)" onclick="refreshAndScrollToTop()">Volte ao Início</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2024 Lanchonete Familia de Ouro. Todos os direitos reservados.</p>
+            <p>&copy; 2024 - Lanchonete Família de Ouro. Todos os direitos reservados.</p>
         </div>
     </footer>
+
+    <!-- Modal para o mapa -->
+    <div id="mapModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeMap()">&times;</span>
+            <!-- Incorpora o Google Maps com o endereço desejado -->
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3658.8682585013674!2d-46.543890524980676!3d-23.51645636599426!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce65a80ff97b79%3A0x21c5d4d173cb8c72!2sAv.%20das%20Mon%C3%A7%C3%B5es%2C%20846%20-%20Parque%20Recanto%20Monica%2C%20Suzano%20-%20SP%2C%2008592-150!5e0!3m2!1sen!2sbr!4v1639779435459!5m2!1sen!2sbr"
+                width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy">
+            </iframe>
+        </div>
+    </div>
 
     <div class="produto-modal">
         <div class="produto show">

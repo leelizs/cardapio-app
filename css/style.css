@@ -39,25 +39,66 @@ body::-webkit-scrollbar-thumb {
     padding: 10px;
     text-align: center;
     z-index: 1000;
-  }
-  
-  .update-notification .message {
+}
+
+.update-notification .message {
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-  
-  .update-notification p {
+}
+
+.update-notification p {
     margin: 0;
-  }
-  
-  #refresh-button {
+}
+
+#refresh-button {
     background-color: #ff0000;
     border: none;
     color: white;
     padding: 5px 10px;
     cursor: pointer;
-  }  
+}
+
+/* Estilos para o modal */
+.modal {
+    display: none;
+    /* Inicialmente escondido */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Fundo semitransparente */
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    position: relative;
+}
+
+.close {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+}
+
 
 /* HEADER PC ---------------------------------------------------------------------*/
 #header {
@@ -641,11 +682,13 @@ ul li a i {
     display: flex;
     -webkit-animation: scale-in 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940);
     animation: scale-in 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940);
-    flex-wrap: wrap; /* Permite que os elementos se ajustem */
+    flex-wrap: wrap;
+    /* Permite que os elementos se ajustem */
 }
 
 .produto-img {
-    height: auto; /* Alterado para auto para se ajustar ao conteúdo */
+    height: auto;
+    /* Alterado para auto para se ajustar ao conteúdo */
     width: 250px;
     background-color: #f4ebdc;
     border-radius: 40px;
@@ -659,7 +702,8 @@ ul li a i {
 }
 
 .produto-informacoes {
-    flex: 1; /* Flexível, ocupando o espaço disponível */
+    flex: 1;
+    /* Flexível, ocupando o espaço disponível */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -669,8 +713,10 @@ ul li a i {
     width: 100%;
     padding: 1rem 1.5rem;
     padding-top: 2.5rem;
-    overflow-y: auto; /* Permite rolagem se necessário */
-    max-height: 400px; /* Altura máxima para limitar a altura da área */
+    overflow-y: auto;
+    /* Permite rolagem se necessário */
+    max-height: 400px;
+    /* Altura máxima para limitar a altura da área */
 }
 
 .produto-informacoes-area1 h2 {
@@ -776,13 +822,21 @@ ul li a i {
 }
 
 /* Estilos para listas de sabores e acompanhamentos */
-.sabores-list, .acompanhamentos-list, .adicionais-list {
-    padding: 0.5rem 1rem; /* Adiciona padding para espaçamento */
-    background-color: #f4ebdc; /* Cor de fundo para destacar */
-    border-radius: 10px; /* Bordas arredondadas */
-    margin-top: 0.5rem; /* Espaço acima */
-    max-height: 150px; /* Altura máxima */
-    overflow-y: auto; /* Permite rolagem se necessário */
+.sabores-list,
+.acompanhamentos-list,
+.adicionais-list {
+    padding: 0.5rem 1rem;
+    /* Adiciona padding para espaçamento */
+    background-color: #f4ebdc;
+    /* Cor de fundo para destacar */
+    border-radius: 10px;
+    /* Bordas arredondadas */
+    margin-top: 0.5rem;
+    /* Espaço acima */
+    max-height: 150px;
+    /* Altura máxima */
+    overflow-y: auto;
+    /* Permite rolagem se necessário */
 }
 
 
@@ -832,69 +886,104 @@ ul li a i {
 
 .metodo-entrega {
     color: white;
-    margin-top: 20px; /* Espaçamento superior */
-    border-radius: 8px; /* Cantos arredondados */
-    padding: 10px; /* Espaçamento interno */
-    background-color: #5c2308; /* Cor de fundo suave */
+    margin-top: 20px;
+    /* Espaçamento superior */
+    border-radius: 8px;
+    /* Cantos arredondados */
+    padding: 10px;
+    /* Espaçamento interno */
+    background-color: #5c2308;
+    /* Cor de fundo suave */
 }
 
 .opcao-entrega {
-    margin-bottom: 10px; /* Espaçamento entre as opções */
-    display: flex; /* Flexbox para alinhar input e label */
-    align-items: center; /* Alinha verticalmente */
+    margin-bottom: 10px;
+    /* Espaçamento entre as opções */
+    display: flex;
+    /* Flexbox para alinhar input e label */
+    align-items: center;
+    /* Alinha verticalmente */
 }
 
 .label-entrega {
-    margin-left: 8px; /* Espaçamento à esquerda do label */
-    font-weight: bold; /* Estilo em negrito */
+    margin-left: 8px;
+    /* Espaçamento à esquerda do label */
+    font-weight: bold;
+    /* Estilo em negrito */
 }
 
 .input-endereco {
-    margin-top: 5px; /* Espaçamento acima do input de endereço */
-    padding: 8px; /* Espaçamento interno do input */
-    width: 100%; /* Ocupa toda a largura disponível */
-    border: 1px solid #ccc; /* Borda leve */
-    border-radius: 4px; /* Cantos arredondados */
+    margin-top: 5px;
+    /* Espaçamento acima do input de endereço */
+    padding: 8px;
+    /* Espaçamento interno do input */
+    width: 100%;
+    /* Ocupa toda a largura disponível */
+    border: 1px solid #ccc;
+    /* Borda leve */
+    border-radius: 4px;
+    /* Cantos arredondados */
 }
 
 .tipos-salgados-container {
     display: flex;
-    flex-direction: column; /* Para que cada linha de salgado fique em uma nova linha */
-    margin-top: 20px; /* Espaçamento no topo */
+    flex-direction: column;
+    /* Para que cada linha de salgado fique em uma nova linha */
+    margin-top: 20px;
+    /* Espaçamento no topo */
 }
 
 .salgado-row {
     display: flex;
-    align-items: center; /* Alinha os itens verticalmente no centro */
-    border: 2px solid #f4ebdc; /* Cor da borda */
-    border-radius: 60px; /* Bordas arredondadas */
-    margin-bottom: 10px; /* Espaço entre as linhas de salgados */
-    overflow: hidden; /* Para manter o conteúdo dentro dos limites do container */
-    padding: 10px; /* Adicionando padding para melhor espaçamento interno */
-    gap: 10px; /* Espaço entre os elementos dentro da linha */
+    align-items: center;
+    /* Alinha os itens verticalmente no centro */
+    border: 2px solid #f4ebdc;
+    /* Cor da borda */
+    border-radius: 60px;
+    /* Bordas arredondadas */
+    margin-bottom: 10px;
+    /* Espaço entre as linhas de salgados */
+    overflow: hidden;
+    /* Para manter o conteúdo dentro dos limites do container */
+    padding: 10px;
+    /* Adicionando padding para melhor espaçamento interno */
+    gap: 10px;
+    /* Espaço entre os elementos dentro da linha */
 }
 
 .salgado-quantidade {
     display: flex;
     align-items: center;
-    justify-content: center; /* Centraliza o texto da quantidade */
-    color: #f4ebdc; /* Cor do texto da quantidade */
+    justify-content: center;
+    /* Centraliza o texto da quantidade */
+    color: #f4ebdc;
+    /* Cor do texto da quantidade */
     font-weight: 500;
-    font-size: 2rem; /* Tamanho da fonte */
-    margin: 0 1rem; /* Espaçamento horizontal */
+    font-size: 2rem;
+    /* Tamanho da fonte */
+    margin: 0 1rem;
+    /* Espaçamento horizontal */
 }
 
 /* Estilo do Nome e Preço do Salgado */
 .salgado-row span {
-    font-size: 1.5rem; /* Ajuste o tamanho da fonte para melhor responsividade */
+    font-size: 1.5rem;
+    /* Ajuste o tamanho da fonte para melhor responsividade */
     color: #ffffff;
-    flex-grow: 1; /* Permitir que o texto cresça e ocupe o espaço disponível */
-    text-align: left; /* Alinhar o texto à esquerda */
-    min-width: 150px; /* Largura mínima para manter o alinhamento */
-    max-width: 200px; /* Largura máxima para evitar que nomes muito longos estiquem demais */
-    overflow: hidden; /* Esconde o texto que não cabe */
-    text-overflow: ellipsis; /* Adiciona reticências ao texto que não cabe */
-    white-space: nowrap; /* Impede a quebra de linha do texto */
+    flex-grow: 1;
+    /* Permitir que o texto cresça e ocupe o espaço disponível */
+    text-align: left;
+    /* Alinhar o texto à esquerda */
+    min-width: 150px;
+    /* Largura mínima para manter o alinhamento */
+    max-width: 200px;
+    /* Largura máxima para evitar que nomes muito longos estiquem demais */
+    overflow: hidden;
+    /* Esconde o texto que não cabe */
+    text-overflow: ellipsis;
+    /* Adiciona reticências ao texto que não cabe */
+    white-space: nowrap;
+    /* Impede a quebra de linha do texto */
 }
 
 .salgado-row button {
@@ -903,24 +992,31 @@ ul li a i {
     border: none;
     cursor: pointer;
     transition: all ease 0.3s;
-    background-color: #ee7700; /* Cor de fundo do botão */
-    color: #f4ebdc; /* Cor do texto do botão */
-    font-size: 2.2rem; /* Tamanho da fonte dos botões */
-    font-weight: 500; /* Peso da fonte */
+    background-color: #ee7700;
+    /* Cor de fundo do botão */
+    color: #f4ebdc;
+    /* Cor do texto do botão */
+    font-size: 2.2rem;
+    /* Tamanho da fonte dos botões */
+    font-weight: 500;
+    /* Peso da fonte */
 }
 
 .salgado-row button:hover {
-    background-color: #5c2308; /* Cor de fundo ao passar o mouse */
+    background-color: #5c2308;
+    /* Cor de fundo ao passar o mouse */
 }
 
 /* Estilo dos Botões de Quantidade */
 .botao-menor,
 .botao-maior {
-    background-color: #007BFF; /* Azul */
+    background-color: #007BFF;
+    /* Azul */
     color: white;
     border: none;
     border-radius: 5px;
-    padding: 5px 10px; /* Pode manter o padding aqui */
+    padding: 5px 10px;
+    /* Pode manter o padding aqui */
     font-size: 18px;
     cursor: pointer;
     transition: background-color 0.3s;
@@ -928,44 +1024,65 @@ ul li a i {
 
 .botao-menor:hover,
 .botao-maior:hover {
-    background-color: #0056b3; /* Azul mais escuro ao passar o mouse */
+    background-color: #0056b3;
+    /* Azul mais escuro ao passar o mouse */
 }
 
 /* Responsividade */
 @media (max-width: 600px) {
     .produto-modal {
-        width: 95%; /* Reduzir um pouco mais em telas pequenas */
+        width: 95%;
+        /* Reduzir um pouco mais em telas pequenas */
     }
 
     .salgado-row {
-        flex-direction: row; /* Manter na mesma linha para dispositivos móveis */
-        align-items: center; /* Alinhar à esquerda */
-        padding: 5px; /* Reduzir o padding para tornar o quadrado menor */
-        gap: 5px; /* Diminuir o espaço entre os elementos */
+        flex-direction: row;
+        /* Manter na mesma linha para dispositivos móveis */
+        align-items: center;
+        /* Alinhar à esquerda */
+        padding: 5px;
+        /* Reduzir o padding para tornar o quadrado menor */
+        gap: 5px;
+        /* Diminuir o espaço entre os elementos */
     }
 
     .salgado-quantidade {
-        flex-direction: row; /* Exibir os botões lado a lado */
-        justify-content: center; /* Centraliza horizontalmente */
-        margin: 0; /* Remover margem vertical para um visual mais compacto */
-        gap: 5px; /* Espaço entre os botões */
+        flex-direction: row;
+        /* Exibir os botões lado a lado */
+        justify-content: center;
+        /* Centraliza horizontalmente */
+        margin: 0;
+        /* Remover margem vertical para um visual mais compacto */
+        gap: 5px;
+        /* Espaço entre os botões */
     }
 
     .salgado-quantidade button {
-        width: 30px; /* Diminuindo o tamanho dos botões */
-        height: 30px; /* Diminuindo o tamanho dos botões */
-        font-size: 1.2rem; /* Ajustando o tamanho da fonte dos botões */
-        margin: 0; /* Remover margens para aproximar */
+        width: 30px;
+        /* Diminuindo o tamanho dos botões */
+        height: 30px;
+        /* Diminuindo o tamanho dos botões */
+        font-size: 1.2rem;
+        /* Ajustando o tamanho da fonte dos botões */
+        margin: 0;
+        /* Remover margens para aproximar */
     }
 
     .salgado-row span {
-        margin-bottom: 0; /* Remover espaço entre o nome e a quantidade */
-        font-size: 1.2rem; /* Ajustando o tamanho da fonte para caber melhor */
-        min-width: 100px; /* Largura mínima para manter o alinhamento */
-        max-width: 150px; /* Largura máxima para evitar que nomes muito longos estiquem demais */
-        overflow: hidden; /* Esconde o texto que não cabe */
-        text-overflow: ellipsis; /* Adiciona reticências ao texto que não cabe */
-        white-space: nowrap; /* Impede a quebra de linha do texto */
+        margin-bottom: 0;
+        /* Remover espaço entre o nome e a quantidade */
+        font-size: 1.2rem;
+        /* Ajustando o tamanho da fonte para caber melhor */
+        min-width: 100px;
+        /* Largura mínima para manter o alinhamento */
+        max-width: 150px;
+        /* Largura máxima para evitar que nomes muito longos estiquem demais */
+        overflow: hidden;
+        /* Esconde o texto que não cabe */
+        text-overflow: ellipsis;
+        /* Adiciona reticências ao texto que não cabe */
+        white-space: nowrap;
+        /* Impede a quebra de linha do texto */
     }
 }
 
@@ -999,29 +1116,37 @@ ul li a i {
 /* Container geral para os elementos do produto */
 .produto-container {
     display: flex;
-    flex-direction: column; /* Coloca os elementos em coluna */
-    gap: 20px; /* Espaçamento entre as seções */
-    margin: 20px; /* Margem geral */
+    flex-direction: column;
+    /* Coloca os elementos em coluna */
+    gap: 20px;
+    /* Espaçamento entre as seções */
+    margin: 20px;
+    /* Margem geral */
 }
 
 /* Container dos tamanhos */
 .tamanhos-opcoes {
     display: flex;
-    flex-direction: column; /* Opções na vertical */
-    gap: 15px; /* Espaçamento entre itens */
+    flex-direction: column;
+    /* Opções na vertical */
+    gap: 15px;
+    /* Espaçamento entre itens */
     padding: 20px;
     background-color: #f4ebdc;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    max-height: 300px; /* Define uma altura máxima para o container */
-    overflow-y: auto; /* Adiciona rolagem vertical se necessário */
+    max-height: 300px;
+    /* Define uma altura máxima para o container */
+    overflow-y: auto;
+    /* Adiciona rolagem vertical se necessário */
 }
 
 /* Estilização para cada tamanho */
 .tamanho-item {
     display: flex;
     align-items: center;
-    justify-content: flex-start; /* Ajusta a justificativa */
+    justify-content: flex-start;
+    /* Ajusta a justificativa */
     padding: 15px;
     border-radius: 10px;
     border: 1px solid transparent;
@@ -1032,121 +1157,168 @@ ul li a i {
 }
 
 .tamanho-item:hover {
-    background-color: #eaf6ff; /* Cor ao passar o mouse */
+    background-color: #eaf6ff;
+    /* Cor ao passar o mouse */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-    transform: translateY(-3px); /* Leve elevação ao passar o mouse */
+    transform: translateY(-3px);
+    /* Leve elevação ao passar o mouse */
 }
 
 .tamanho-item input[type="radio"] {
-    display: none; /* Esconde o rádio padrão */
+    display: none;
+    /* Esconde o rádio padrão */
 }
 
 .tamanho-item label {
     display: flex;
     align-items: center;
-    cursor: pointer; /* Cursor de ponteiro para indicar interatividade */
-    font-size: 17px; /* Tamanho da fonte do label */
-    font-weight: 500; /* Peso da fonte */
-    color: #2c3e50; /* Cor do texto */
-    margin-right: auto; /* Força o label a ocupar o máximo possível do espaço */
+    cursor: pointer;
+    /* Cursor de ponteiro para indicar interatividade */
+    font-size: 17px;
+    /* Tamanho da fonte do label */
+    font-weight: 500;
+    /* Peso da fonte */
+    color: #2c3e50;
+    /* Cor do texto */
+    margin-right: auto;
+    /* Força o label a ocupar o máximo possível do espaço */
 }
 
 /* Estilo do quadrado */
 .tamanho-item label::before {
-    content: ''; /* Gera o quadrado ao lado do texto */
-    width: 13px; /* Largura do quadrado */
-    height: 13px; /* Altura do quadrado */
-    border: 2px solid #3498db; /* Cor da borda */
-    border-radius: 2px; /* Bordas levemente arredondadas */
-    margin-right: 10px; /* Espaçamento entre o quadrado e o texto */
-    transition: background-color 0.3s, border-color 0.3s; /* Transição suave */
-    display: inline-block; /* Certifique-se de que é um bloco inline */
-    position: relative; /* Necessário para o posicionamento do check */
+    content: '';
+    /* Gera o quadrado ao lado do texto */
+    width: 13px;
+    /* Largura do quadrado */
+    height: 13px;
+    /* Altura do quadrado */
+    border: 2px solid #3498db;
+    /* Cor da borda */
+    border-radius: 2px;
+    /* Bordas levemente arredondadas */
+    margin-right: 10px;
+    /* Espaçamento entre o quadrado e o texto */
+    transition: background-color 0.3s, border-color 0.3s;
+    /* Transição suave */
+    display: inline-block;
+    /* Certifique-se de que é um bloco inline */
+    position: relative;
+    /* Necessário para o posicionamento do check */
 }
 
 /* Mudança de estilo quando o input de rádio está selecionado */
-.tamanho-item input[type="radio"]:checked + label::before {
-    background-color: #3498db; /* Cor do quadrado quando selecionado */
-    border-color: #2980b9; /* Cor da borda quando selecionado */
+.tamanho-item input[type="radio"]:checked+label::before {
+    background-color: #3498db;
+    /* Cor do quadrado quando selecionado */
+    border-color: #2980b9;
+    /* Cor da borda quando selecionado */
 }
 
 /* Estilo do "check" */
-.tamanho-item input[type="radio"]:checked + span::after {
-    content: '✔'; /* Símbolo de check */
-    color: white; /* Cor do check */
-    position: absolute; /* Para posicionar corretamente dentro do quadrado */
-    left: 3px; /* Ajuste conforme necessário */
-    top: 1px; /* Ajuste conforme necessário */
-    font-size: 12px; /* Tamanho do check */
-    line-height: 13px; /* Alinha verticalmente o check no centro do quadrado */
-    font-weight: bold; /* Negrito para maior visibilidade */
-    display: inline-block; /* Certifique-se de que o check é um bloco inline */
+.tamanho-item input[type="radio"]:checked+span::after {
+    content: '✔';
+    /* Símbolo de check */
+    color: white;
+    /* Cor do check */
+    position: absolute;
+    /* Para posicionar corretamente dentro do quadrado */
+    left: 3px;
+    /* Ajuste conforme necessário */
+    top: 1px;
+    /* Ajuste conforme necessário */
+    font-size: 12px;
+    /* Tamanho do check */
+    line-height: 13px;
+    /* Alinha verticalmente o check no centro do quadrado */
+    font-weight: bold;
+    /* Negrito para maior visibilidade */
+    display: inline-block;
+    /* Certifique-se de que o check é um bloco inline */
 }
 
 /* Tamanho e cor do preço */
 .tamanho-preco {
-    font-size: 16px; /* Tamanho da fonte do preço */
-    color: #16a085; /* Cor do preço */
-    font-weight: 600; /* Peso da fonte */
+    font-size: 16px;
+    /* Tamanho da fonte do preço */
+    color: #16a085;
+    /* Cor do preço */
+    font-weight: 600;
+    /* Peso da fonte */
 }
 
 /* Estilização da opção selecionada */
-.tamanho-item input[type="radio"]:checked + label {
-    font-weight: 700; /* Negrito quando selecionado */
-    color: #2980b9; /* Cor mais escura para destaque */
+.tamanho-item input[type="radio"]:checked+label {
+    font-weight: 700;
+    /* Negrito quando selecionado */
+    color: #2980b9;
+    /* Cor mais escura para destaque */
 }
 
 /* Estilização do preço ao selecionar */
-.tamanho-item input[type="radio"]:checked + label + .tamanho-preco {
-    color: #27ae60; /* Cor do preço ao selecionar */
+.tamanho-item input[type="radio"]:checked+label+.tamanho-preco {
+    color: #27ae60;
+    /* Cor do preço ao selecionar */
 }
 
 
 /* Responsividade para dispositivos móveis */
 @media (max-width: 768px) {
     .tamanhos-opcoes {
-        padding: 15px; /* Reduz o padding do container em telas menores */
+        padding: 15px;
+        /* Reduz o padding do container em telas menores */
     }
 
     .produto-preco {
-        padding: 15px; /* Ajusta o padding na área de preço em telas menores */
+        padding: 15px;
+        /* Ajusta o padding na área de preço em telas menores */
     }
 
     .tamanho-item {
-        padding: 12px; /* Reduz o padding em telas menores */
-        flex-direction: row; /* Mantém a flexão em linha para espaço melhor */
+        padding: 12px;
+        /* Reduz o padding em telas menores */
+        flex-direction: row;
+        /* Mantém a flexão em linha para espaço melhor */
     }
 
     .tamanho-item label {
-        font-size: 15px; /* Reduz o tamanho da fonte do label */
+        font-size: 15px;
+        /* Reduz o tamanho da fonte do label */
     }
 
     .tamanho-preco {
-        font-size: 14px; /* Reduz o tamanho da fonte do preço */
+        font-size: 14px;
+        /* Reduz o tamanho da fonte do preço */
     }
 }
 
 @media (max-width: 480px) {
     .tamanhos-opcoes {
-        padding: 10px; /* Reduz o padding do container em telas muito pequenas */
+        padding: 10px;
+        /* Reduz o padding do container em telas muito pequenas */
     }
 
     .produto-preco {
-        padding: 10px; /* Ajusta o padding na área de preço em telas muito pequenas */
+        padding: 10px;
+        /* Ajusta o padding na área de preço em telas muito pequenas */
     }
 
     .tamanho-item {
-        padding: 10px; /* Aumenta a responsividade em telas muito pequenas */
-        flex-direction: column; /* Alinha itens na vertical */
-        align-items: flex-start; /* Alinha à esquerda */
+        padding: 10px;
+        /* Aumenta a responsividade em telas muito pequenas */
+        flex-direction: column;
+        /* Alinha itens na vertical */
+        align-items: flex-start;
+        /* Alinha à esquerda */
     }
 
     .tamanho-item label {
-        font-size: 14px; /* Reduz ainda mais o tamanho da fonte do label */
+        font-size: 14px;
+        /* Reduz ainda mais o tamanho da fonte do label */
     }
 
     .tamanho-preco {
-        font-size: 13px; /* Reduz ainda mais o tamanho da fonte do preço */
+        font-size: 13px;
+        /* Reduz ainda mais o tamanho da fonte do preço */
     }
 }
 
@@ -1413,21 +1585,27 @@ footer {
     background-color: #371200;
 }
 
-.sabores-selecao, .acompanhamentos-selecao, .adicionais-selecao {
+.sabores-selecao,
+.acompanhamentos-selecao,
+.adicionais-selecao {
     margin: 1rem 0;
     padding: 1rem;
     background-color: #f4ebdc;
     border-radius: 10px;
 }
 
-.sabores-list, .acompanhamentos-list, .adicionais-list {
+.sabores-list,
+.acompanhamentos-list,
+.adicionais-list {
     margin-top: 0.5rem;
     padding: 0.5rem;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
-.ver-mais-sabores, .ver-mais-acompanhamentos, .ver-mais-adicionais {
+.ver-mais-sabores,
+.ver-mais-acompanhamentos,
+.ver-mais-adicionais {
     margin-top: 0.5rem;
     background-color: #5c2308;
     color: #f4ebdc;
@@ -1437,7 +1615,9 @@ footer {
     cursor: pointer;
 }
 
-.ver-mais-sabores:hover, .ver-mais-acompanhamentos:hover, .ver-mais-adicionais:hover {
+.ver-mais-sabores:hover,
+.ver-mais-acompanhamentos:hover,
+.ver-mais-adicionais:hover {
     background-color: #371200;
 }
 
@@ -1629,8 +1809,10 @@ footer {
 }
 
 #conteudo {
-    width: 100%; /* Para se ajustar ao tamanho do contêiner pai */
-    max-width: 1600px; /* Limita a largura máxima */
+    width: 100%;
+    /* Para se ajustar ao tamanho do contêiner pai */
+    max-width: 1600px;
+    /* Limita a largura máxima */
     text-align: center;
     margin: 0 auto;
     padding: 10px;
@@ -1641,26 +1823,38 @@ footer {
 }
 
 #conteudo.captura {
-    width: 1600px; /* Define uma largura fixa para garantir consistência durante a captura */
-    max-width: none; /* Remove a limitação de largura máxima */
-    padding: 0; /* Remove padding durante a captura */
-    margin: 0 auto; /* Centraliza o conteúdo */
-    border: none; /* Remove bordas durante a captura */
-    overflow: visible; /* Permite que todo o conteúdo seja visível durante a captura */
+    width: 1600px;
+    /* Define uma largura fixa para garantir consistência durante a captura */
+    max-width: none;
+    /* Remove a limitação de largura máxima */
+    padding: 0;
+    /* Remove padding durante a captura */
+    margin: 0 auto;
+    /* Centraliza o conteúdo */
+    border: none;
+    /* Remove bordas durante a captura */
+    overflow: visible;
+    /* Permite que todo o conteúdo seja visível durante a captura */
 }
 
 #conteudo.captura .total-itens {
-    position: relative; /* Garante que o elemento seja tratado como parte do fluxo normal do conteúdo */
+    position: relative;
+    /* Garante que o elemento seja tratado como parte do fluxo normal do conteúdo */
     bottom: 0;
-    background-color: #371200; /* Mantém a cor de fundo */
+    background-color: #371200;
+    /* Mantém a cor de fundo */
     padding: 10px;
-    border-top: 1px solid #ffffff; /* Linha para separar visualmente do conteúdo do carrinho */
+    border-top: 1px solid #ffffff;
+    /* Linha para separar visualmente do conteúdo do carrinho */
 }
 
 .carrinho-conteudo {
-    max-width: 100%; /* Garante que não ultrapasse a largura do carrinho */
-    overflow: auto; /* Permite rolagem se necessário */
-    padding: 0; /* Remove padding para o carrinho */
+    max-width: 100%;
+    /* Garante que não ultrapasse a largura do carrinho */
+    overflow: auto;
+    /* Permite rolagem se necessário */
+    padding: 0;
+    /* Remove padding para o carrinho */
 }
 
 
@@ -1764,7 +1958,8 @@ footer {
 }
 
 .footer-section a:hover {
-    color: #f0b330; /* Cor de destaque para hover */
+    color: #f0b330;
+    /* Cor de destaque para hover */
     text-decoration: underline;
 }
 
@@ -1820,4 +2015,8 @@ footer {
     .footer-bottom {
         font-size: 0.75rem;
     }
+}
+
+.footer-section .fab.fa-whatsapp {
+    font-size: 40px; /* Aumente o tamanho conforme necessário */
 }
