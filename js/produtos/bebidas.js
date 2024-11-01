@@ -5,39 +5,36 @@ let marginbebidas = 0; //Margin para movimentar o carrosel de sorvete
 document.querySelector('.bebidas-setaLeft-icone').addEventListener('click', () => {
 
     if (window.innerWidth > 460) {
-        marginbebidas = marginbebidas + 340;
+        marginbebidas += 340; // Ajuste a largura do item
         if (marginbebidas > 0) {
-            marginbebidas = 0;
+            marginbebidas = 0; // Limite da margem
         }
-
-        document.querySelector('.bebidas-list').style.marginLeft = marginbebidas + 'px';
-    }
-    else {
-        marginbebidas = marginbebidas + (window.innerWidth - 60);
+    } else {
+        marginbebidas += (window.innerWidth - 60);
         if (marginbebidas > 0) {
-            marginbebidas = 0;
+            marginbebidas = 0; // Limite da margem
         }
-        document.querySelector('.bebidas-list').style.marginLeft = marginbebidas + 'px';;
     }
+    document.querySelector('.bebidas-list').style.marginLeft = marginbebidas + 'px';
 });
 
 document.querySelector('.bebidas-setaRigth-icone').addEventListener('click', () => {
+    const itemCount = document.querySelectorAll('.bebidas-item').length; // Contar itens
+    const itemWidth = window.innerWidth > 460 ? 340 : (window.innerWidth - 60); // Largura do item
+    let maxMargin = -(itemCount * itemWidth - itemWidth); // Cálculo do limite
+
     if (window.innerWidth > 460) {
-        let x = marginbebidas - 340;
-        if ((window.innerWidth - 2280) > x) {
-            x = 0;
+        marginbebidas -= itemWidth;
+        if (marginbebidas < maxMargin) {
+            marginbebidas = maxMargin; // Limite da margem
         }
-        marginbebidas = x;
-        document.querySelector('.bebidas-list').style.marginLeft = marginbebidas + 'px';
-    }
-    else {
-        marginbebidas = marginbebidas - (window.innerWidth - 60);
-        let x = -(window.innerWidth * 4) - 10;
-        if (marginbebidas < x) {
-            marginbebidas = 0;
+    } else {
+        marginbebidas -= (window.innerWidth - 60);
+        if (marginbebidas < maxMargin) {
+            marginbebidas = maxMargin; // Limite da margem
         }
-        document.querySelector('.bebidas-list').style.marginLeft = marginbebidas + 'px';
     }
+    document.querySelector('.bebidas-list').style.marginLeft = marginbebidas + 'px';
 });
 
 // MAPEANDO LISTA DE BEBIDAS ///////////////////////////////////////////////////////////////////////////////////////////

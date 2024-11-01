@@ -5,39 +5,36 @@ let marginsalgados = 0; //Margin para movimentar o carrosel de salgados
 document.querySelector('.salgados-setaLeft-icone').addEventListener('click', () => {
 
     if (window.innerWidth > 460) {
-        marginsalgados = marginsalgados + 340;
+        marginsalgados += 340; // Ajuste a largura do item
         if (marginsalgados > 0) {
-            marginsalgados = 0;
+            marginsalgados = 0; // Limite da margem
         }
-
-        document.querySelector('.salgados-list').style.marginLeft = marginsalgados + 'px';
-    }
-    else {
-        marginsalgados = marginsalgados + (window.innerWidth - 60);
+    } else {
+        marginsalgados += (window.innerWidth - 60);
         if (marginsalgados > 0) {
-            marginsalgados = 0;
+            marginsalgados = 0; // Limite da margem
         }
-        document.querySelector('.salgados-list').style.marginLeft = marginsalgados + 'px';
     }
+    document.querySelector('.salgados-list').style.marginLeft = marginsalgados + 'px';
 });
 
 document.querySelector('.salgados-setaRigth-icone').addEventListener('click', () => {
+    const itemCount = document.querySelectorAll('.salgados-item').length; // Contar itens
+    const itemWidth = window.innerWidth > 460 ? 340 : (window.innerWidth - 60); // Largura do item
+    let maxMargin = -(itemCount * itemWidth - itemWidth); // Cálculo do limite
+
     if (window.innerWidth > 460) {
-        let x = marginsalgados - 340;
-        if ((window.innerWidth - 1000) > x) {
-            x = 0;
+        marginsalgados -= itemWidth;
+        if (marginsalgados < maxMargin) {
+            marginsalgados = maxMargin; // Limite da margem
         }
-        marginsalgados = x;
-        document.querySelector('.salgados-list').style.marginLeft = marginsalgados + 'px';
-    }
-    else {
-        marginsalgados = marginsalgados - (window.innerWidth - 60);
-        let x = -(window.innerWidth * 1) - 10;
-        if (marginsalgados < x) {
-            marginsalgados = 0;
+    } else {
+        marginsalgados -= (window.innerWidth - 60);
+        if (marginsalgados < maxMargin) {
+            marginsalgados = maxMargin; // Limite da margem
         }
-        document.querySelector('.salgados-list').style.marginLeft = marginsalgados + 'px';
     }
+    document.querySelector('.salgados-list').style.marginLeft = marginsalgados + 'px';
 });
 
 // MAPEANDO LISTA DE SALGADOS ///////////////////////////////////////////////////////////////////////////////////////////

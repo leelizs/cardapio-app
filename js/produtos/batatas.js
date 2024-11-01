@@ -5,39 +5,36 @@ let marginbatatas = 0; //Margin para movimentar o carrosel de batatas
 document.querySelector('.batatas-setaLeft-icone').addEventListener('click', () => {
 
     if (window.innerWidth > 460) {
-        marginbatatas = marginbatatas + 340;
+        marginbatatas += 340; // Ajuste a largura do item
         if (marginbatatas > 0) {
-            marginbatatas = 0;
+            marginbatatas = 0; // Limite da margem
         }
-
-        document.querySelector('.batatas-list').style.marginLeft = marginbatatas + 'px';
-    }
-    else {
-        marginbatatas = marginbatatas + (window.innerWidth - 60);
+    } else {
+        marginbatatas += (window.innerWidth - 60);
         if (marginbatatas > 0) {
-            marginbatatas = 0;
+            marginbatatas = 0; // Limite da margem
         }
-        document.querySelector('.batatas-list').style.marginLeft = marginbatatas + 'px';;
     }
+    document.querySelector('.batatas-list').style.marginLeft = marginbatatas + 'px';
 });
 
 document.querySelector('.batatas-setaRigth-icone').addEventListener('click', () => {
+    const itemCount = document.querySelectorAll('.batatas-item').length; // Contar itens
+    const itemWidth = window.innerWidth > 460 ? 340 : (window.innerWidth - 60); // Largura do item
+    let maxMargin = -(itemCount * itemWidth - itemWidth); // Cálculo do limite
+
     if (window.innerWidth > 460) {
-        let x = marginbatatas - 340;
-        if ((window.innerWidth - 2280) > x) {
-            x = 0;
+        marginbatatas -= itemWidth;
+        if (marginbatatas < maxMargin) {
+            marginbatatas = maxMargin; // Limite da margem
         }
-        marginbatatas = x;
-        document.querySelector('.batatas-list').style.marginLeft = marginbatatas + 'px';
-    }
-    else {
-        marginbatatas = marginbatatas - (window.innerWidth - 60);
-        let x = -(window.innerWidth * 2) - 10;
-        if (marginbatatas < x) {
-            marginbatatas = 0;
+    } else {
+        marginbatatas -= (window.innerWidth - 60);
+        if (marginbatatas < maxMargin) {
+            marginbatatas = maxMargin; // Limite da margem
         }
-        document.querySelector('.batatas-list').style.marginLeft = marginbatatas + 'px';
     }
+    document.querySelector('.batatas-list').style.marginLeft = marginbatatas + 'px';
 });
 
 // MAPEANDO LISTA DE BATATAS ///////////////////////////////////////////////////////////////////////////////////////////

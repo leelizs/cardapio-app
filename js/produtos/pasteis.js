@@ -5,39 +5,36 @@ let marginPastel = 0; //Margin para movimentar o carrosel de sorvete
 document.querySelector('.pastel-setaLeft-icone').addEventListener('click', () => {
 
     if (window.innerWidth > 460) {
-        marginPastel = marginPastel + 340;
+        marginPastel += 340; // Ajuste a largura do item
         if (marginPastel > 0) {
-            marginPastel = 0;
+            marginPastel = 0; // Limite da margem
         }
-
-        document.querySelector('.pastel-list').style.marginLeft = marginPastel + 'px';
-    }
-    else {
-        marginPastel = marginPastel + (window.innerWidth - 60);
+    } else {
+        marginPastel += (window.innerWidth - 60);
         if (marginPastel > 0) {
-            marginPastel = 0;
+            marginPastel = 0; // Limite da margem
         }
-        document.querySelector('.pastel-list').style.marginLeft = marginPastel + 'px';;
     }
+    document.querySelector('.pastel-list').style.marginLeft = marginPastel + 'px';
 });
 
 document.querySelector('.pastel-setaRigth-icone').addEventListener('click', () => {
+    const itemCount = document.querySelectorAll('.pastel-item').length; // Contar itens
+    const itemWidth = window.innerWidth > 460 ? 340 : (window.innerWidth - 60); // Largura do item
+    let maxMargin = -(itemCount * itemWidth - itemWidth); // Cálculo do limite
+
     if (window.innerWidth > 460) {
-        let x = marginPastel - 340;
-        if ((window.innerWidth - 4420) > x) {
-            x = 0;
+        marginPastel -= itemWidth;
+        if (marginPastel < maxMargin) {
+            marginPastel = maxMargin; // Limite da margem
         }
-        marginPastel = x;
-        document.querySelector('.pastel-list').style.marginLeft = marginPastel + 'px';
-    }
-    else {
-        marginPastel = marginPastel - (window.innerWidth - 60);
-        let x = -(window.innerWidth * 8) - 10;
-        if (marginPastel < x) {
-            marginPastel = 0;
+    } else {
+        marginPastel -= (window.innerWidth - 60);
+        if (marginPastel < maxMargin) {
+            marginPastel = maxMargin; // Limite da margem
         }
-        document.querySelector('.pastel-list').style.marginLeft = marginPastel + 'px';
     }
+    document.querySelector('.pastel-list').style.marginLeft = marginPastel + 'px';
 });
 
 // MAPEANDO LISTA DE PASTEIS ///////////////////////////////////////////////////////////////////////////////////////////

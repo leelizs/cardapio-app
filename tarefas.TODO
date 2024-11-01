@@ -11,4 +11,4 @@ Modal Salgados:
     ✔ Atualizar em tempo real o Preço da modal, para que o usuário veja quanto está ficando dependendo da quantidade de salgados escolhidos @done(24-11-01 15:35)
 
 Modal Hamburguer:
-    ☐ Separar carregamento de adicional para cada item. por exemplo: x-egg carrega adicional de ovo. já x-burguer não.
+    ✔ Separar carregamento de adicional para cada item. por exemplo: x-egg carrega adicional de ovo. já x-burguer não. @done(24-11-01 18:05)

@@ -5,39 +5,36 @@ let marginsorvete = 0; //Margin para movimentar o carrosel de sorvete
 document.querySelector('.sorvete-setaLeft-icone').addEventListener('click', () => {
 
     if (window.innerWidth > 460) {
-        marginsorvete = marginsorvete + 340;
+        marginsorvete += 340; // Ajuste a largura do item
         if (marginsorvete > 0) {
-            marginsorvete = 0;
+            marginsorvete = 0; // Limite da margem
         }
-
-        document.querySelector('.sorvete-list').style.marginLeft = marginsorvete + 'px';
-    }
-    else {
-        marginsorvete = marginsorvete + (window.innerWidth - 60);
+    } else {
+        marginsorvete += (window.innerWidth - 60);
         if (marginsorvete > 0) {
-            marginsorvete = 0;
+            marginsorvete = 0; // Limite da margem
         }
-        document.querySelector('.sorvete-list').style.marginLeft = marginsorvete + 'px';
     }
-})
+    document.querySelector('.sorvete-list').style.marginLeft = marginsorvete + 'px';
+});
 
 document.querySelector('.sorvete-setaRigth-icone').addEventListener('click', () => {
+    const itemCount = document.querySelectorAll('.sorvete-item').length; // Contar itens
+    const itemWidth = window.innerWidth > 460 ? 340 : (window.innerWidth - 60); // Largura do item
+    let maxMargin = -(itemCount * itemWidth - itemWidth); // Cálculo do limite
+
     if (window.innerWidth > 460) {
-        let x = marginsorvete - 340;
-        if ((window.innerWidth - 2280) > x) {
-            x = 0;
+        marginsorvete -= itemWidth;
+        if (marginsorvete < maxMargin) {
+            marginsorvete = maxMargin; // Limite da margem
         }
-        marginsorvete = x;
-        document.querySelector('.sorvete-list').style.marginLeft = marginsorvete + 'px';
-    }
-    else {
-        marginsorvete = marginsorvete - (window.innerWidth - 60);
-        let x = -(window.innerWidth * 3) - 10;
-        if (marginsorvete < x) {
-            marginsorvete = 0;
+    } else {
+        marginsorvete -= (window.innerWidth - 60);
+        if (marginsorvete < maxMargin) {
+            marginsorvete = maxMargin; // Limite da margem
         }
-        document.querySelector('.sorvete-list').style.marginLeft = marginsorvete + 'px';
     }
+    document.querySelector('.sorvete-list').style.marginLeft = marginsorvete + 'px';
 });
 
 const modalPrice = document.querySelector(".produto-preco h2");
@@ -335,7 +332,7 @@ sorvetes.map((item, index) => {
         if (!produtoNome.includes('Massa') && !produtoNome.includes('Açaí') && !produtoNome.includes('Cupuaçu')) {
             return; // Retorna se não for Massa, Açaí ou Cupuaçu
         }
-        
+
         let acompanhamentosContainer = document.querySelector('#acompanhamentos-container');
         if (acompanhamentosContainer) {
             acompanhamentosContainer.remove();

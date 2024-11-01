@@ -1,43 +1,39 @@
-let marginHamburguer = 0; //Margin para movimentar o carrosel de hamburguer
+let marginHamburguer = 0; // Margin para movimentar o carrossel de hamburguer
 
 // CARROSEL HAMBURGUERES ///////////////////////////////////////////////////////////////////////////////////////////
 
 document.querySelector('.hamburguer-setaLeft-icone').addEventListener('click', () => {
-
     if (window.innerWidth > 460) {
-        marginHamburguer = marginHamburguer + 340;
+        marginHamburguer += 340; // Ajuste a largura do item
         if (marginHamburguer > 0) {
-            marginHamburguer = 0;
+            marginHamburguer = 0; // Limite da margem
         }
-
-        document.querySelector('.hamburguer-list').style.marginLeft = marginHamburguer + 'px';
-    }
-    else {
-        marginHamburguer = marginHamburguer + (window.innerWidth - 60);
+    } else {
+        marginHamburguer += (window.innerWidth - 60);
         if (marginHamburguer > 0) {
-            marginHamburguer = 0;
+            marginHamburguer = 0; // Limite da margem
         }
-        document.querySelector('.hamburguer-list').style.marginLeft = marginHamburguer + 'px';;
     }
+    document.querySelector('.hamburguer-list').style.marginLeft = marginHamburguer + 'px';
 });
 
 document.querySelector('.hamburguer-setaRigth-icone').addEventListener('click', () => {
+    const itemCount = document.querySelectorAll('.hamburguer-item').length; // Contar itens
+    const itemWidth = window.innerWidth > 460 ? 340 : (window.innerWidth - 60); // Largura do item
+    let maxMargin = -(itemCount * itemWidth - itemWidth); // Cálculo do limite
+
     if (window.innerWidth > 460) {
-        let x = marginHamburguer - 340;
-        if ((window.innerWidth - 3100) > x) {
-            x = 0;
+        marginHamburguer -= itemWidth;
+        if (marginHamburguer < maxMargin) {
+            marginHamburguer = maxMargin; // Limite da margem
         }
-        marginHamburguer = x;
-        document.querySelector('.hamburguer-list').style.marginLeft = marginHamburguer + 'px';
-    }
-    else {
-        marginHamburguer = marginHamburguer - (window.innerWidth - 60);
-        let x = -(window.innerWidth * 5) - 10;
-        if (marginHamburguer < x) {
-            marginHamburguer = 0;
+    } else {
+        marginHamburguer -= (window.innerWidth - 60);
+        if (marginHamburguer < maxMargin) {
+            marginHamburguer = maxMargin; // Limite da margem
         }
-        document.querySelector('.hamburguer-list').style.marginLeft = marginHamburguer + 'px';
     }
+    document.querySelector('.hamburguer-list').style.marginLeft = marginHamburguer + 'px';
 });
 
 // MAPEANDO LISTA DE HAMBURGUER ///////////////////////////////////////////////////////////////////////////////////////////

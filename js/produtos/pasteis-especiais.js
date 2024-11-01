@@ -5,39 +5,36 @@ let marginpasteisEspeciais = 0; //Margin para movimentar o carrosel de pasteis e
 document.querySelector('.pasteisEspeciais-setaLeft-icone').addEventListener('click', () => {
 
     if (window.innerWidth > 460) {
-        marginpasteisEspeciais = marginpasteisEspeciais + 340;
+        marginpasteisEspeciais += 340; // Ajuste a largura do item
         if (marginpasteisEspeciais > 0) {
-            marginpasteisEspeciais = 0;
+            marginpasteisEspeciais = 0; // Limite da margem
         }
-
-        document.querySelector('.pasteisEspeciais-list').style.marginLeft = marginpasteisEspeciais + 'px';
-    }
-    else {
-        marginpasteisEspeciais = marginpasteisEspeciais + (window.innerWidth - 60);
+    } else {
+        marginpasteisEspeciais += (window.innerWidth - 60);
         if (marginpasteisEspeciais > 0) {
-            marginpasteisEspeciais = 0;
+            marginpasteisEspeciais = 0; // Limite da margem
         }
-        document.querySelector('.pasteisEspeciais-list').style.marginLeft = marginpasteisEspeciais + 'px';;
     }
+    document.querySelector('.pasteisEspeciais-list').style.marginLeft = marginpasteisEspeciais + 'px';
 });
 
 document.querySelector('.pasteisEspeciais-setaRigth-icone').addEventListener('click', () => {
+    const itemCount = document.querySelectorAll('.pasteisEspeciais-item').length; // Contar itens
+    const itemWidth = window.innerWidth > 460 ? 340 : (window.innerWidth - 60); // Largura do item
+    let maxMargin = -(itemCount * itemWidth - itemWidth); // Cálculo do limite
+
     if (window.innerWidth > 460) {
-        let x = marginpasteisEspeciais - 340;
-        if ((window.innerWidth - 2880) > x) {
-            x = 0;
+        marginpasteisEspeciais -= itemWidth;
+        if (marginpasteisEspeciais < maxMargin) {
+            marginpasteisEspeciais = maxMargin; // Limite da margem
         }
-        marginpasteisEspeciais = x;
-        document.querySelector('.pasteisEspeciais-list').style.marginLeft = marginpasteisEspeciais + 'px';
-    }
-    else {
-        marginpasteisEspeciais = marginpasteisEspeciais - (window.innerWidth - 60);
-        let x = -(window.innerWidth * 5) - 10;
-        if (marginpasteisEspeciais < x) {
-            marginpasteisEspeciais = 0;
+    } else {
+        marginpasteisEspeciais -= (window.innerWidth - 60);
+        if (marginpasteisEspeciais < maxMargin) {
+            marginpasteisEspeciais = maxMargin; // Limite da margem
         }
-        document.querySelector('.pasteisEspeciais-list').style.marginLeft = marginpasteisEspeciais + 'px';
     }
+    document.querySelector('.pasteisEspeciais-list').style.marginLeft = marginpasteisEspeciais + 'px';
 });
 
 // MAPEANDO LISTA DE PASTEIS ESPECIAIS ///////////////////////////////////////////////////////////////////////////////////////////
