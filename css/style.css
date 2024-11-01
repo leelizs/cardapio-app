@@ -419,10 +419,6 @@ ul li a i {
     transition: all ease 0.3s;
 }
 
-.pasteisEspeciais-list {
-    width: 1700px;
-}
-
 .batatas-list {
     width: 1020px;
 }
@@ -1728,4 +1724,100 @@ footer {
 #linkDownload:hover {
     color: blue;
     text-decoration: underline;
+}
+
+.footer {
+    background-color: #222;
+    color: #ddd;
+    padding: 40px 20px;
+    font-family: Arial, sans-serif;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.footer-section {
+    flex: 1 1 250px;
+    margin: 10px 0;
+}
+
+.footer-section h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #fff;
+    border-bottom: 2px solid #666;
+    padding-bottom: 5px;
+}
+
+.footer-section p,
+.footer-section a {
+    font-size: 0.9rem;
+    color: #ddd;
+    text-decoration: none;
+    line-height: 1.6;
+}
+
+.footer-section a:hover {
+    color: #f0b330; /* Cor de destaque para hover */
+    text-decoration: underline;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 8px;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.8rem;
+    color: #bbb;
+}
+
+/* Estilização para dispositivos menores */
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-section {
+        text-align: center;
+        margin: 5px 0;
+    }
+}
+
+@media (max-width: 375px) {
+    .footer {
+        padding: 20px 10px;
+    }
+
+    .footer-section {
+        margin: 5px 0;
+        text-align: center;
+    }
+
+    .footer-section h3 {
+        font-size: 1.1rem;
+        margin-bottom: 8px;
+    }
+
+    .footer-section p,
+    .footer-section a {
+        font-size: 0.85rem;
+    }
+
+    .footer-bottom {
+        font-size: 0.75rem;
+    }
 }
