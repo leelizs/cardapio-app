@@ -315,7 +315,7 @@ function mostrarPedidos() {
 
   // Verifica se há itens no carrinho antes de exibi-lo
   if (produtosCarrinho.length === 0) {
-    alert('Tente novamente.');
+    alert(`Ops! Tente novamente. Possíveis causas: 'Adicione algo ao carrinho para que seja possível exibir os itens' ou 'Este alerta é exibido quando algo não ocorre como esperado.'`);
     modalCarrinho.classList.remove("show"); // Fecha o modal se estiver aberto
     return; // Não faz nada se o carrinho estiver vazio
   } else {
@@ -350,7 +350,6 @@ function mostrarPedidos() {
 
     // Calcula total de salgados se o item for um salgado
     const totalSalgados = calcularTotalSalgados(keyEscolhido);
-    console.log("Total de salgados:", totalSalgados);
 
     let valorReal;
 
@@ -824,6 +823,7 @@ function loadCarrinhoFromLocalStorage() {
       contagemCarrinho(); // Atualiza a contagem
       mostrarPedidos(); // Exibe os pedidos carregados
       console.log('Carrinho carregado:', produtosCarrinho); // Adicionado para debug
+      alert("Algo inesperado ocorreu, mas salvamos o seu último pedido.");
     } catch (error) {
       console.error('Erro ao carregar o carrinho do localStorage:', error);
       produtosCarrinho = []; // Reinicializa o carrinho em caso de erro
@@ -845,6 +845,23 @@ document.addEventListener('DOMContentLoaded', function () {
   if (produtosCarrinho.length > 0) {
     mostrarPedidos(); // Exibe o carrinho apenas se houver itens
   }
+});
+
+// Adiciona um evento de clique a todos os elementos com a classe "scroll-icon"
+document.querySelectorAll(".scroll-icon").forEach(icon => {
+  icon.addEventListener("click", function(event) {
+    event.preventDefault(); // Impede o comportamento padrão
+    const id = this.getAttribute('data-target'); // Pega o ID da seção do atributo data-target
+    const targetElement = document.querySelector(id); // Seleciona a seção de destino
+
+    if (targetElement) {
+      const to = targetElement.offsetTop; // Pega a posição do elemento
+      window.scroll({
+        top: to - 160, // Desloca a posição
+        behavior: "smooth", // Faz a rolagem suave
+      });
+    }
+  });
 });
 
 const menuItens = document.querySelectorAll('#header-menu a[href^="#"]'); //pega todos a
