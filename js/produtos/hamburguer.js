@@ -82,7 +82,7 @@ hamburgueres.map((item, index) => {
         function limparModal() {
             const containers = [
                 '#sabores-container', '#acompanhamentos-container',
-                '#adicionais-container', '.tipos-salgados-container',
+                '.tipos-salgados-container',
                 '#produto-descricao', '.tamanhos-opcoes'
             ];
             containers.forEach(selector => {
@@ -151,7 +151,7 @@ hamburgueres.map((item, index) => {
             produtoModal.classList.remove("show");
         });
 
-
+        configurarAdicionais(index);
     });
 
     function configurarAdicionais(index) {

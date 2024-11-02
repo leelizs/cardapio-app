@@ -315,7 +315,7 @@ function mostrarPedidos() {
 
   // Verifica se há itens no carrinho antes de exibi-lo
   if (produtosCarrinho.length === 0) {
-    alert(`Ops! Tente novamente. Possíveis causas: 'Adicione algo ao carrinho para que seja possível exibir os itens' ou 'Este alerta é exibido quando algo não ocorre como esperado.'`);
+    alert(`Ops! Tente novamente. Possíveis causas: 'Adicione algo ao carrinho para que os itens possam ser exibidos', 'Este alerta é exibido quando algo não ocorre como esperado' ou 'Item removido do carrinho.'`);
     modalCarrinho.classList.remove("show"); // Fecha o modal se estiver aberto
     return; // Não faz nada se o carrinho estiver vazio
   } else {

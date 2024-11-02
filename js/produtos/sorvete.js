@@ -78,56 +78,19 @@ sorvetes.map((item, index) => {
 
         itemEscolhido = 1;
 
-        if (itemEscolhido === 1) { // Quando o item é um sorvete
-            // Configura sabores e acompanhamentos apenas para sorvetes
-            configurarTamanhos(index); // Chama a nova função para configurar tamanhos
-            configurarSabores(sorvetes[index].name);
-            configurarAcompanhamentos(sorvetes[index].name);
-        } else {
-            // Remove qualquer container de tamanhos existente
-            const tamanhoContainerExisting = document.querySelector('.tamanhos-opcoes');
-            if (tamanhoContainerExisting) tamanhoContainerExisting.remove(); // Remove o container de tamanhos, se existir
-
-            // Remove qualquer elemento relacionado a sabores/acompanhamentos
-            const saboresContainer = document.querySelector('#sabores-container');
-            if (saboresContainer) saboresContainer.remove();
-
-            const acompanhamentosContainer = document.querySelector('#acompanhamentos-container');
-            if (acompanhamentosContainer) acompanhamentosContainer.remove();
-
-            // Remove a descrição anterior
-            const descricaoPersonalizada = document.querySelector('#produto-descricao');
-            if (descricaoPersonalizada) {
-                descricaoPersonalizada.parentElement.remove(); // Remove o container da descrição
-            }
+        // Função para limpar a modal
+        function limparModal() {
+            const containers = [
+                '#adicionais-container', '.tipos-salgados-container',
+                '#produto-descricao'
+            ];
+            containers.forEach(selector => {
+                const container = document.querySelector(selector);
+                if (container) container.remove();
+            });
         }
 
-        if (itemEscolhido === 0 || itemEscolhido === 2 || itemEscolhido === 3) { // Quando o item é um hamburguer, pastel ou pastel especial
-            // Configura adicionais apenas para hamburguer
-            // Configura adicionais apenas para pastel
-            // Configura adicionais apenas para pastel especial
-            configurarAdicionais();
-        } else {
-            // Remove qualquer container de tamanhos existente
-            const tamanhoContainerExisting = document.querySelector('.tamanhos-opcoes');
-            if (tamanhoContainerExisting) tamanhoContainerExisting.remove(); // Remove o container de tamanhos, se existir
-
-            // Remove qualquer elemento relacionado a sabores/acompanhamentos
-            const saboresContainer = document.querySelector('#sabores-container');
-            if (saboresContainer) saboresContainer.remove();
-
-            const acompanhamentosContainer = document.querySelector('#acompanhamentos-container');
-            if (acompanhamentosContainer) acompanhamentosContainer.remove();
-
-            const adicionaisContainer = document.querySelector('#adicionais-container');
-            if (adicionaisContainer) adicionaisContainer.remove();
-
-            // Remove a descrição anterior
-            const descricaoPersonalizada = document.querySelector('#produto-descricao');
-            if (descricaoPersonalizada) {
-                descricaoPersonalizada.parentElement.remove(); // Remove o container da descrição
-            }
-        }
+        limparModal();
 
         keyEscolhido = index;
 

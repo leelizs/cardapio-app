@@ -2046,8 +2046,8 @@ footer {
 
 #header-contato svg {
     fill: #FFFFFF; /* Cor do ícone alterada para branco */
-    width: 50px; /* Tamanho fixo do SVG */
-    height: 50px; /* Tamanho fixo do SVG */
+    width: 40px; /* Tamanho fixo do SVG */
+    height: 40px; /* Tamanho fixo do SVG */
     transition: fill 0.3s ease;
 }
 

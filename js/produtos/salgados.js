@@ -234,7 +234,7 @@ salgados.forEach((item, index) => {
                 // Define o preço inicial como 0
                 modalPrice.innerText = `R$${totalSalgados.toFixed(2)}`;
             }
-            configurarSalgados(index)
+            configurarSalgados(index);
         }
 
         buttonCancel.addEventListener('click', () => {
