@@ -199,10 +199,10 @@ sorvetes.map((item, index) => {
     }
 
     function configurarSabores(produtoNome) {
-
         if (!produtoNome.includes('Massa') && !produtoNome.includes('Açaí') && !produtoNome.includes('Cupuaçu') && !produtoNome.includes('Milk Shake')) {
             return; // Retorna se não for Massa, Açaí ou Cupuaçu
         }
+
         let saboresContainer = document.querySelector('#sabores-container');
 
         // Limpa sabores anteriores
@@ -280,6 +280,14 @@ sorvetes.map((item, index) => {
     }
 
     function configurarAcompanhamentos(produtoNome) {
+
+        if(produtoNome.includes('Milk Shake')) {
+            let acompanhamentosContainer = document.querySelector('#acompanhamentos-container');
+            if(acompanhamentosContainer) {
+                acompanhamentosContainer.remove();
+            }
+        }
+
         if (!produtoNome.includes('Massa') && !produtoNome.includes('Açaí') && !produtoNome.includes('Cupuaçu')) {
             return; // Retorna se não for Massa, Açaí ou Cupuaçu
         }
@@ -360,11 +368,6 @@ sorvetes.map((item, index) => {
             acompanhamentosList.style.display = isVisible ? 'none' : 'block';
             acompanhamentosButton.innerText = isVisible ? 'Ver mais acompanhamentos' : 'Ver menos acompanhamentos';
         });
-    }
-
-    // Função para obter o preço do acompanhamento
-    function obterPrecoAcompanhamento() {
-        return 1.00; // Cada acompanhamento custa R$1,00
     }
 
     // Atualiza o preço total combinando tamanho e acompanhamentos
