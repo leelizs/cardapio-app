@@ -299,8 +299,7 @@ ul li a i {
     padding-left: 30px;
     padding-right: 30px;
     border-radius: 20px;
-
-
+    cursor: pointer;
 }
 
 /* LISTAGEM DOS LANCHES ---------------------------------------------------------------------*/
@@ -2019,4 +2018,52 @@ footer {
 
 .footer-section .fab.fa-whatsapp {
     font-size: 40px; /* Aumente o tamanho conforme necessário */
+}
+
+#btnVoltarAoInicio {
+    cursor: pointer;
+}
+
+#header-contato { 
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent; /* Remove o fundo */
+    border-radius: 50%; /* Torna o ícone circular */
+    width: 10vw; /* Tamanho responsivo */
+    height: 10vw; /* Tamanho responsivo */
+    max-width: 60px; /* Tamanho máximo */
+    max-height: 60px; /* Tamanho máximo */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+#header-contato:hover {
+    transform: scale(1.1); /* Aumenta o ícone ligeiramente ao passar o mouse */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+#header-contato svg {
+    fill: #FFFFFF; /* Cor do ícone alterada para branco */
+    width: 50px; /* Tamanho fixo do SVG */
+    height: 50px; /* Tamanho fixo do SVG */
+    transition: fill 0.3s ease;
+}
+
+#header-contato:hover svg {
+    fill: #E0E0E0; /* Altera a cor do ícone para um cinza claro ao passar o mouse */
+}
+
+/* Media Queries para ajustar em telas menores */
+@media (max-width: 768px) {
+    #header-contato {
+        width: 50px; /* Tamanho fixo em pixels para telas pequenas */
+        height: 50px; /* Tamanho fixo em pixels para telas pequenas */
+    }
+
+    #header-contato svg {
+        width: 40px; /* Tamanho fixo do SVG para telas pequenas */
+        height: 40px; /* Tamanho fixo do SVG para telas pequenas */
+    }
 }

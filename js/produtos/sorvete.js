@@ -167,17 +167,22 @@ sorvetes.map((item, index) => {
             descricaoPersonalizada.value = ''; // Limpa o conteúdo da descrição ao abrir a modal
         }
 
-        // Remover event listeners antigos antes de adicionar os novos
-        buttonLess.removeEventListener('click', handleButtonLess);
-        buttonPlus.removeEventListener('click', handleButtonPlus);
-        buttonCancel.removeEventListener('click', handleButtonCancel);
+        buttonLess.addEventListener('click', () => {
+            numeroQuantidade = numeroQuantidade - 1;
+            if (numeroQuantidade <= 0) {
+                numeroQuantidade = 1
+            }
+            quantidade.innerHTML = numeroQuantidade;
+        });
 
-        // Adicionar novos event listeners
-        buttonLess.addEventListener('click', handleButtonLess);
-        buttonPlus.addEventListener('click', handleButtonPlus);
+        buttonPlus.addEventListener('click', () => {
+            numeroQuantidade = numeroQuantidade + 1;
+            quantidade.innerHTML = numeroQuantidade;
+        });
+
+
         buttonCancel.addEventListener('click', () => {
-            produtoModal.classList.remove("show"); // Fecha a modal
-            modalTamanho.style.display = 'none'; // Esconde o modal de tamanho
+            produtoModal.classList.remove("show");
         });
 
         // Configurar os sabores e acompanhamentos ao abrir a modal
@@ -185,23 +190,6 @@ sorvetes.map((item, index) => {
         configurarSabores(sorvetes[index].name);
         configurarAcompanhamentos(sorvetes[index].name);
     });
-
-    // Funções de manipulação de eventos definidas fora do escopo para referência correta
-    function handleButtonLess() {
-        let numeroQuantidade = parseInt(document.querySelector('.produto-quantidade .quantidade').innerText);
-        numeroQuantidade = numeroQuantidade > 1 ? numeroQuantidade - 1 : 1;
-        document.querySelector('.produto-quantidade .quantidade').innerText = numeroQuantidade;
-    }
-
-    function handleButtonPlus() {
-        let numeroQuantidade = parseInt(document.querySelector('.produto-quantidade .quantidade').innerText);
-        numeroQuantidade++;
-        document.querySelector('.produto-quantidade .quantidade').innerText = numeroQuantidade;
-    }
-
-    function handleButtonCancel() {
-        produtoModal.classList.remove("show");
-    }
 
     let precoTamanhoSelecionado = 0; // Armazena o valor do copo selecionado
 

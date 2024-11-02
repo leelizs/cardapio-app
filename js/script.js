@@ -887,3 +887,15 @@ function scrollToIdOnClick(event) { //esse event e passado cada a cada vez que e
     behavior: "smooth",
   });
 }
+
+function scrollToFooter() {
+  const footer = document.querySelector('footer');
+  const footerPosition = footer.getBoundingClientRect().top + window.scrollY; // Posição do footer
+  const headerHeight = document.querySelector('header').offsetHeight; // Altura do cabeçalho
+
+  // Rolagem suave para a posição do footer, ajustada pela altura do cabeçalho
+  window.scrollTo({
+      top: footerPosition - headerHeight, // Ajusta a rolagem
+      behavior: 'smooth'
+  });
+}
