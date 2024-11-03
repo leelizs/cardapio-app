@@ -12,3 +12,7 @@ Modal Salgados:
 
 Modal Hamburguer:
     ✔ Separar carregamento de adicional para cada item. por exemplo: x-egg carrega adicional de ovo. já x-burguer não. @done(24-11-01 18:05)
+
+Metódo de Pagamento:
+    Criar Métodos de Pagamento:
+        ☐ Dinheiro, Cartão e PIX
