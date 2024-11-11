@@ -576,6 +576,7 @@ async function solicitarQRCode(valor) {
     }
 
     const data = await response.json();
+    console.log(data);  // Verifique o que é retornado da API
     if (data.qrcode && data.qrcode.copiaECola) {
       // Gerar o QR Code diretamente com o código Copia e Cola
       exibirQRCode(data.qrcode.copiaECola);
@@ -596,6 +597,8 @@ function exibirQRCode(copiaECola) {
       return;
     }
 
+    console.log(url); // Verifique a URL gerada para o QR Code
+
     const qrCodeModal = document.createElement("div");
     qrCodeModal.classList.add("modal-qrcode");
 
@@ -615,7 +618,6 @@ function exibirQRCode(copiaECola) {
   });
 
 }
-
 
 function adicionarOpcoesEntrega(container) {
   // Verifica se as opções já existem para evitar duplicação
