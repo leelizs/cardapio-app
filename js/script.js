@@ -507,6 +507,7 @@ function mostrarPedidos() {
   adicionarOpcoesPagamento(carrinhoProdutos, totalItens);
 }
 
+// Função para adicionar opções de pagamento
 function adicionarOpcoesPagamento(container, total) {
   if (document.querySelector('.metodo-pagamento')) return;
 
@@ -575,9 +576,9 @@ async function solicitarQRCode(valor) {
     }
 
     const data = await response.json();
-    if (data.qrcode) {
-      // Exibir o QR Code em uma modal no frontend
-      exibirQRCode(data.qrcode.imagemQrcode);
+    if (data.qrcode && data.qrcode.copiaECola) {
+      // Gerar o QR Code diretamente com o código Copia e Cola
+      exibirQRCode(data.qrcode.copiaECola);
     } else {
       console.error("Erro ao gerar QR Code:", data.error);
     }
@@ -586,26 +587,34 @@ async function solicitarQRCode(valor) {
   }
 }
 
-
 // Função para exibir o QR Code em uma modal
-function exibirQRCode(imagemQrcode) {
-  const qrCodeModal = document.createElement("div");
-  qrCodeModal.classList.add("modal-qrcode");
+function exibirQRCode(copiaECola) {
+  // Gerar o QR Code usando o texto Copia e Cola
+  QRCode.toDataURL(copiaECola, function (err, url) {
+    if (err) {
+      console.error("Erro ao gerar QR Code:", err);
+      return;
+    }
 
-  const qrCodeImg = document.createElement("img");
-  qrCodeImg.src = imagemQrcode;
-  qrCodeImg.alt = "QR Code para pagamento PIX";
+    const qrCodeModal = document.createElement("div");
+    qrCodeModal.classList.add("modal-qrcode");
 
-  const fecharModal = document.createElement("button");
-  fecharModal.innerText = "Fechar";
-  fecharModal.addEventListener("click", () => {
-    qrCodeModal.remove(); // Remove a modal da interface
+    const qrCodeImg = document.createElement("img");
+    qrCodeImg.src = url; // URL do QR Code gerado
+    qrCodeImg.alt = "QR Code para pagamento PIX";
+
+    const fecharModal = document.createElement("button");
+    fecharModal.innerText = "Fechar";
+    fecharModal.addEventListener("click", () => {
+      qrCodeModal.remove(); // Remove a modal da interface
+    });
+
+    qrCodeModal.appendChild(qrCodeImg);
+    qrCodeModal.appendChild(fecharModal);
+    document.body.appendChild(qrCodeModal); // Adiciona a modal ao corpo da página
   });
-
-  qrCodeModal.appendChild(qrCodeImg);
-  qrCodeModal.appendChild(fecharModal);
-  document.body.appendChild(qrCodeModal); // Adiciona a modal ao corpo da página
 }
+
 
 function adicionarOpcoesEntrega(container) {
   // Verifica se as opções já existem para evitar duplicação
