@@ -561,20 +561,31 @@ function adicionarOpcoesPagamento(container, total) {
 
 // Função para solicitar o QR Code do PIX
 async function solicitarQRCode(valor) {
-  const response = await fetch('https://pagamento-lemon.vercel.app/api/create-qrcode', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ valor })
-  });
+  try {
+    const response = await fetch('https://pagamento-lemon.vercel.app/api/create-qrcode', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ valor }),
+      mode: 'cors' // Define explicitamente o modo CORS
+    });
 
-  const data = await response.json();
-  if (data.qrcode) {
-    // Exibir o QR Code em uma modal no frontend
-    exibirQRCode(data.qrcode.imagemQrcode);
-  } else {
-    console.error("Erro ao gerar QR Code:", data.error);
+    // Verifica se a resposta teve status HTTP OK
+    if (!response.ok) {
+      throw new Error(`Erro de status HTTP: ${response.status}`);
+    }
+
+    const data = await response.json();
+    if (data.qrcode) {
+      // Exibir o QR Code em uma modal no frontend
+      exibirQRCode(data.qrcode.imagemQrcode);
+    } else {
+      console.error("Erro ao gerar QR Code:", data.error);
+    }
+  } catch (error) {
+    console.error("Erro ao solicitar QR Code:", error);
   }
 }
+
 
 // Função para exibir o QR Code em uma modal
 function exibirQRCode(imagemQrcode) {
