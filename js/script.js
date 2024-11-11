@@ -503,6 +503,97 @@ function mostrarPedidos() {
 
   // Criar e adicionar opções de Retirada e Entrega
   adicionarOpcoesEntrega(carrinhoProdutos);
+
+  adicionarOpcoesPagamento(carrinhoProdutos, totalItens);
+}
+
+function adicionarOpcoesPagamento(container, total) {
+  if (document.querySelector('.metodo-pagamento')) return;
+
+  const metodoPagamentoDiv = document.createElement("div");
+  metodoPagamentoDiv.classList.add("metodo-pagamento");
+
+  // Opção para pagamento em dinheiro
+  const dinheiroContainer = document.createElement("div");
+  dinheiroContainer.classList.add("opcao-pagamento");
+
+  const dinheiroInput = document.createElement("input");
+  dinheiroInput.type = "radio";
+  dinheiroInput.id = "pagamentoDinheiro";
+  dinheiroInput.name = "metodoPagamento";
+
+  const dinheiroLabel = document.createElement("label");
+  dinheiroLabel.htmlFor = "pagamentoDinheiro";
+  dinheiroLabel.innerText = "Dinheiro";
+  dinheiroLabel.classList.add("label-pagamento");
+
+  dinheiroContainer.appendChild(dinheiroInput);
+  dinheiroContainer.appendChild(dinheiroLabel);
+  metodoPagamentoDiv.appendChild(dinheiroContainer);
+
+  // Opção para pagamento com PIX
+  const pixContainer = document.createElement("div");
+  pixContainer.classList.add("opcao-pagamento");
+
+  const pixInput = document.createElement("input");
+  pixInput.type = "radio";
+  pixInput.id = "pagamentoPix";
+  pixInput.name = "metodoPagamento";
+
+  const pixLabel = document.createElement("label");
+  pixLabel.htmlFor = "pagamentoPix";
+  pixLabel.innerText = "PIX";
+  pixLabel.classList.add("label-pagamento");
+
+  pixInput.addEventListener('change', async () => {
+    if (pixInput.checked) {
+      // Chama a função para gerar o QR Code de pagamento
+      await solicitarQRCode(total);
+    }
+  });
+
+  pixContainer.appendChild(pixInput);
+  pixContainer.appendChild(pixLabel);
+  metodoPagamentoDiv.appendChild(pixContainer);
+
+  container.appendChild(metodoPagamentoDiv); // Adiciona a seção de método de pagamento ao carrinho
+}
+
+// Função para solicitar o QR Code do PIX
+async function solicitarQRCode(valor) {
+  const response = await fetch('https://pagamento-lemon.vercel.app/api/create-qrcode', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ valor })
+  });
+
+  const data = await response.json();
+  if (data.qrcode) {
+    // Exibir o QR Code em uma modal no frontend
+    exibirQRCode(data.qrcode.imagemQrcode);
+  } else {
+    console.error("Erro ao gerar QR Code:", data.error);
+  }
+}
+
+// Função para exibir o QR Code em uma modal
+function exibirQRCode(imagemQrcode) {
+  const qrCodeModal = document.createElement("div");
+  qrCodeModal.classList.add("modal-qrcode");
+
+  const qrCodeImg = document.createElement("img");
+  qrCodeImg.src = imagemQrcode;
+  qrCodeImg.alt = "QR Code para pagamento PIX";
+
+  const fecharModal = document.createElement("button");
+  fecharModal.innerText = "Fechar";
+  fecharModal.addEventListener("click", () => {
+    qrCodeModal.remove(); // Remove a modal da interface
+  });
+
+  qrCodeModal.appendChild(qrCodeImg);
+  qrCodeModal.appendChild(fecharModal);
+  document.body.appendChild(qrCodeModal); // Adiciona a modal ao corpo da página
 }
 
 function adicionarOpcoesEntrega(container) {
@@ -849,7 +940,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Adiciona um evento de clique a todos os elementos com a classe "scroll-icon"
 document.querySelectorAll(".scroll-icon").forEach(icon => {
-  icon.addEventListener("click", function(event) {
+  icon.addEventListener("click", function (event) {
     event.preventDefault(); // Impede o comportamento padrão
     const id = this.getAttribute('data-target'); // Pega o ID da seção do atributo data-target
     const targetElement = document.querySelector(id); // Seleciona a seção de destino
@@ -895,7 +986,7 @@ function scrollToFooter() {
 
   // Rolagem suave para a posição do footer, ajustada pela altura do cabeçalho
   window.scrollTo({
-      top: footerPosition - headerHeight, // Ajusta a rolagem
-      behavior: 'smooth'
+    top: footerPosition - headerHeight, // Ajusta a rolagem
+    behavior: 'smooth'
   });
 }
