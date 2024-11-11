@@ -560,11 +560,12 @@ function adicionarOpcoesPagamento(container, total) {
   container.appendChild(metodoPagamentoDiv); // Adiciona a seção de método de pagamento ao carrinho
 }
 
+// Função para solicitar o QR Code
 async function solicitarQRCode(valor) {
   // Verifica se o QR Code já foi salvo no localStorage
   const qrCode = localStorage.getItem("qrCode");
   const txid = localStorage.getItem("txid");
-  const expiracao = localStorage.getItem("expiracao");
+  const expiracao = parseInt(localStorage.getItem("expiracao"), 10); // Converter para número
 
   if (qrCode && txid && expiracao && Date.now() < expiracao) {
     // Se o QR Code ainda for válido no localStorage, exibe-o
@@ -599,7 +600,6 @@ async function solicitarQRCode(valor) {
 }
 
 // Função para exibir o QR Code em uma modal
-// Função para exibir o QR Code em uma modal
 function exibirQRCode(copiaECola, txid) {
   // Gerar o QR Code usando o texto Copia e Cola
   QRCode.toDataURL(copiaECola, function (err, url) {
@@ -623,7 +623,7 @@ function exibirQRCode(copiaECola, txid) {
     copiarBtn.addEventListener("click", () => copiarCopiaCola(copiaECola));
 
     const timerElement = document.createElement("p");
-    let tempoRestante = localStorage.getItem("expiracao") - Date.now(); // Tempo restante
+    let tempoRestante = parseInt(localStorage.getItem("expiracao"), 10) - Date.now(); // Converter para número
 
     // Se o tempo restante for negativo ou zero, o QR Code expirou
     if (tempoRestante <= 0) {
@@ -675,13 +675,13 @@ function exibirQRCode(copiaECola, txid) {
   });
 }
 
-
 // Função para copiar o código Copia e Cola
 function copiarCopiaCola(codigo) {
   navigator.clipboard.writeText(codigo)
     .then(() => alert("Código Copia e Cola copiado!"))
     .catch(err => console.error("Erro ao copiar o código:", err));
 }
+
 
 // Função para verificar o status do pagamento no localStorage
 function verificarPagamento() {
