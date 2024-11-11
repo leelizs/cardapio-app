@@ -599,6 +599,7 @@ async function solicitarQRCode(valor) {
 }
 
 // Função para exibir o QR Code em uma modal
+// Função para exibir o QR Code em uma modal
 function exibirQRCode(copiaECola, txid) {
   // Gerar o QR Code usando o texto Copia e Cola
   QRCode.toDataURL(copiaECola, function (err, url) {
@@ -622,17 +623,30 @@ function exibirQRCode(copiaECola, txid) {
     copiarBtn.addEventListener("click", () => copiarCopiaCola(copiaECola));
 
     const timerElement = document.createElement("p");
-    let tempoExpiracao = 600; // 10 minutos
-    timerElement.textContent = `Expira em: 10:00`;
+    let tempoRestante = localStorage.getItem("expiracao") - Date.now(); // Tempo restante
+
+    // Se o tempo restante for negativo ou zero, o QR Code expirou
+    if (tempoRestante <= 0) {
+      alert("QR Code expirado!");
+      return;
+    }
+
+    // Exibir o tempo restante formatado (minutos:segundos)
+    const atualizarTempo = () => {
+      let minutos = Math.floor(tempoRestante / 60000);
+      let segundos = Math.floor((tempoRestante % 60000) / 1000);
+      timerElement.textContent = `Expira em: ${String(minutos).padStart(2, '0')}:${String(segundos).padStart(2, '0')}`;
+    };
+
+    // Atualiza o tempo e inicia o contador de decremento
+    atualizarTempo();
     const contadorExpiracao = setInterval(() => {
-      if (tempoExpiracao <= 0) {
+      tempoRestante -= 1000;
+      if (tempoRestante <= 0) {
         clearInterval(contadorExpiracao);
         alert("QR Code expirado!");
       } else {
-        const minutos = Math.floor(tempoExpiracao / 60);
-        const segundos = tempoExpiracao % 60;
-        timerElement.textContent = `Expira em: ${String(minutos).padStart(2, '0')}:${String(segundos).padStart(2, '0')}`;
-        tempoExpiracao--;
+        atualizarTempo();
       }
     }, 1000);
 
@@ -640,6 +654,11 @@ function exibirQRCode(copiaECola, txid) {
     fecharModal.innerText = "Fechar";
     fecharModal.addEventListener("click", () => {
       document.body.removeChild(qrCodeModal);
+
+      // Limpar o localStorage ao fechar a modal
+      localStorage.removeItem("qrCode");
+      localStorage.removeItem("txid");
+      localStorage.removeItem("expiracao");
     });
 
     qrCodeModal.appendChild(qrCodeImg);
@@ -655,6 +674,7 @@ function exibirQRCode(copiaECola, txid) {
     localStorage.setItem("expiracao", Date.now() + 600000); // 10 minutos
   });
 }
+
 
 // Função para copiar o código Copia e Cola
 function copiarCopiaCola(codigo) {
