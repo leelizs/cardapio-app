@@ -579,7 +579,7 @@ async function solicitarQRCode(valor) {
     console.log(data);  // Verifique o que é retornado da API
     if (data.qrcode && data.qrcode.copiaECola) {
       // Gerar o QR Code diretamente com o código Copia e Cola
-      exibirQRCode(data.qrcode.copiaECola);
+      exibirQRCode(data.qrcode.copiaECola, data.qrcode.txid);
     } else {
       console.error("Erro ao gerar QR Code:", data.error);
     }
@@ -589,7 +589,7 @@ async function solicitarQRCode(valor) {
 }
 
 // Função para exibir o QR Code em uma modal
-function exibirQRCode(copiaECola) {
+function exibirQRCode(copiaECola, txid) {
   // Gerar o QR Code usando o texto Copia e Cola
   QRCode.toDataURL(copiaECola, function (err, url) {
     if (err) {
@@ -599,6 +599,7 @@ function exibirQRCode(copiaECola) {
 
     console.log(url); // Verifique a URL gerada para o QR Code
 
+    // Exibir modal com QR Code
     const qrCodeModal = document.createElement("div");
     qrCodeModal.classList.add("modal-qrcode");
 
@@ -606,17 +607,81 @@ function exibirQRCode(copiaECola) {
     qrCodeImg.src = url; // URL do QR Code gerado
     qrCodeImg.alt = "QR Code para pagamento PIX";
 
+    const copiarBtn = document.createElement("button");
+    copiarBtn.innerText = "Copiar Código";
+    copiarBtn.addEventListener("click", () => copiarCopiaCola(copiaECola));
+
+    const timerElement = document.createElement("p");
+    let tempoExpiracao = 600; // 10 minutos
+    timerElement.textContent = `Expira em: 10:00`;
+    const contadorExpiracao = setInterval(() => {
+      if (tempoExpiracao <= 0) {
+        clearInterval(contadorExpiracao);
+        alert("QR Code expirado!");
+      } else {
+        const minutos = Math.floor(tempoExpiracao / 60);
+        const segundos = tempoExpiracao % 60;
+        timerElement.textContent = `Expira em: ${String(minutos).padStart(2, '0')}:${String(segundos).padStart(2, '0')}`;
+        tempoExpiracao--;
+      }
+    }, 1000);
+
     const fecharModal = document.createElement("button");
     fecharModal.innerText = "Fechar";
     fecharModal.addEventListener("click", () => {
-      qrCodeModal.remove(); // Remove a modal da interface
+      document.body.removeChild(qrCodeModal);
     });
 
     qrCodeModal.appendChild(qrCodeImg);
+    qrCodeModal.appendChild(copiarBtn);
+    qrCodeModal.appendChild(timerElement);
     qrCodeModal.appendChild(fecharModal);
-    document.body.appendChild(qrCodeModal); // Adiciona a modal ao corpo da página
-  });
 
+    document.body.appendChild(qrCodeModal); // Adiciona a modal à página
+
+    // Salva o QR Code e o txid no localStorage
+    localStorage.setItem("qrCode", copiaECola);
+    localStorage.setItem("txid", txid);
+    localStorage.setItem("expiracao", Date.now() + 600000); // 10 minutos
+  });
+}
+
+// Função para copiar o código Copia e Cola
+function copiarCopiaCola(codigo) {
+  navigator.clipboard.writeText(codigo)
+    .then(() => alert("Código Copia e Cola copiado!"))
+    .catch(err => console.error("Erro ao copiar o código:", err));
+}
+
+// Função para verificar o status do pagamento no localStorage
+function verificarPagamento() {
+  const txid = localStorage.getItem("txid");
+  const expiracao = localStorage.getItem("expiracao");
+
+  if (txid && Date.now() < expiracao) {
+    // Iniciar verificação do pagamento
+    const intervaloVerificacao = setInterval(() => {
+      fetch(`/api/verificar-status?txid=${txid}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === "CONCLUIDA") {
+            clearInterval(intervaloVerificacao);
+            alert("Pagamento confirmado!");
+          } else if (data.status === "PENDENTE") {
+            console.log("Aguardando pagamento...");
+          } else {
+            clearInterval(intervaloVerificacao);
+            alert("Pagamento rejeitado!");
+          }
+        })
+        .catch(err => {
+          console.error("Erro ao verificar pagamento:", err);
+          clearInterval(intervaloVerificacao);
+        });
+    }, 5000);
+  } else {
+    alert("QR Code expirado ou pagamento já realizado.");
+  }
 }
 
 function adicionarOpcoesEntrega(container) {
