@@ -613,6 +613,7 @@ function exibirQRCode(copiaECola) {
     qrCodeModal.appendChild(fecharModal);
     document.body.appendChild(qrCodeModal); // Adiciona a modal ao corpo da página
   });
+
 }
 
 
