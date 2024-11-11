@@ -560,31 +560,41 @@ function adicionarOpcoesPagamento(container, total) {
   container.appendChild(metodoPagamentoDiv); // Adiciona a seção de método de pagamento ao carrinho
 }
 
-// Função para solicitar o QR Code do PIX
 async function solicitarQRCode(valor) {
-  try {
-    const response = await fetch('https://pagamento-lemon.vercel.app/api/create-qrcode', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ valor }),
-      mode: 'cors' // Define explicitamente o modo CORS
-    });
+  // Verifica se o QR Code já foi salvo no localStorage
+  const qrCode = localStorage.getItem("qrCode");
+  const txid = localStorage.getItem("txid");
+  const expiracao = localStorage.getItem("expiracao");
 
-    // Verifica se a resposta teve status HTTP OK
-    if (!response.ok) {
-      throw new Error(`Erro de status HTTP: ${response.status}`);
-    }
+  if (qrCode && txid && expiracao && Date.now() < expiracao) {
+    // Se o QR Code ainda for válido no localStorage, exibe-o
+    console.log("QR Code encontrado no localStorage, exibindo...");
+    exibirQRCode(qrCode, txid);
+  } else {
+    try {
+      const response = await fetch('https://pagamento-lemon.vercel.app/api/create-qrcode', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ valor }),
+        mode: 'cors' // Define explicitamente o modo CORS
+      });
 
-    const data = await response.json();
-    console.log(data);  // Verifique o que é retornado da API
-    if (data.qrcode && data.qrcode.copiaECola) {
-      // Gerar o QR Code diretamente com o código Copia e Cola
-      exibirQRCode(data.qrcode.copiaECola, data.qrcode.txid);
-    } else {
-      console.error("Erro ao gerar QR Code:", data.error);
+      // Verifica se a resposta teve status HTTP OK
+      if (!response.ok) {
+        throw new Error(`Erro de status HTTP: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log(data);  // Verifique o que é retornado da API
+      if (data.qrcode && data.qrcode.copiaECola) {
+        // Gerar o QR Code diretamente com o código Copia e Cola
+        exibirQRCode(data.qrcode.copiaECola, data.qrcode.txid);
+      } else {
+        console.error("Erro ao gerar QR Code:", data.error);
+      }
+    } catch (error) {
+      console.error("Erro ao solicitar QR Code:", error);
     }
-  } catch (error) {
-    console.error("Erro ao solicitar QR Code:", error);
   }
 }
 
@@ -990,6 +1000,7 @@ function finalizarCompra() {
 // Função para carregar os itens do carrinho do localStorage
 
 function loadCarrinhoFromLocalStorage() {
+  // Carrega os produtos do carrinho
   const carrinhoSalvo = localStorage.getItem('produtosCarrinho');
   if (carrinhoSalvo) {
     try {
@@ -1011,6 +1022,26 @@ function loadCarrinhoFromLocalStorage() {
     produtosCarrinho = []; // Inicia um carrinho vazio se não houver dados
   }
 
+  // Carrega o QR Code e o txid do localStorage
+  const qrCode = localStorage.getItem('qrCode');
+  const txid = localStorage.getItem('txid');
+  const expiracao = localStorage.getItem('expiracao');
+
+  if (qrCode && txid && expiracao) {
+    const tempoRestante = expiracao - Date.now();
+    if (tempoRestante > 0) {
+      // Se o QR Code ainda não expirou, exibe o QR Code na página
+      exibirQRCode(qrCode, txid); // Aqui, o QR Code seria exibido com o `txid` e o tempo restante
+    } else {
+      console.log("QR Code expirado.");
+      // Você pode querer remover os dados expirados do localStorage ou avisar o usuário
+      localStorage.removeItem('qrCode');
+      localStorage.removeItem('txid');
+      localStorage.removeItem('expiracao');
+    }
+  } else {
+    console.log("Não há QR Code armazenado ou dados de pagamento.");
+  }
 
   // Se o carrinho estiver vazio, atualiza a exibição
   if (produtosCarrinho.length === 0) {
@@ -1025,6 +1056,7 @@ document.addEventListener('DOMContentLoaded', function () {
     mostrarPedidos(); // Exibe o carrinho apenas se houver itens
   }
 });
+
 
 // Adiciona um evento de clique a todos os elementos com a classe "scroll-icon"
 document.querySelectorAll(".scroll-icon").forEach(icon => {
