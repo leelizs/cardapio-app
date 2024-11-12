@@ -613,6 +613,43 @@ async function solicitarQRCode(valor) {
   }
 }
 
+// Função verificarPagamento global
+const verificarPagamento = (txid) => {
+  return new Promise((resolve, reject) => {
+    const intervaloVerificacao = setInterval(() => {
+      fetch(`https://pagamento-lemon.vercel.app/api/verificar-status?txid=${txid}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === "CONCLUIDA") {
+            clearInterval(intervaloVerificacao); // Para o intervalo de verificações
+            // Exibe a mensagem de confirmação de pagamento
+            document.getElementById("mensagemConfirmacaoPagamento").style.display = "block";
+
+            // Remove ou oculta o QR Code, código Copia e Cola, e timer
+            document.getElementById("qrCodeImage").style.display = "none"; // Oculta o QR Code
+            document.getElementById("copiarBtn").style.display = "none";  // Oculta o botão de copiar
+            document.getElementById("timer").style.display = "none";      // Oculta o timer
+
+            // Remove o texto "Código Copia e Cola:"
+            const codigoTexto = document.querySelector("p strong");
+            if (codigoTexto) {
+              codigoTexto.style.display = "none"; // Oculta o texto "Código Copia e Cola"
+            }
+
+            resolve("CONCLUIDA"); // Resolve a Promise com status "CONCLUIDA"
+          } else if (data.status === "PENDENTE") {
+            console.log("Aguardando pagamento...");
+          }
+        })
+        .catch(err => {
+          clearInterval(intervaloVerificacao); // Para o intervalo se houver erro
+          reject(err); // Rejeita a Promise com o erro
+        });
+    }, 5000); // Verifica o pagamento a cada 5 segundos
+  });
+};
+
+// Função exibirQRCode
 function exibirQRCode(copiaECola, txid, expiracao) {
   QRCode.toDataURL(copiaECola, function (err, url) {
     if (err) {
@@ -722,41 +759,7 @@ function exibirQRCode(copiaECola, txid, expiracao) {
     localStorage.setItem("qrCode", copiaECola);
     localStorage.setItem("expiracao", expiracao); // Armazena a expiração original
 
-    const verificarPagamento = (txid) => {
-      return new Promise((resolve, reject) => {
-        const intervaloVerificacao = setInterval(() => {
-          fetch(`https://pagamento-lemon.vercel.app/api/verificar-status?txid=${txid}`)
-            .then(response => response.json())
-            .then(data => {
-              if (data.status === "CONCLUIDA") {
-                clearInterval(intervaloVerificacao); // Para o intervalo de verificações
-                // Exibe a mensagem de confirmação de pagamento
-                document.getElementById("mensagemConfirmacaoPagamento").style.display = "block";
-
-                // Remove ou oculta o QR Code, código Copia e Cola, e timer
-                document.getElementById("qrCodeImage").style.display = "none"; // Oculta o QR Code
-                document.getElementById("copiarBtn").style.display = "none";  // Oculta o botão de copiar
-                document.getElementById("timer").style.display = "none";      // Oculta o timer
-
-                // Remove o texto "Código Copia e Cola:"
-                const codigoTexto = document.querySelector("p strong");
-                if (codigoTexto) {
-                  codigoTexto.style.display = "none"; // Oculta o texto "Código Copia e Cola"
-                }
-
-                resolve("CONCLUIDA"); // Resolve a Promise com status "CONCLUIDA"
-              } else if (data.status === "PENDENTE") {
-                console.log("Aguardando pagamento...");
-              }
-            })
-            .catch(err => {
-              clearInterval(intervaloVerificacao); // Para o intervalo se houver erro
-              reject(err); // Rejeita a Promise com o erro
-            });
-        }, 5000); // Verifica o pagamento a cada 5 segundos
-      });
-    };
-
+    // Agora passa o txid para a função verificarPagamento
     verificarPagamento(txid).then(status => {
       if (status === "CONCLUIDA") {
         console.log("Pagamento concluído.");
@@ -767,7 +770,6 @@ function exibirQRCode(copiaECola, txid, expiracao) {
 
   });
 }
-
 
 // Função para copiar o código Copia e Cola
 function copiarCopiaCola(codigo) {
