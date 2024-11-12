@@ -917,28 +917,40 @@ ul li a i {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.7); /* Escurecer mais o fundo */
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
-  }
-  
-  .modal-qrcode img {
-    max-width: 80%;
-    max-height: 80%;
-  }
-  
-  .modal-qrcode button {
+    padding: 20px; /* Adiciona um padding para dar mais espaço em torno do conteúdo */
+    overflow: hidden; /* Impede que o conteúdo ultrapasse os limites da modal */
+}
+
+.modal-qrcode img {
+    max-width: 90%; /* Aumenta um pouco a largura máxima */
+    max-height: 80%; /* Limita um pouco a altura para manter proporções */
+    object-fit: contain; /* Garante que o QR Code seja bem ajustado */
+    border: 2px solid #fff; /* Adiciona uma borda branca para destacar o QR Code */
+    border-radius: 10px; /* Torna os cantos do QR Code arredondados */
+}
+
+.modal-qrcode button {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: white;
+    top: 20px; /* Ajusta a posição do botão para ficar mais distante da borda superior */
+    right: 20px; /* Ajusta a posição do botão para ficar mais distante da borda direita */
+    background-color: #fff; /* Mantém o fundo branco */
     border: 1px solid #ccc;
-    padding: 5px;
+    padding: 10px 15px; /* Aumenta o tamanho do botão */
     cursor: pointer;
-  }
-  
+    font-size: 16px; /* Aumenta o tamanho da fonte do botão */
+    border-radius: 5px; /* Torna os cantos do botão arredondados */
+    transition: background-color 0.3s; /* Efeito suave na transição do fundo */
+}
+
+.modal-qrcode button:hover {
+    background-color: #f1f1f1; /* Altera a cor de fundo do botão ao passar o mouse */
+}
+
 
 .metodo-entrega {
     color: white;
