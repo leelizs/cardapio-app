@@ -959,8 +959,10 @@ function desabilitarPagamentoDinheiro() {
   const pagamentoDinheiro = document.getElementById('pagamentoDinheiro');
 
   const txid = localStorage.getItem("txid");
+  console.log("TXID:", txid); // Verifica se o TXID está presente
   if (txid) {
     verificarPagamento(txid).then(status => {
+      console.log("Status do pagamento:", status); // Verifique o status retornado
       if (status === "CONCLUIDA") {
         pagamentoDinheiro.disabled = true;
         console.log('Pagamento via PIX concluído. Não é possível selecionar Dinheiro após finalizar um pagamento PIX.');
@@ -971,10 +973,6 @@ function desabilitarPagamentoDinheiro() {
     });
   }
 }
-
-// Chama a função para desabilitar o pagamento em dinheiro ao carregar a página
-document.addEventListener("DOMContentLoaded", desabilitarPagamentoDinheiro);
-
 
 function capturarPedido() {
   return verificarConexao()
@@ -1209,12 +1207,16 @@ function loadCarrinhoFromLocalStorage() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-  loadCarrinhoFromLocalStorage(); // Carrega o carrinho do localStorage ao iniciar
+document.addEventListener("DOMContentLoaded", function () {
+  // Carrega o carrinho do localStorage ao iniciar
+  loadCarrinhoFromLocalStorage();
 
   if (produtosCarrinho.length > 0) {
     mostrarPedidos(); // Exibe o carrinho apenas se houver itens
   }
+
+  // Chama a função para desabilitar o pagamento em dinheiro ao carregar a página
+  desabilitarPagamentoDinheiro();
 });
 
 
