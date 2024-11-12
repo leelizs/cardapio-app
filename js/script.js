@@ -566,6 +566,7 @@ function adicionarOpcoesPagamento(container, total) {
 async function solicitarQRCode(valor) {
   // Verifica se o QR Code já foi salvo no localStorage
   const qrCode = localStorage.getItem("qrCode");
+  const txid = localStorage.getItem("txid");
   const expiracao = parseInt(localStorage.getItem("expiracao"), 10);
   if (isNaN(expiracao)) {
     console.error("Expiração inválida.");
@@ -878,7 +879,6 @@ const verificarPagamento = (txid) => {
     }, 5000); // Verifica o pagamento a cada 5 segundos
   });
 };
-
 
 // Função para salvar os itens do carrinho no localStorage
 function saveCarrinhoToLocalStorage() {
