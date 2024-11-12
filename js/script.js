@@ -716,7 +716,6 @@ function exibirQRCode(copiaECola, txid, expiracao) {
 
       // Limpar o localStorage ao fechar a modal
       localStorage.removeItem("qrCode");
-      localStorage.removeItem("txid");
       localStorage.removeItem("expiracao");
     });
 
@@ -908,7 +907,6 @@ async function finalizarECapturarPedido() {
   try {
     await verificarConexao(); // Aguarda a verificação de conexão
 
-    // Código de verificação de opções de recebimento
     const retirarLocalChecked = document.getElementById('retirarLocal')?.checked;
     const fazerEntregaChecked = document.getElementById('fazerEntrega')?.checked;
     const enderecoEntrega = document.getElementById('enderecoEntrega')?.value.trim(); // Remove espaços em branco
@@ -946,6 +944,7 @@ async function finalizarECapturarPedido() {
     let metodoPagamentoTexto = "";
     if (metodoPagamento === "pagamentoPix") {
       metodoPagamentoTexto = "Pagamento via PIX";
+
       // Verifica o status do pagamento PIX
       const txid = localStorage.getItem("txid");
       if (!txid) {
@@ -954,11 +953,24 @@ async function finalizarECapturarPedido() {
       }
 
       // Verifica o pagamento via PIX até que o status seja CONCLUIDO
-      const statusPagamento = await verificarPagamento(txid);
-      if (statusPagamento !== "CONCLUIDA") {
-        alert('O pagamento via PIX ainda não foi concluído.');
-        return;
+      let statusPagamento = await verificarPagamento(txid);
+      while (statusPagamento !== "CONCLUIDA") {
+        if (statusPagamento === null) {
+          alert('Erro ao verificar o pagamento.');
+          return;
+        }
+        if (statusPagamento === "PENDENTE") {
+          console.log("Aguardando pagamento...");
+        } else {
+          console.log("Status desconhecido:", statusPagamento);
+        }
+        // Verifica novamente após 5 segundos
+        await new Promise(resolve => setTimeout(resolve, 5000));
+        statusPagamento = await verificarPagamento(txid);
       }
+
+      // Remove o txid do localStorage após a confirmação do pagamento
+      localStorage.removeItem("txid");
     } else if (metodoPagamento === "pagamentoDinheiro") {
       metodoPagamentoTexto = "Pagamento em Dinheiro";
     }
@@ -983,6 +995,7 @@ async function finalizarECapturarPedido() {
     window.location.href = 'offline.html'; // Redireciona para a página offline em caso de erro
   }
 }
+
 
 // Desabilitar a opção "Dinheiro" se o pagamento via PIX for concluído
 function desabilitarPagamentoDinheiro() {
