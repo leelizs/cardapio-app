@@ -599,9 +599,45 @@ async function solicitarQRCode(valor) {
   }
 }
 
+// Função para solicitar o QR Code
+async function solicitarQRCode(valor) {
+  const qrCode = localStorage.getItem("qrCode");
+  const txid = localStorage.getItem("txid");
+  const expiracao = parseInt(localStorage.getItem("expiracao"), 10); // Converter para número
+
+  if (qrCode && txid && expiracao && Date.now() < expiracao) {
+    // Se o QR Code ainda for válido no localStorage, exibe-o
+    console.log("QR Code encontrado no localStorage, exibindo...");
+    exibirQRCode(qrCode, txid, expiracao);
+  } else {
+    try {
+      const response = await fetch('https://pagamento-lemon.vercel.app/api/create-qrcode', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ valor }),
+        mode: 'cors' // Define explicitamente o modo CORS
+      });
+
+      if (!response.ok) {
+        throw new Error(`Erro de status HTTP: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log(data); // Verifique o que é retornado da API
+      if (data.qrcode && data.qrcode.copiaECola) {
+        // Gerar o QR Code diretamente com o código Copia e Cola
+        exibirQRCode(data.qrcode.copiaECola, data.qrcode.txid, Date.now() + 600000); // Define a nova expiração
+      } else {
+        console.error("Erro ao gerar QR Code:", data.error);
+      }
+    } catch (error) {
+      console.error("Erro ao solicitar QR Code:", error);
+    }
+  }
+}
+
 // Função para exibir o QR Code em uma modal
-function exibirQRCode(copiaECola, txid) {
-  // Gerar o QR Code usando o texto Copia e Cola
+function exibirQRCode(copiaECola, txid, expiracao) {
   QRCode.toDataURL(copiaECola, function (err, url) {
     if (err) {
       console.error("Erro ao gerar QR Code:", err);
@@ -610,7 +646,6 @@ function exibirQRCode(copiaECola, txid) {
 
     console.log(url); // Verifique a URL gerada para o QR Code
 
-    // Exibir modal com QR Code
     const qrCodeModal = document.createElement("div");
     qrCodeModal.classList.add("modal-qrcode");
 
@@ -623,23 +658,22 @@ function exibirQRCode(copiaECola, txid) {
     copiarBtn.addEventListener("click", () => copiarCopiaCola(copiaECola));
 
     const timerElement = document.createElement("p");
-    let tempoRestante = parseInt(localStorage.getItem("expiracao"), 10) - Date.now(); // Converter para número
 
-    // Se o tempo restante for negativo ou zero, o QR Code expirou
+    let tempoRestante = expiracao - Date.now(); // Usar a expiração fixa passada como parâmetro
+
     if (tempoRestante <= 0) {
       alert("QR Code expirado!");
       return;
     }
 
-    // Exibir o tempo restante formatado (minutos:segundos)
     const atualizarTempo = () => {
       let minutos = Math.floor(tempoRestante / 60000);
       let segundos = Math.floor((tempoRestante % 60000) / 1000);
       timerElement.textContent = `Expira em: ${String(minutos).padStart(2, '0')}:${String(segundos).padStart(2, '0')}`;
     };
 
-    // Atualiza o tempo e inicia o contador de decremento
     atualizarTempo();
+
     const contadorExpiracao = setInterval(() => {
       tempoRestante -= 1000;
       if (tempoRestante <= 0) {
@@ -666,14 +700,15 @@ function exibirQRCode(copiaECola, txid) {
     qrCodeModal.appendChild(timerElement);
     qrCodeModal.appendChild(fecharModal);
 
-    document.body.appendChild(qrCodeModal); // Adiciona a modal à página
+    document.body.appendChild(qrCodeModal);
 
     // Salva o QR Code e o txid no localStorage
     localStorage.setItem("qrCode", copiaECola);
     localStorage.setItem("txid", txid);
-    localStorage.setItem("expiracao", Date.now() + 600000); // 10 minutos
+    localStorage.setItem("expiracao", expiracao); // Armazena a expiração original
   });
 }
+
 
 // Função para copiar o código Copia e Cola
 function copiarCopiaCola(codigo) {
@@ -681,7 +716,6 @@ function copiarCopiaCola(codigo) {
     .then(() => alert("Código Copia e Cola copiado!"))
     .catch(err => console.error("Erro ao copiar o código:", err));
 }
-
 
 // Função para verificar o status do pagamento no localStorage
 function verificarPagamento() {
