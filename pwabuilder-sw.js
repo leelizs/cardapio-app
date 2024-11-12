@@ -2,7 +2,7 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
 
 // Altere a versão do cache sempre que fizer qualquer alteração no site
-const CACHE = "pwabuilder-page-v1.5"; // Mude este valor toda vez que atualizar algo
+const CACHE = "pwabuilder-page-v1.6"; // Mude este valor toda vez que atualizar algo
 
 const offlineFallbackPage = "offline.html";
 

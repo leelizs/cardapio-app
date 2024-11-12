@@ -107,11 +107,12 @@ let salgados = [
         type: 'Salgados',
         quantidade: 0,
         tipos: [
-            { name: 'Coxinha', price: 0.50 },
-            { name: 'Risole', price: 0.50 },
-            { name: 'Queijo', price: 0.50 },
-            { name: 'Salsicha', price: 0.50 },
-            { name: 'Carne', price: 0.50 }
+            { name: 'Coxinha', price: 0.60 },
+            { name: 'Risole', price: 0.60 },
+            { name: 'Queijo', price: 0.60 },
+            { name: 'Salsicha', price: 0.60 },
+            { name: 'Carne', price: 0.60 },
+            { name: 'Calabresa', price: 0.60 }
         ]
     },
     {
@@ -122,6 +123,6 @@ let salgados = [
         type: 'Salgados',
         quantidade: 0,
         tipos: [],
-        price: 45.00 // Valor fixo para "Cento de Salgados Mini"
+        price: 50.00 // Valor fixo para "Cento de Salgados Mini"
     }
 ];
