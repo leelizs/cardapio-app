@@ -920,11 +920,17 @@ ul li a i {
     background-color: rgba(0, 0, 0, 0.7); /* Escurecer mais o fundo */
     display: flex;
     flex-direction: column; /* Organiza os elementos de forma vertical */
-    justify-content: center; /* Centraliza o QR Code */
-    align-items: center; /* Centraliza o QR Code horizontalmente */
+    justify-content: center; /* Centraliza o conteúdo */
+    align-items: center; /* Centraliza o conteúdo horizontalmente */
     z-index: 1000;
     padding: 20px;
     overflow: hidden;
+}
+
+.modal-qrcode .expiration-text {
+    color: #fff; /* Altera a cor do texto para branco */
+    font-size: 16px; /* Tamanho da fonte do texto */
+    margin-bottom: 15px; /* Adiciona espaçamento entre o texto e o QR Code */
 }
 
 .modal-qrcode img {
