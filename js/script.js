@@ -953,8 +953,8 @@ async function finalizarECapturarPedido() {
         return;
       }
 
-      const statusPagamento = await verificarStatusPagamento(txid);
-
+      // Verifica o pagamento via PIX até que o status seja CONCLUIDO
+      const statusPagamento = await verificarPagamento(txid);
       if (statusPagamento !== "CONCLUIDA") {
         alert('O pagamento via PIX ainda não foi concluído.');
         return;
@@ -973,31 +973,14 @@ async function finalizarECapturarPedido() {
     await capturarPedido(metodoPagamentoTexto);
 
     // Finaliza a compra
-    await verificarConexao();
     finalizarCompra();
     informacaoEntrega.remove(); // Remove a informação de entrega da tela após finalizar
     informacaoPagamento.remove(); // Remove a informação de pagamento da tela após finalizar
 
   } catch (error) {
-    alert(error);
-    window.location.href = 'offline.html';
-  }
-}
-
-// Função para verificar o status do pagamento PIX
-async function verificarStatusPagamento(txid) {
-  try {
-    const response = await fetch(`https://pagamento-lemon.vercel.app/api/verificar-status?txid=${txid}`);
-    const data = await response.json();
-
-    if (data.status === "CONCLUIDA") {
-      return "CONCLUIDA"; // Pagamento concluído
-    } else {
-      return "PENDENTE"; // Pagamento pendente
-    }
-  } catch (error) {
-    console.error('Erro ao verificar o status do pagamento:', error);
-    return "ERRO";
+    console.error(error);
+    alert('Erro ao processar o pedido. Você será redirecionado.');
+    window.location.href = 'offline.html'; // Redireciona para a página offline em caso de erro
   }
 }
 
@@ -1009,15 +992,18 @@ function desabilitarPagamentoDinheiro() {
   // Verifica se o pagamento via PIX foi concluído
   const txid = localStorage.getItem("txid");
   if (txid) {
-    verificarStatusPagamento(txid).then(status => {
+    verificarPagamento(txid).then(status => {
       if (status === "CONCLUIDA") {
         // Se o pagamento via PIX foi concluído, desabilita a opção de Dinheiro
         pagamentoDinheiro.disabled = true;
-        alert('Pagamento via PIX concluído. Não é possível selecionar Dinheiro após finalizar um pagamento PIX.');
+        console.log('Pagamento via PIX concluído. Não é possível selecionar Dinheiro após finalizar um pagamento PIX.');
       }
+    }).catch(err => {
+      console.error("Erro ao verificar o pagamento:", err);
     });
   }
 }
+
 
 function capturarPedido() {
   return verificarConexao()
