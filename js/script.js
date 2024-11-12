@@ -670,14 +670,17 @@ function exibirQRCode(copiaECola, txid, expiracao) {
     const qrCodeImg = document.createElement("img");
     qrCodeImg.src = url; // URL do QR Code gerado
     qrCodeImg.alt = "QR Code para pagamento PIX";
+    qrCodeImg.id = "qrCodeImage"; // Atribui um ID para poder ocultá-lo posteriormente
 
     // Cria o botão de copiar
     const copiarBtn = document.createElement("button");
     copiarBtn.innerText = "Copiar Código";
+    copiarBtn.id = "copiarBtn"; // Atribui um ID para poder ocultá-lo posteriormente
     copiarBtn.addEventListener("click", () => copiarCopiaCola(copiaECola));
 
     // Cria o timer para exibir a expiração
     const timerElement = document.createElement("p");
+    timerElement.id = "timer"; // Atribui um ID para poder ocultá-lo posteriormente
 
     let tempoRestante = expiracao - Date.now(); // Usar a expiração fixa passada como parâmetro
 
@@ -724,6 +727,28 @@ function exibirQRCode(copiaECola, txid, expiracao) {
     modalContent.appendChild(timerElement);
     modalContent.appendChild(fecharModal);
 
+    // Cria a mensagem de confirmação de pagamento
+    const mensagemConfirmacaoPagamento = document.createElement("div");
+    mensagemConfirmacaoPagamento.id = "mensagemConfirmacaoPagamento";
+    mensagemConfirmacaoPagamento.style.display = "none";
+    mensagemConfirmacaoPagamento.style.textAlign = "center";
+
+    const icon = document.createElement("span");
+    icon.style.fontSize = "30px";
+    icon.style.color = "green";
+    icon.innerText = "✔️";
+
+    const texto = document.createElement("p");
+    texto.style.fontSize = "18px";
+    texto.style.color = "#4CAF50";
+    texto.innerText = "Pagamento recebido com sucesso!";
+
+    mensagemConfirmacaoPagamento.appendChild(icon);
+    mensagemConfirmacaoPagamento.appendChild(texto);
+
+    // Adiciona a mensagem de confirmação ao conteúdo da modal
+    modalContent.appendChild(mensagemConfirmacaoPagamento);
+
     // Adiciona a "modal-content" à modal
     qrCodeModal.appendChild(modalContent);
 
@@ -734,6 +759,45 @@ function exibirQRCode(copiaECola, txid, expiracao) {
     localStorage.setItem("qrCode", copiaECola);
     localStorage.setItem("txid", txid);
     localStorage.setItem("expiracao", expiracao); // Armazena a expiração original
+
+    // Função para verificar pagamento e exibir a confirmação
+    const verificarPagamento = () => {
+      const intervaloVerificacao = setInterval(() => {
+        fetch(`https://pagamento-lemon.vercel.app/api/verificar-status?txid=${txid}`)
+          .then(response => response.json())
+          .then(data => {
+            if (data.status === "CONCLUIDA") {
+              clearInterval(intervaloVerificacao);
+
+              // Exibe a mensagem de confirmação de pagamento
+              document.getElementById("mensagemConfirmacaoPagamento").style.display = "block";
+
+              // Remove ou oculta o QR Code, código Copia e Cola, e timer
+              document.getElementById("qrCodeImage").style.display = "none"; // Oculta o QR Code
+              document.getElementById("copiarBtn").style.display = "none";  // Oculta o botão de copiar
+              document.getElementById("timer").style.display = "none";      // Oculta o timer
+
+              // Remove o texto "Código Copia e Cola:"
+              const codigoTexto = document.querySelector("p strong");
+              if (codigoTexto) {
+                codigoTexto.style.display = "none"; // Oculta o texto "Código Copia e Cola"
+              }
+            } else if (data.status === "PENDENTE") {
+              console.log("Aguardando pagamento...");
+            } else {
+              clearInterval(intervaloVerificacao);
+              alert("Pagamento rejeitado!");
+            }
+          })
+          .catch(err => {
+            console.error("Erro ao verificar pagamento:", err);
+            clearInterval(intervaloVerificacao);
+          });
+      }, 5000); // Verifica o pagamento a cada 5 segundos
+    };
+
+    // Inicia a verificação de pagamento
+    verificarPagamento();
   });
 }
 
@@ -742,37 +806,6 @@ function copiarCopiaCola(codigo) {
   navigator.clipboard.writeText(codigo)
     .then(() => alert("Código Copia e Cola copiado!"))
     .catch(err => console.error("Erro ao copiar o código:", err));
-}
-
-// Função para verificar o status do pagamento no localStorage
-function verificarPagamento() {
-  const txid = localStorage.getItem("txid");
-  const expiracao = localStorage.getItem("expiracao");
-
-  if (txid && Date.now() < expiracao) {
-    // Iniciar verificação do pagamento
-    const intervaloVerificacao = setInterval(() => {
-      fetch(`/api/verificar-status?txid=${txid}`)
-        .then(response => response.json())
-        .then(data => {
-          if (data.status === "CONCLUIDA") {
-            clearInterval(intervaloVerificacao);
-            alert("Pagamento confirmado!");
-          } else if (data.status === "PENDENTE") {
-            console.log("Aguardando pagamento...");
-          } else {
-            clearInterval(intervaloVerificacao);
-            alert("Pagamento rejeitado!");
-          }
-        })
-        .catch(err => {
-          console.error("Erro ao verificar pagamento:", err);
-          clearInterval(intervaloVerificacao);
-        });
-    }, 5000);
-  } else {
-    alert("QR Code expirado ou pagamento já realizado.");
-  }
 }
 
 function adicionarOpcoesEntrega(container) {
