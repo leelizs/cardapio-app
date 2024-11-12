@@ -560,49 +560,6 @@ function adicionarOpcoesPagamento(container, total) {
   container.appendChild(metodoPagamentoDiv); // Adiciona a seção de método de pagamento ao carrinho
 }
 
-// Função para solicitar o QR Code
-async function solicitarQRCode(valor) {
-  // Verifica se o QR Code já foi salvo no localStorage
-  const qrCode = localStorage.getItem("qrCode");
-  const txid = localStorage.getItem("txid");
-  const expiracao = parseInt(localStorage.getItem("expiracao"), 10);
-  if (isNaN(expiracao)) {
-    console.error("Expiração inválida.");
-    return; // Evita continuar se a expiração não for válida
-  }
-
-  if (qrCode && txid && expiracao && Date.now() < expiracao) {
-    // Se o QR Code ainda for válido no localStorage, exibe-o
-    console.log("QR Code encontrado no localStorage, exibindo...");
-    exibirQRCode(qrCode, txid);
-  } else {
-    try {
-      const response = await fetch('https://pagamento-lemon.vercel.app/api/create-qrcode', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ valor }),
-        mode: 'cors' // Define explicitamente o modo CORS
-      });
-
-      // Verifica se a resposta teve status HTTP OK
-      if (!response.ok) {
-        throw new Error(`Erro de status HTTP: ${response.status}`);
-      }
-
-      const data = await response.json();
-      console.log(data);  // Verifique o que é retornado da API
-      if (data.qrcode && data.qrcode.copiaECola) {
-        // Gerar o QR Code diretamente com o código Copia e Cola
-        exibirQRCode(data.qrcode.copiaECola, data.qrcode.txid);
-      } else {
-        console.error("Erro ao gerar QR Code:", data.error);
-      }
-    } catch (error) {
-      console.error("Erro ao solicitar QR Code:", error);
-    }
-  }
-}
-
 async function solicitarQRCode(valor) {
   // Recupera as informações do localStorage
   const qrCode = localStorage.getItem("qrCode");
