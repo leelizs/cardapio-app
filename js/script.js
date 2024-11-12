@@ -309,8 +309,6 @@ function contagemCarrinho() { // Função que conta quantos itens tem no carrinh
   carrinhoQuantidade.innerText = qt; // Atualiza a contagem no display
 }
 
-const txid = localStorage.getItem("txid");
-
 function mostrarPedidos() {
   carrinhoProdutos.innerHTML = ""; // Limpa a lista de produtos no carrinho
   let totalItens = 0;
