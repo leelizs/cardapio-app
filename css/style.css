@@ -919,36 +919,53 @@ ul li a i {
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.7); /* Escurecer mais o fundo */
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column; /* Organiza os elementos de forma vertical */
+    justify-content: center; /* Centraliza o QR Code */
+    align-items: center; /* Centraliza o QR Code horizontalmente */
     z-index: 1000;
-    padding: 20px; /* Adiciona um padding para dar mais espaço em torno do conteúdo */
-    overflow: hidden; /* Impede que o conteúdo ultrapasse os limites da modal */
+    padding: 20px;
+    overflow: hidden;
 }
 
 .modal-qrcode img {
-    max-width: 90%; /* Aumenta um pouco a largura máxima */
-    max-height: 80%; /* Limita um pouco a altura para manter proporções */
-    object-fit: contain; /* Garante que o QR Code seja bem ajustado */
-    border: 2px solid #fff; /* Adiciona uma borda branca para destacar o QR Code */
-    border-radius: 10px; /* Torna os cantos do QR Code arredondados */
+    max-width: 90%;
+    max-height: 80%;
+    object-fit: contain;
+    border: 2px solid #fff;
+    border-radius: 10px;
+    margin-bottom: 20px; /* Adiciona espaçamento entre o QR Code e o botão de copiar/colar */
 }
 
-.modal-qrcode button {
-    position: absolute;
-    top: 20px; /* Ajusta a posição do botão para ficar mais distante da borda superior */
-    right: 20px; /* Ajusta a posição do botão para ficar mais distante da borda direita */
-    background-color: #fff; /* Mantém o fundo branco */
+.modal-qrcode .copy-btn {
+    background-color: #fff;
     border: 1px solid #ccc;
-    padding: 10px 15px; /* Aumenta o tamanho do botão */
+    padding: 10px 15px;
     cursor: pointer;
-    font-size: 16px; /* Aumenta o tamanho da fonte do botão */
-    border-radius: 5px; /* Torna os cantos do botão arredondados */
-    transition: background-color 0.3s; /* Efeito suave na transição do fundo */
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    margin-bottom: 20px; /* Adiciona espaçamento abaixo do botão de copiar */
 }
 
-.modal-qrcode button:hover {
-    background-color: #f1f1f1; /* Altera a cor de fundo do botão ao passar o mouse */
+.modal-qrcode .copy-btn:hover {
+    background-color: #f1f1f1;
+}
+
+.modal-qrcode .close-btn {
+    position: absolute;
+    bottom: 20px; /* Ajusta a posição do botão de fechar para o canto inferior */
+    right: 20px; /* Ajusta a posição do botão de fechar para o canto direito */
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.modal-qrcode .close-btn:hover {
+    background-color: #f1f1f1;
 }
 
 
