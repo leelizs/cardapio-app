@@ -550,6 +550,8 @@ function adicionarOpcoesPagamento(container, total) {
     if (pixInput.checked) {
       // Chama a função para gerar o QR Code de pagamento
       await solicitarQRCode(total);
+      // Desabilita a opção Dinheiro se o QR Code foi gerado
+      desabilitarPagamentoDinheiro();
     }
   });
 
@@ -558,7 +560,11 @@ function adicionarOpcoesPagamento(container, total) {
   metodoPagamentoDiv.appendChild(pixContainer);
 
   container.appendChild(metodoPagamentoDiv); // Adiciona a seção de método de pagamento ao carrinho
+
+  // Chama a função de desativação ao inicializar
+  desabilitarPagamentoDinheiro();
 }
+
 
 async function solicitarQRCode(valor) {
   // Recupera as informações do localStorage
@@ -971,17 +977,16 @@ async function finalizarECapturarPedido() {
 
 // Desabilita a opção "Dinheiro" se o PIX foi concluído
 function desabilitarPagamentoDinheiro() {
-  const pagamentoPix = document.getElementById('pagamentoPix');
   const pagamentoDinheiro = document.getElementById('pagamentoDinheiro');
-
   const txid = localStorage.getItem("txid");
+
   console.log("TXID:", txid); // Verifica se o TXID está presente
 
   if (txid) {
     verificarPagamento(txid).then(status => {
       console.log("Status do pagamento:", status); // Verifique o status retornado
       if (status === "CONCLUIDA") {
-        // Verifica se o elemento pagamentoDinheiro existe antes de tentar desativá-lo
+        // Desativa a opção de pagamento em dinheiro
         if (pagamentoDinheiro) {
           pagamentoDinheiro.disabled = true;
           console.log('Pagamento via PIX concluído. Não é possível selecionar Dinheiro após finalizar um pagamento PIX.');
