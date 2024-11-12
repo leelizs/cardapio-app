@@ -622,18 +622,33 @@ const verificarPagamento = (txid) => {
         .then(data => {
           if (data.status === "CONCLUIDA") {
             clearInterval(intervaloVerificacao); // Para o intervalo de verificações
-            // Exibe a mensagem de confirmação de pagamento
-            document.getElementById("mensagemConfirmacaoPagamento").style.display = "block";
+            
+            // Exibe a mensagem de confirmação de pagamento se o elemento existir
+            const mensagemConfirmacao = document.getElementById("mensagemConfirmacaoPagamento");
+            if (mensagemConfirmacao) {
+              mensagemConfirmacao.style.display = "block";
+            }
 
-            // Remove ou oculta o QR Code, código Copia e Cola, e timer
-            document.getElementById("qrCodeImage").style.display = "none"; // Oculta o QR Code
-            document.getElementById("copiarBtn").style.display = "none";  // Oculta o botão de copiar
-            document.getElementById("timer").style.display = "none";      // Oculta o timer
+            // Oculta o QR Code, código Copia e Cola, e timer se os elementos existirem
+            const qrCodeImage = document.getElementById("qrCodeImage");
+            if (qrCodeImage) {
+              qrCodeImage.style.display = "none";
+            }
 
-            // Remove o texto "Código Copia e Cola:"
+            const copiarBtn = document.getElementById("copiarBtn");
+            if (copiarBtn) {
+              copiarBtn.style.display = "none";
+            }
+
+            const timer = document.getElementById("timer");
+            if (timer) {
+              timer.style.display = "none";
+            }
+
+            // Remove o texto "Código Copia e Cola:" se o elemento existir
             const codigoTexto = document.querySelector("p strong");
             if (codigoTexto) {
-              codigoTexto.style.display = "none"; // Oculta o texto "Código Copia e Cola"
+              codigoTexto.style.display = "none";
             }
 
             resolve("CONCLUIDA"); // Resolve a Promise com status "CONCLUIDA"
@@ -648,6 +663,7 @@ const verificarPagamento = (txid) => {
     }, 5000); // Verifica o pagamento a cada 5 segundos
   });
 };
+
 
 // Função exibirQRCode
 function exibirQRCode(copiaECola, txid, expiracao) {
