@@ -758,39 +758,6 @@ function exibirQRCode(copiaECola, txid, expiracao) {
     localStorage.setItem("txid", txid);
     localStorage.setItem("expiracao", expiracao); // Armazena a expiração original
 
-    // Função para verificar pagamento e exibir a confirmação
-    const verificarPagamento = () => {
-      const intervaloVerificacao = setInterval(() => {
-        fetch(`https://pagamento-lemon.vercel.app/api/verificar-status?txid=${txid}`)
-          .then(response => response.json())
-          .then(data => {
-            if (data.status === "CONCLUIDA") {
-              clearInterval(intervaloVerificacao);
-
-              // Exibe a mensagem de confirmação de pagamento
-              document.getElementById("mensagemConfirmacaoPagamento").style.display = "block";
-
-              // Remove ou oculta o QR Code, código Copia e Cola, e timer
-              document.getElementById("qrCodeImage").style.display = "none"; // Oculta o QR Code
-              document.getElementById("copiarBtn").style.display = "none";  // Oculta o botão de copiar
-              document.getElementById("timer").style.display = "none";      // Oculta o timer
-
-              // Remove o texto "Código Copia e Cola:"
-              const codigoTexto = document.querySelector("p strong");
-              if (codigoTexto) {
-                codigoTexto.style.display = "none"; // Oculta o texto "Código Copia e Cola"
-              }
-            } else if (data.status === "PENDENTE") {
-              console.log("Aguardando pagamento...");
-            }
-          })
-          .catch(err => {
-            console.error("Erro ao verificar pagamento:", err);
-            clearInterval(intervaloVerificacao);
-          });
-      }, 5000); // Verifica o pagamento a cada 5 segundos
-    };
-
     // Função para verificar se o QR Code expirou
     const verificarExpiracao = () => {
       const tempoRestante = expiracao - Date.now();
@@ -875,6 +842,39 @@ function adicionarOpcoesEntrega(container) {
 
   container.appendChild(metodoEntregaDiv); // Adiciona a seção de método de entrega ao carrinho
 }
+
+// Função para verificar pagamento e exibir a confirmação
+const verificarPagamento = () => {
+  const intervaloVerificacao = setInterval(() => {
+    fetch(`https://pagamento-lemon.vercel.app/api/verificar-status?txid=${txid}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === "CONCLUIDA") {
+          clearInterval(intervaloVerificacao);
+
+          // Exibe a mensagem de confirmação de pagamento
+          document.getElementById("mensagemConfirmacaoPagamento").style.display = "block";
+
+          // Remove ou oculta o QR Code, código Copia e Cola, e timer
+          document.getElementById("qrCodeImage").style.display = "none"; // Oculta o QR Code
+          document.getElementById("copiarBtn").style.display = "none";  // Oculta o botão de copiar
+          document.getElementById("timer").style.display = "none";      // Oculta o timer
+
+          // Remove o texto "Código Copia e Cola:"
+          const codigoTexto = document.querySelector("p strong");
+          if (codigoTexto) {
+            codigoTexto.style.display = "none"; // Oculta o texto "Código Copia e Cola"
+          }
+        } else if (data.status === "PENDENTE") {
+          console.log("Aguardando pagamento...");
+        }
+      })
+      .catch(err => {
+        console.error("Erro ao verificar pagamento:", err);
+        clearInterval(intervaloVerificacao);
+      });
+  }, 5000); // Verifica o pagamento a cada 5 segundos
+};
 
 // Função para salvar os itens do carrinho no localStorage
 function saveCarrinhoToLocalStorage() {
