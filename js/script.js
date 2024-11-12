@@ -933,7 +933,7 @@ async function finalizarECapturarPedido() {
 
     // Verifica a forma de pagamento selecionada
     const pagamentoSelecionado = document.querySelector('input[name="metodoPagamento"]:checked');
-    
+
     if (!pagamentoSelecionado) {
       alert('Por favor, selecione um método de pagamento.');
       return;
@@ -1016,7 +1016,6 @@ function desabilitarPagamentoDinheiro() {
     });
   }
 }
-
 
 function capturarPedido() {
   return verificarConexao()
@@ -1130,8 +1129,17 @@ function capturarPedido() {
               mensagemTexto += itemTexto + "\n";
             });
 
-            mensagemTexto += `Método de Pagamento: ${metodoPagamentoTexto}\n`;
             mensagemTexto += `${totalElement.innerText}`;
+
+            // Adicionando o método de pagamento escolhido na mensagem
+            const metodoPagamentoEscolhido = document.querySelector('input[name="metodoPagamento"]:checked');
+            if (metodoPagamentoEscolhido) {
+              const metodoPagamentoTexto = metodoPagamentoEscolhido.nextElementSibling.textContent.trim();
+              mensagemTexto += `Método de Pagamento: ${metodoPagamentoTexto}\n`;
+            } else {
+              mensagemTexto += `Método de Pagamento: Não especificado\n`; // Caso nenhum esteja selecionado
+            }
+
 
             const metodoEntrega = document.querySelector('input[name="metodoEntrega"]:checked');
             if (metodoEntrega) {
