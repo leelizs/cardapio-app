@@ -613,7 +613,6 @@ async function solicitarQRCode(valor) {
   }
 }
 
-
 function exibirQRCode(copiaECola, txid, expiracao) {
   QRCode.toDataURL(copiaECola, function (err, url) {
     if (err) {
@@ -758,22 +757,17 @@ function exibirQRCode(copiaECola, txid, expiracao) {
       });
     };
 
-    // Função para verificar se o QR Code expirou
-    const verificarExpiracao = () => {
-      const tempoRestante = expiracao - Date.now();
-      if (tempoRestante <= 0) {
-        alert("QR Code expirado!");
-        setTimeout(() => {
-          alert("Pagamento rejeitado!");
-        }, 1000); // Exibe o aviso "Pagamento rejeitado!" 1 segundo após expirar
+    verificarPagamento(txid).then(status => {
+      if (status === "CONCLUIDA") {
+        console.log("Pagamento concluído.");
       }
-    };
+    }).catch(error => {
+      console.error("Erro ao verificar status de pagamento:", error);
+    });
 
-    // Inicia a verificação de pagamento
-    verificarPagamento();
-    verificarExpiracao();
   });
 }
+
 
 // Função para copiar o código Copia e Cola
 function copiarCopiaCola(codigo) {
