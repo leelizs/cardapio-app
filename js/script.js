@@ -309,6 +309,8 @@ function contagemCarrinho() { // Função que conta quantos itens tem no carrinh
   carrinhoQuantidade.innerText = qt; // Atualiza a contagem no display
 }
 
+const txid = localStorage.getItem("txid");
+
 function mostrarPedidos() {
   carrinhoProdutos.innerHTML = ""; // Limpa a lista de produtos no carrinho
   let totalItens = 0;
@@ -564,7 +566,6 @@ function adicionarOpcoesPagamento(container, total) {
 async function solicitarQRCode(valor) {
   // Verifica se o QR Code já foi salvo no localStorage
   const qrCode = localStorage.getItem("qrCode");
-  const txid = localStorage.getItem("txid");
   const expiracao = parseInt(localStorage.getItem("expiracao"), 10);
   if (isNaN(expiracao)) {
     console.error("Expiração inválida.");
