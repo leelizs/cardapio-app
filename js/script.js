@@ -626,7 +626,8 @@ async function solicitarQRCode(valor) {
       console.log(data); // Verifique o que é retornado da API
       if (data.qrcode && data.qrcode.copiaECola) {
         // Gerar o QR Code diretamente com o código Copia e Cola
-        exibirQRCode(data.qrcode.copiaECola, data.qrcode.txid, Date.now() + 600000); // Define a nova expiração
+        const expiracao = Date.now() + 600000; // Define a nova expiração
+        exibirQRCode(data.qrcode.copiaECola, data.qrcode.txid, expiracao); // Passa o valor da expiração
       } else {
         console.error("Erro ao gerar QR Code:", data.error);
       }
