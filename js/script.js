@@ -648,7 +648,6 @@ async function solicitarQRCode(valor) {
   }
 }
 
-// Função para exibir o QR Code em uma modal
 function exibirQRCode(copiaECola, txid, expiracao) {
   QRCode.toDataURL(copiaECola, function (err, url) {
     if (err) {
@@ -784,9 +783,6 @@ function exibirQRCode(copiaECola, txid, expiracao) {
               }
             } else if (data.status === "PENDENTE") {
               console.log("Aguardando pagamento...");
-            } else {
-              clearInterval(intervaloVerificacao);
-              alert("Pagamento rejeitado!");
             }
           })
           .catch(err => {
@@ -796,10 +792,23 @@ function exibirQRCode(copiaECola, txid, expiracao) {
       }, 5000); // Verifica o pagamento a cada 5 segundos
     };
 
+    // Função para verificar se o QR Code expirou
+    const verificarExpiracao = () => {
+      const tempoRestante = expiracao - Date.now();
+      if (tempoRestante <= 0) {
+        alert("QR Code expirado!");
+        setTimeout(() => {
+          alert("Pagamento rejeitado!");
+        }, 1000); // Exibe o aviso "Pagamento rejeitado!" 1 segundo após expirar
+      }
+    };
+
     // Inicia a verificação de pagamento
     verificarPagamento();
+    verificarExpiracao();
   });
 }
+
 
 // Função para copiar o código Copia e Cola
 function copiarCopiaCola(codigo) {
