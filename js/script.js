@@ -565,7 +565,11 @@ async function solicitarQRCode(valor) {
   // Verifica se o QR Code já foi salvo no localStorage
   const qrCode = localStorage.getItem("qrCode");
   const txid = localStorage.getItem("txid");
-  const expiracao = parseInt(localStorage.getItem("expiracao"), 10); // Converter para número
+  const expiracao = parseInt(localStorage.getItem("expiracao"), 10);
+  if (isNaN(expiracao)) {
+    console.error("Expiração inválida.");
+    return; // Evita continuar se a expiração não for válida
+  }
 
   if (qrCode && txid && expiracao && Date.now() < expiracao) {
     // Se o QR Code ainda for válido no localStorage, exibe-o
@@ -603,7 +607,11 @@ async function solicitarQRCode(valor) {
 async function solicitarQRCode(valor) {
   const qrCode = localStorage.getItem("qrCode");
   const txid = localStorage.getItem("txid");
-  const expiracao = parseInt(localStorage.getItem("expiracao"), 10); // Converter para número
+  const expiracao = parseInt(localStorage.getItem("expiracao"), 10);
+  if (isNaN(expiracao)) {
+    console.error("Expiração inválida.");
+    return; // Evita continuar se a expiração não for válida
+  }
 
   if (qrCode && txid && expiracao && Date.now() < expiracao) {
     // Se o QR Code ainda for válido no localStorage, exibe-o
@@ -626,7 +634,8 @@ async function solicitarQRCode(valor) {
       console.log(data); // Verifique o que é retornado da API
       if (data.qrcode && data.qrcode.copiaECola) {
         // Gerar o QR Code diretamente com o código Copia e Cola
-        const expiracao = Date.now() + 600000; // Define a nova expiração
+        const expiracao = Date.now() + 600000; // 10 minutos
+        localStorage.setItem("expiracao", expiracao);
         exibirQRCode(data.qrcode.copiaECola, data.qrcode.txid, expiracao); // Passa o valor da expiração
       } else {
         console.error("Erro ao gerar QR Code:", data.error);
@@ -1077,7 +1086,6 @@ function loadCarrinhoFromLocalStorage() {
     produtosCarrinho = []; // Inicia um carrinho vazio se não houver dados
   }
 
-  // Carrega o QR Code e o txid do localStorage
   const qrCode = localStorage.getItem('qrCode');
   const txid = localStorage.getItem('txid');
   const expiracao = localStorage.getItem('expiracao');
@@ -1086,10 +1094,10 @@ function loadCarrinhoFromLocalStorage() {
     const tempoRestante = expiracao - Date.now();
     if (tempoRestante > 0) {
       // Se o QR Code ainda não expirou, exibe o QR Code na página
-      exibirQRCode(qrCode, txid); // Aqui, o QR Code seria exibido com o `txid` e o tempo restante
+      exibirQRCode(qrCode, txid, expiracao); // Passa o tempo de expiração
     } else {
       console.log("QR Code expirado.");
-      // Você pode querer remover os dados expirados do localStorage ou avisar o usuário
+      // Limpar os dados expirados
       localStorage.removeItem('qrCode');
       localStorage.removeItem('txid');
       localStorage.removeItem('expiracao');
@@ -1097,6 +1105,7 @@ function loadCarrinhoFromLocalStorage() {
   } else {
     console.log("Não há QR Code armazenado ou dados de pagamento.");
   }
+
 
   // Se o carrinho estiver vazio, atualiza a exibição
   if (produtosCarrinho.length === 0) {
