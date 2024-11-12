@@ -564,7 +564,25 @@ function adicionarOpcoesPagamento(container, total) {
 async function solicitarQRCode(valor) {
   // Verifica se o QR Code já foi salvo no localStorage
   const qrCode = localStorage.getItem("qrCode");
-  const txid = localStorage.getItem("txid");
+
+  // Definindo o cookie
+  document.cookie = "txid=" + txid + "; path=/; max-age=" + 60 * 60 * 24;  // 24 horas
+
+  // Lendo o cookie
+  function getCookie(name) {
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+  }
+
+  // Recuperando o txid do cookie
+  const txid = getCookie('txid');
+
   const expiracao = parseInt(localStorage.getItem("expiracao"), 10);
   if (isNaN(expiracao)) {
     console.error("Expiração inválida.");
@@ -604,15 +622,34 @@ async function solicitarQRCode(valor) {
 }
 
 async function solicitarQRCode(valor) {
+  // Função para recuperar o cookie
+  function getCookie(name) {
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+  }
+
+  // Recuperando o txid do cookie
+  let txid = getCookie('txid');
+
   // Recupera as informações do localStorage
   const qrCode = localStorage.getItem("qrCode");
-  const txid = localStorage.getItem("txid");
-  let expiracao = localStorage.getItem("expiracao");
+  const expiracao = parseInt(localStorage.getItem("expiracao"), 10);
+
+  if (isNaN(expiracao)) {
+    console.error("Expiração inválida.");
+    return; // Evita continuar se a expiração não for válida
+  }
 
   // Se o QR Code e a transação já foram salvos e a expiração ainda é válida, exibe o QR Code
-  if (qrCode && txid && expiracao && Date.now() < parseInt(expiracao, 10)) {
+  if (qrCode && txid && expiracao && Date.now() < expiracao) {
     console.log("QR Code encontrado no localStorage, exibindo...");
-    exibirQRCode(qrCode, txid, parseInt(expiracao, 10));
+    exibirQRCode(qrCode, txid, expiracao);
     return; // Termina a execução da função
   }
 
@@ -633,13 +670,19 @@ async function solicitarQRCode(valor) {
     console.log(data);  // Verifique o que é retornado da API
 
     if (data.qrcode && data.qrcode.copiaECola) {
-      // Gerar o QR Code diretamente com o código Copia e Cola
-      expiracao = Date.now() + 600000; // 10 minutos
-      localStorage.setItem("expiracao", expiracao.toString()); // Armazena a expiração no localStorage como string
-      localStorage.setItem("qrCode", data.qrcode.copiaECola); // Armazena o código Copia e Cola
-      localStorage.setItem("txid", data.qrcode.txid); // Armazena o txid
+      // Se não havia txid, usamos o da resposta
+      if (!txid) {
+        txid = data.qrcode.txid;
+        document.cookie = "txid=" + txid + "; path=/; max-age=" + 60 * 60 * 24;  // 24 horas
+      }
 
-      exibirQRCode(data.qrcode.copiaECola, data.qrcode.txid, expiracao); // Passa o valor da expiração
+      // Salva no localStorage
+      localStorage.setItem("expiracao", (Date.now() + 60 * 60 * 1000).toString()); // 1 hora de expiração
+      localStorage.setItem("qrCode", data.qrcode.copiaECola); // Salva o QR Code no localStorage
+      localStorage.setItem("txid", txid); // Salva o txid no localStorage
+
+      // Exibe o QR Code
+      exibirQRCode(data.qrcode.copiaECola, txid, Date.now() + 60 * 60 * 1000); // Passa a expiração correta
     } else {
       console.error("Erro ao gerar QR Code:", data.error);
     }
@@ -716,7 +759,6 @@ function exibirQRCode(copiaECola, txid, expiracao) {
 
       // Limpar o localStorage ao fechar a modal
       localStorage.removeItem("qrCode");
-      localStorage.removeItem("txid");
       localStorage.removeItem("expiracao");
     });
 
@@ -756,7 +798,6 @@ function exibirQRCode(copiaECola, txid, expiracao) {
 
     // Salva o QR Code e o txid no localStorage
     localStorage.setItem("qrCode", copiaECola);
-    localStorage.setItem("txid", txid);
     localStorage.setItem("expiracao", expiracao); // Armazena a expiração original
 
     // Função para verificar pagamento e exibir a confirmação
@@ -935,7 +976,7 @@ async function finalizarECapturarPedido() {
 
     // Verifica a forma de pagamento selecionada
     const pagamentoSelecionado = document.querySelector('input[name="metodoPagamento"]:checked');
-    
+
     if (!pagamentoSelecionado) {
       alert('Por favor, selecione um método de pagamento.');
       return;
@@ -990,7 +1031,7 @@ function desabilitarPagamentoDinheiro() {
   const pagamentoDinheiro = document.getElementById('pagamentoDinheiro');
 
   // Verifica se o pagamento via PIX foi concluído
-  const txid = localStorage.getItem("txid");
+  const txid = getCookie('txid') || localStorage.getItem("txid");
   if (txid) {
     verificarPagamento(txid).then(status => {
       if (status === "CONCLUIDA") {
@@ -1003,7 +1044,6 @@ function desabilitarPagamentoDinheiro() {
     });
   }
 }
-
 
 function capturarPedido() {
   return verificarConexao()
