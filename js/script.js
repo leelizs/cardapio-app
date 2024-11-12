@@ -622,7 +622,7 @@ const verificarPagamento = (txid) => {
         .then(data => {
           if (data.status === "CONCLUIDA") {
             clearInterval(intervaloVerificacao); // Para o intervalo de verificações
-            
+
             // Exibe a mensagem de confirmação de pagamento se o elemento existir
             const mensagemConfirmacao = document.getElementById("mensagemConfirmacaoPagamento");
             if (mensagemConfirmacao) {
@@ -976,12 +976,18 @@ function desabilitarPagamentoDinheiro() {
 
   const txid = localStorage.getItem("txid");
   console.log("TXID:", txid); // Verifica se o TXID está presente
+
   if (txid) {
     verificarPagamento(txid).then(status => {
       console.log("Status do pagamento:", status); // Verifique o status retornado
       if (status === "CONCLUIDA") {
-        pagamentoDinheiro.disabled = true;
-        console.log('Pagamento via PIX concluído. Não é possível selecionar Dinheiro após finalizar um pagamento PIX.');
+        // Verifica se o elemento pagamentoDinheiro existe antes de tentar desativá-lo
+        if (pagamentoDinheiro) {
+          pagamentoDinheiro.disabled = true;
+          console.log('Pagamento via PIX concluído. Não é possível selecionar Dinheiro após finalizar um pagamento PIX.');
+        } else {
+          console.warn("Elemento pagamentoDinheiro não encontrado no DOM.");
+        }
       }
     }).catch(err => {
       console.error("Erro ao verificar o pagamento:", err);
@@ -989,6 +995,7 @@ function desabilitarPagamentoDinheiro() {
     });
   }
 }
+
 
 function capturarPedido() {
   return verificarConexao()
