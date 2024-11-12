@@ -924,6 +924,8 @@ async function finalizarECapturarPedido() {
         } else {
           console.log("Status desconhecido:", statusPagamento);
         }
+
+        // Aguarda 5 segundos antes de verificar novamente
         await new Promise(resolve => setTimeout(resolve, 5000));
         statusPagamento = await verificarPagamento(txid);
       }
@@ -965,6 +967,7 @@ function desabilitarPagamentoDinheiro() {
       }
     }).catch(err => {
       console.error("Erro ao verificar o pagamento:", err);
+      alert('Erro ao verificar o status do pagamento. Tente novamente.');
     });
   }
 }
