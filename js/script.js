@@ -604,54 +604,47 @@ async function solicitarQRCode(valor) {
 }
 
 async function solicitarQRCode(valor) {
+  // Recupera as informações do localStorage
   const qrCode = localStorage.getItem("qrCode");
   const txid = localStorage.getItem("txid");
   let expiracao = localStorage.getItem("expiracao");
 
-  // Verifica se a expiração foi corretamente salva
-  if (!expiracao) {
-    console.error("Expiração não encontrada.");
-    return; // Retorna caso a expiração não esteja salva
-  }
-
-  expiracao = parseInt(expiracao, 10); // Converte para número
-
-  // Verifica se a expiração é válida
-  if (isNaN(expiracao)) {
-    console.error("Expiração inválida.");
-    return; // Evita continuar se a expiração não for válida
-  }
-
-  if (qrCode && txid && expiracao && Date.now() < expiracao) {
-    // Se o QR Code ainda for válido no localStorage, exibe-o
+  // Se o QR Code e a transação já foram salvos e a expiração ainda é válida, exibe o QR Code
+  if (qrCode && txid && expiracao && Date.now() < parseInt(expiracao, 10)) {
     console.log("QR Code encontrado no localStorage, exibindo...");
-    exibirQRCode(qrCode, txid, expiracao);
-  } else {
-    try {
-      const response = await fetch('https://pagamento-lemon.vercel.app/api/create-qrcode', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ valor }),
-        mode: 'cors' // Define explicitamente o modo CORS
-      });
+    exibirQRCode(qrCode, txid, parseInt(expiracao, 10));
+    return; // Termina a execução da função
+  }
 
-      if (!response.ok) {
-        throw new Error(`Erro de status HTTP: ${response.status}`);
-      }
+  try {
+    // Solicita o QR Code da API
+    const response = await fetch('https://pagamento-lemon.vercel.app/api/create-qrcode', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ valor }),
+      mode: 'cors' // Define explicitamente o modo CORS
+    });
 
-      const data = await response.json();
-      console.log(data);  // Verifique o que é retornado da API
-      if (data.qrcode && data.qrcode.copiaECola) {
-        // Gerar o QR Code diretamente com o código Copia e Cola
-        expiracao = Date.now() + 600000; // 10 minutos
-        localStorage.setItem("expiracao", expiracao.toString()); // Armazena como string
-        exibirQRCode(data.qrcode.copiaECola, data.qrcode.txid, expiracao); // Passa o valor da expiração
-      } else {
-        console.error("Erro ao gerar QR Code:", data.error);
-      }
-    } catch (error) {
-      console.error("Erro ao solicitar QR Code:", error);
+    if (!response.ok) {
+      throw new Error(`Erro de status HTTP: ${response.status}`);
     }
+
+    const data = await response.json();
+    console.log(data);  // Verifique o que é retornado da API
+
+    if (data.qrcode && data.qrcode.copiaECola) {
+      // Gerar o QR Code diretamente com o código Copia e Cola
+      expiracao = Date.now() + 600000; // 10 minutos
+      localStorage.setItem("expiracao", expiracao.toString()); // Armazena a expiração no localStorage como string
+      localStorage.setItem("qrCode", data.qrcode.copiaECola); // Armazena o código Copia e Cola
+      localStorage.setItem("txid", data.qrcode.txid); // Armazena o txid
+
+      exibirQRCode(data.qrcode.copiaECola, data.qrcode.txid, expiracao); // Passa o valor da expiração
+    } else {
+      console.error("Erro ao gerar QR Code:", data.error);
+    }
+  } catch (error) {
+    console.error("Erro ao solicitar QR Code:", error);
   }
 }
 
