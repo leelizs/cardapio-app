@@ -648,7 +648,6 @@ async function solicitarQRCode(valor) {
   }
 }
 
-
 // Função para exibir o QR Code em uma modal
 function exibirQRCode(copiaECola, txid, expiracao) {
   QRCode.toDataURL(copiaECola, function (err, url) {
@@ -659,17 +658,25 @@ function exibirQRCode(copiaECola, txid, expiracao) {
 
     console.log(url); // Verifique a URL gerada para o QR Code
 
+    // Cria a div da modal
     const qrCodeModal = document.createElement("div");
     qrCodeModal.classList.add("modal-qrcode");
 
+    // Cria a div "modal-content" que irá conter o conteúdo da modal
+    const modalContent = document.createElement("div");
+    modalContent.classList.add("modal-content");
+
+    // Cria a imagem do QR Code
     const qrCodeImg = document.createElement("img");
     qrCodeImg.src = url; // URL do QR Code gerado
     qrCodeImg.alt = "QR Code para pagamento PIX";
 
+    // Cria o botão de copiar
     const copiarBtn = document.createElement("button");
     copiarBtn.innerText = "Copiar Código";
     copiarBtn.addEventListener("click", () => copiarCopiaCola(copiaECola));
 
+    // Cria o timer para exibir a expiração
     const timerElement = document.createElement("p");
 
     let tempoRestante = expiracao - Date.now(); // Usar a expiração fixa passada como parâmetro
@@ -679,6 +686,7 @@ function exibirQRCode(copiaECola, txid, expiracao) {
       return;
     }
 
+    // Função para atualizar o timer
     const atualizarTempo = () => {
       let minutos = Math.floor(tempoRestante / 60000);
       let segundos = Math.floor((tempoRestante % 60000) / 1000);
@@ -687,6 +695,7 @@ function exibirQRCode(copiaECola, txid, expiracao) {
 
     atualizarTempo();
 
+    // Atualiza o tempo a cada segundo
     const contadorExpiracao = setInterval(() => {
       tempoRestante -= 1000;
       if (tempoRestante <= 0) {
@@ -697,6 +706,7 @@ function exibirQRCode(copiaECola, txid, expiracao) {
       }
     }, 1000);
 
+    // Cria o botão de fechar
     const fecharModal = document.createElement("button");
     fecharModal.innerText = "Fechar";
     fecharModal.addEventListener("click", () => {
@@ -708,11 +718,16 @@ function exibirQRCode(copiaECola, txid, expiracao) {
       localStorage.removeItem("expiracao");
     });
 
-    qrCodeModal.appendChild(qrCodeImg);
-    qrCodeModal.appendChild(copiarBtn);
-    qrCodeModal.appendChild(timerElement);
-    qrCodeModal.appendChild(fecharModal);
+    // Adiciona os elementos à "modal-content"
+    modalContent.appendChild(qrCodeImg);
+    modalContent.appendChild(copiarBtn);
+    modalContent.appendChild(timerElement);
+    modalContent.appendChild(fecharModal);
 
+    // Adiciona a "modal-content" à modal
+    qrCodeModal.appendChild(modalContent);
+
+    // Adiciona a modal ao corpo do documento
     document.body.appendChild(qrCodeModal);
 
     // Salva o QR Code e o txid no localStorage
@@ -721,7 +736,6 @@ function exibirQRCode(copiaECola, txid, expiracao) {
     localStorage.setItem("expiracao", expiracao); // Armazena a expiração original
   });
 }
-
 
 // Função para copiar o código Copia e Cola
 function copiarCopiaCola(codigo) {

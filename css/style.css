@@ -911,6 +911,7 @@ ul li a i {
     /* Estilo em negrito */
 }
 
+/* Estilos para a modal */
 .modal-qrcode {
     position: fixed;
     top: 0;
@@ -919,30 +920,46 @@ ul li a i {
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.7); /* Escurecer mais o fundo */
     display: flex;
-    flex-direction: column; /* Organiza os elementos de forma vertical */
     justify-content: center; /* Centraliza o conteúdo */
-    align-items: center; /* Centraliza o conteúdo horizontalmente */
+    align-items: center; /* Centraliza o conteúdo verticalmente */
     z-index: 1000;
     padding: 20px;
     overflow: hidden;
-}
-
-.modal-qrcode .expiration-text {
-    color: #fff; /* Altera a cor do texto para branco */
-    font-size: 16px; /* Tamanho da fonte do texto */
-    margin-bottom: 15px; /* Adiciona espaçamento entre o texto e o QR Code */
-}
-
-.modal-qrcode img {
+  }
+  
+  /* Estilos para o conteúdo da modal */
+  .modal-qrcode .modal-content {
+    background-color: #fff; /* Define fundo branco para o conteúdo */
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    max-width: 400px; /* Define uma largura máxima para a modal */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Adiciona sombra ao redor da modal */
+  }
+  
+  /* Estilo para o texto de expiração */
+  .modal-qrcode .expiration-text {
+    color: #000; /* Altera a cor do texto para preto */
+    font-size: 16px;
+    margin-bottom: 15px; /* Espaçamento entre o texto e o QR Code */
+  }
+  
+  /* Estilo para o QR Code */
+  .modal-qrcode img {
     max-width: 90%;
     max-height: 80%;
     object-fit: contain;
-    border: 2px solid #fff;
+    border: 2px solid #fff; /* Borda branca ao redor da imagem */
     border-radius: 10px;
-    margin-bottom: 20px; /* Adiciona espaçamento entre o QR Code e o botão de copiar/colar */
-}
-
-.modal-qrcode .copy-btn {
+    margin-bottom: 20px;
+  }
+  
+  /* Estilo para o botão de copiar */
+  .modal-qrcode .copy-btn {
     background-color: #fff;
     border: 1px solid #ccc;
     padding: 10px 15px;
@@ -950,14 +967,15 @@ ul li a i {
     font-size: 16px;
     border-radius: 5px;
     transition: background-color 0.3s;
-    margin-bottom: 20px; /* Adiciona espaçamento abaixo do botão de copiar */
-}
-
-.modal-qrcode .copy-btn:hover {
-    background-color: #f1f1f1;
-}
-
-.modal-qrcode .close-btn {
+    margin-bottom: 20px;
+  }
+  
+  .modal-qrcode .copy-btn:hover {
+    background-color: #f1f1f1; /* Altera o fundo ao passar o mouse */
+  }
+  
+  /* Estilo para o botão de fechar */
+  .modal-qrcode .close-btn {
     position: absolute;
     bottom: 20px; /* Ajusta a posição do botão de fechar para o canto inferior */
     right: 20px; /* Ajusta a posição do botão de fechar para o canto direito */
@@ -968,12 +986,12 @@ ul li a i {
     font-size: 16px;
     border-radius: 5px;
     transition: background-color 0.3s;
-}
-
-.modal-qrcode .close-btn:hover {
-    background-color: #f1f1f1;
-}
-
+  }
+  
+  .modal-qrcode .close-btn:hover {
+    background-color: #f1f1f1; /* Altera o fundo ao passar o mouse */
+  }
+  
 
 .metodo-entrega {
     color: white;
