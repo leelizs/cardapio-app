@@ -1027,13 +1027,19 @@ function capturarPedido() {
         const elementoParaCaptura = document.getElementById('conteudo');
         const totalElement = document.querySelector('.total-itens');
         const metodoEntregaDiv = document.querySelector('.metodo-entrega');
-        const originalDisplay = metodoEntregaDiv.style.display;
+        const metodoPagamentoDiv = document.querySelector('.metodo-pagamento'); // Selecione a div de métodos de pagamento
+        const originalDisplayEntrega = metodoEntregaDiv.style.display;
+        const originalDisplayPagamento = metodoPagamentoDiv.style.display;
 
         loader.style.display = 'block';
         botao.disabled = true;
         mensagemOrientacao.style.opacity = '0';
+
+        // Esconde os métodos de entrega e pagamento temporariamente
         metodoEntregaDiv.style.display = 'none';
+        metodoPagamentoDiv.style.display = 'none';
         elementoParaCaptura.classList.add('captura');
+
         const totalClone = totalElement.cloneNode(true);
         elementoParaCaptura.appendChild(totalClone);
 
@@ -1140,7 +1146,6 @@ function capturarPedido() {
               mensagemTexto += `Método de Pagamento: Não especificado\n`; // Caso nenhum esteja selecionado
             }
 
-
             const metodoEntrega = document.querySelector('input[name="metodoEntrega"]:checked');
             if (metodoEntrega) {
               mensagemTexto += metodoEntrega.id === 'retirarLocal' ? "\nMétodo de entrega: Retirar no local." : `\nMétodo de entrega: Entrega em - ${document.getElementById('enderecoEntrega').value.trim()}`;
@@ -1159,13 +1164,15 @@ function capturarPedido() {
         }).finally(() => {
           loader.style.display = 'none';
           botao.disabled = false;
-          metodoEntregaDiv.style.display = originalDisplay;
+          metodoEntregaDiv.style.display = originalDisplayEntrega;
+          metodoPagamentoDiv.style.display = originalDisplayPagamento;
           elementoParaCaptura.classList.remove('captura');
           totalClone.remove();
         });
       });
     });
 }
+
 
 // Função para finalizar a compra
 function finalizarCompra() {
