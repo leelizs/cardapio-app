@@ -809,7 +809,6 @@ function exibirQRCode(copiaECola, txid, expiracao) {
   });
 }
 
-
 // Função para copiar o código Copia e Cola
 function copiarCopiaCola(codigo) {
   navigator.clipboard.writeText(codigo)
@@ -905,54 +904,119 @@ function verificarConexao() {
 }
 
 // Função para capturar o pedido e finalizar a compra
-function finalizarECapturarPedido() {
-  // Chama a função verificarConexao e aguarda o resultado
-  verificarConexao()
-    .then(() => {
-      // Código de verificação de opções de recebimento
-      const retirarLocalChecked = document.getElementById('retirarLocal')?.checked;
-      const fazerEntregaChecked = document.getElementById('fazerEntrega')?.checked;
-      const enderecoEntrega = document.getElementById('enderecoEntrega')?.value.trim(); // Remove espaços em branco
+async function finalizarECapturarPedido() {
+  try {
+    await verificarConexao(); // Aguarda a verificação de conexão
 
-      if (!retirarLocalChecked && !fazerEntregaChecked) {
-        alert('Por favor, selecione uma opção de recebimento.');
+    // Código de verificação de opções de recebimento
+    const retirarLocalChecked = document.getElementById('retirarLocal')?.checked;
+    const fazerEntregaChecked = document.getElementById('fazerEntrega')?.checked;
+    const enderecoEntrega = document.getElementById('enderecoEntrega')?.value.trim(); // Remove espaços em branco
+
+    if (!retirarLocalChecked && !fazerEntregaChecked) {
+      alert('Por favor, selecione uma opção de recebimento.');
+      return;
+    }
+
+    if (fazerEntregaChecked && !enderecoEntrega) {
+      alert('Por favor, preencha o campo de endereço.');
+      return;
+    }
+
+    const formaEntrega = retirarLocalChecked
+      ? "Retirar no Local - Av. das Monções, 846 - Parque Recanto Monica - 08592-150"
+      : `Fazer Entrega em: ${enderecoEntrega}`;
+
+    const elementoParaCaptura = document.getElementById('conteudo');
+    const informacaoEntrega = document.createElement('p');
+    informacaoEntrega.innerText = formaEntrega;
+    informacaoEntrega.style.color = 'white';
+    elementoParaCaptura.appendChild(informacaoEntrega);
+
+    // Verifica a forma de pagamento selecionada
+    const pagamentoSelecionado = document.querySelector('input[name="metodoPagamento"]:checked');
+    
+    if (!pagamentoSelecionado) {
+      alert('Por favor, selecione um método de pagamento.');
+      return;
+    }
+
+    const metodoPagamento = pagamentoSelecionado.id;
+
+    let metodoPagamentoTexto = "";
+    if (metodoPagamento === "pagamentoPix") {
+      metodoPagamentoTexto = "Pagamento via PIX";
+      // Verifica o status do pagamento PIX
+      const txid = localStorage.getItem("txid");
+      if (!txid) {
+        alert('Erro: Transação PIX não encontrada.');
         return;
       }
 
-      // Verifica se o endereço está preenchido apenas se a opção de fazer entrega estiver selecionada
-      if (fazerEntregaChecked && !enderecoEntrega) {
-        alert('Por favor, preencha o campo de endereço.');
-        return; // Interrompe a execução se o campo estiver vazio e fazerEntregaChecked está marcado
+      const statusPagamento = await verificarStatusPagamento(txid);
+
+      if (statusPagamento !== "CONCLUIDA") {
+        alert('O pagamento via PIX ainda não foi concluído.');
+        return;
       }
+    } else if (metodoPagamento === "pagamentoDinheiro") {
+      metodoPagamentoTexto = "Pagamento em Dinheiro";
+    }
 
-      const formaEntrega = retirarLocalChecked
-        ? "Retirar no Local - Av. das Monções, 846 - Parque Recanto Monica - 08592-150"
-        : `Fazer Entrega em: ${enderecoEntrega}`;
+    // Adiciona a informação de pagamento à captura
+    const informacaoPagamento = document.createElement('p');
+    informacaoPagamento.innerText = metodoPagamentoTexto;
+    informacaoPagamento.style.color = 'white';
+    elementoParaCaptura.appendChild(informacaoPagamento);
 
-      const elementoParaCaptura = document.getElementById('conteudo');
-      const informacaoEntrega = document.createElement('p');
-      informacaoEntrega.innerText = formaEntrega;
-      informacaoEntrega.style.color = 'white';
-      elementoParaCaptura.appendChild(informacaoEntrega);
+    // Captura o pedido após garantir que há conexão
+    await capturarPedido(metodoPagamentoTexto);
 
-      // Captura o pedido após garantir que há conexão
-      capturarPedido()
-        .then(() => {
-          return verificarConexao(); // Verifica novamente antes de finalizar
-        })
-        .then(() => {
-          finalizarCompra(); // Só finaliza se a conexão for validada novamente
-          informacaoEntrega.remove();
-        })
-        .catch((error) => {
-          alert(error);
-          informacaoEntrega.remove();
-        });
-    })
-    .catch((error) => {
-      alert(error);
-      window.location.href = 'offline.html'; // Redireciona para página offline se não tiver internet
+    // Finaliza a compra
+    await verificarConexao();
+    finalizarCompra();
+    informacaoEntrega.remove(); // Remove a informação de entrega da tela após finalizar
+    informacaoPagamento.remove(); // Remove a informação de pagamento da tela após finalizar
+
+  } catch (error) {
+    alert(error);
+    window.location.href = 'offline.html';
+  }
+}
+
+// Função para verificar o status do pagamento PIX
+async function verificarStatusPagamento(txid) {
+  try {
+    const response = await fetch(`https://pagamento-lemon.vercel.app/api/verificar-status?txid=${txid}`);
+    const data = await response.json();
+
+    if (data.status === "CONCLUIDA") {
+      return "CONCLUIDA"; // Pagamento concluído
+    } else {
+      return "PENDENTE"; // Pagamento pendente
+    }
+  } catch (error) {
+    console.error('Erro ao verificar o status do pagamento:', error);
+    return "ERRO";
+  }
+}
+
+// Desabilitar a opção "Dinheiro" se o pagamento via PIX for concluído
+function desabilitarPagamentoDinheiro() {
+  const pagamentoPix = document.getElementById('pagamentoPix');
+  const pagamentoDinheiro = document.getElementById('pagamentoDinheiro');
+
+  // Verifica se o pagamento via PIX foi concluído
+  const txid = localStorage.getItem("txid");
+  if (txid) {
+    verificarStatusPagamento(txid).then(status => {
+      if (status === "CONCLUIDA") {
+        // Se o pagamento via PIX foi concluído, desabilita a opção de Dinheiro
+        pagamentoDinheiro.disabled = true;
+        alert('Pagamento via PIX concluído. Não é possível selecionar Dinheiro após finalizar um pagamento PIX.');
+      }
     });
+  }
 }
 
 function capturarPedido() {
@@ -1067,6 +1131,7 @@ function capturarPedido() {
               mensagemTexto += itemTexto + "\n";
             });
 
+            mensagemTexto += `Método de Pagamento: ${metodoPagamentoTexto}\n`;
             mensagemTexto += `${totalElement.innerText}`;
 
             const metodoEntrega = document.querySelector('input[name="metodoEntrega"]:checked');
