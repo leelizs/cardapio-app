@@ -564,7 +564,11 @@ async function solicitarQRCode(valor) {
   // Recupera as informações do localStorage
   const qrCode = localStorage.getItem("qrCode");
   const txid = localStorage.getItem("txid");
-  console.log(`TXID solicitar qr code: ${txid}`); 
+  if (txid === null) {
+    console.error("txid não encontrado no localStorage.");
+  } else {
+    console.log(`TXID recuperado do localStorage: ${txid}`);
+  }
   let expiracao = localStorage.getItem("expiracao");
 
   // Se o QR Code e a transação já foram salvos e a expiração ainda é válida, exibe o QR Code
@@ -588,7 +592,7 @@ async function solicitarQRCode(valor) {
     }
 
     const data = await response.json();
-    console.log(data);  // Verifique o que é retornado da API
+    console.log("Dados da API:", data);
 
     if (data.qrcode && data.qrcode.copiaECola) {
       // Gerar o QR Code diretamente com o código Copia e Cola
@@ -596,6 +600,7 @@ async function solicitarQRCode(valor) {
       localStorage.setItem("expiracao", expiracao.toString()); // Armazena a expiração no localStorage como string
       localStorage.setItem("qrCode", data.qrcode.copiaECola); // Armazena o código Copia e Cola
       localStorage.setItem("txid", data.qrcode.txid); // Armazena o txid
+      console.log("txid armazenado:", data.qrcode.txid); // Verifique se está correto
 
       exibirQRCode(data.qrcode.copiaECola, data.qrcode.txid, expiracao); // Passa o valor da expiração
     } else {
