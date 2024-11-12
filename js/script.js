@@ -563,13 +563,14 @@ function adicionarOpcoesPagamento(container, total) {
 async function solicitarQRCode(valor) {
   // Recupera as informações do localStorage
   const qrCode = localStorage.getItem("qrCode");
-  const txid = localStorage.getItem("txid");
+  let txid = localStorage.getItem("txid"); // txid pode ser atualizado
+  let expiracao = localStorage.getItem("expiracao");
+
   if (txid === null) {
     console.error("txid não encontrado no localStorage.");
   } else {
     console.log(`TXID recuperado do localStorage: ${txid}`);
   }
-  let expiracao = localStorage.getItem("expiracao");
 
   // Se o QR Code e a transação já foram salvos e a expiração ainda é válida, exibe o QR Code
   if (qrCode && txid && expiracao && Date.now() < parseInt(expiracao, 10)) {
@@ -600,9 +601,10 @@ async function solicitarQRCode(valor) {
       localStorage.setItem("expiracao", expiracao.toString()); // Armazena a expiração no localStorage como string
       localStorage.setItem("qrCode", data.qrcode.copiaECola); // Armazena o código Copia e Cola
       localStorage.setItem("txid", data.qrcode.txid); // Armazena o txid
-      console.log("txid armazenado:", data.qrcode.txid); // Verifique se está correto
+      txid = data.qrcode.txid; // Atualiza a variável txid
+      console.log("txid armazenado:", txid); // Verifique se está correto
 
-      exibirQRCode(data.qrcode.copiaECola, data.qrcode.txid, expiracao); // Passa o valor da expiração
+      exibirQRCode(data.qrcode.copiaECola, txid, expiracao); // Passa o valor da expiração
     } else {
       console.error("Erro ao gerar QR Code:", data.error);
     }
@@ -610,6 +612,7 @@ async function solicitarQRCode(valor) {
     console.error("Erro ao solicitar QR Code:", error);
   }
 }
+
 
 function exibirQRCode(copiaECola, txid, expiracao) {
   QRCode.toDataURL(copiaECola, function (err, url) {
@@ -718,7 +721,6 @@ function exibirQRCode(copiaECola, txid, expiracao) {
 
     // Salva o QR Code e o txid no localStorage
     localStorage.setItem("qrCode", copiaECola);
-    localStorage.setItem("txid", txid);
     localStorage.setItem("expiracao", expiracao); // Armazena a expiração original
 
     const verificarPagamento = (txid) => {
