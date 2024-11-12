@@ -564,6 +564,7 @@ async function solicitarQRCode(valor) {
   // Recupera as informações do localStorage
   const qrCode = localStorage.getItem("qrCode");
   const txid = localStorage.getItem("txid");
+  console.log(`TXID solicitar qr code: ${txid}`); 
   let expiracao = localStorage.getItem("expiracao");
 
   // Se o QR Code e a transação já foram salvos e a expiração ainda é válida, exibe o QR Code
