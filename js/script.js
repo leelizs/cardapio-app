@@ -902,20 +902,19 @@ function verificarConexao() {
   });
 }
 
-// Função para capturar o pedido e finalizar a compra
 async function finalizarECapturarPedido() {
   try {
-    await verificarConexao(); // Aguarda a verificação de conexão
+    await verificarConexao();
 
+    // Verificação de retirada/local e endereço como está feito
     const retirarLocalChecked = document.getElementById('retirarLocal')?.checked;
     const fazerEntregaChecked = document.getElementById('fazerEntrega')?.checked;
-    const enderecoEntrega = document.getElementById('enderecoEntrega')?.value.trim(); // Remove espaços em branco
+    const enderecoEntrega = document.getElementById('enderecoEntrega')?.value.trim();
 
     if (!retirarLocalChecked && !fazerEntregaChecked) {
       alert('Por favor, selecione uma opção de recebimento.');
       return;
     }
-
     if (fazerEntregaChecked && !enderecoEntrega) {
       alert('Por favor, preencha o campo de endereço.');
       return;
@@ -931,7 +930,6 @@ async function finalizarECapturarPedido() {
     informacaoEntrega.style.color = 'white';
     elementoParaCaptura.appendChild(informacaoEntrega);
 
-    // Verifica a forma de pagamento selecionada
     const pagamentoSelecionado = document.querySelector('input[name="metodoPagamento"]:checked');
 
     if (!pagamentoSelecionado) {
@@ -940,20 +938,19 @@ async function finalizarECapturarPedido() {
     }
 
     const metodoPagamento = pagamentoSelecionado.id;
-
     let metodoPagamentoTexto = "";
+
     if (metodoPagamento === "pagamentoPix") {
       metodoPagamentoTexto = "Pagamento via PIX";
-
-      // Verifica o status do pagamento PIX
       const txid = localStorage.getItem("txid");
+
       if (!txid) {
         alert('Erro: Transação PIX não encontrada.');
         return;
       }
 
-      // Verifica o pagamento via PIX até que o status seja CONCLUIDO
       let statusPagamento = await verificarPagamento(txid);
+
       while (statusPagamento !== "CONCLUIDA") {
         if (statusPagamento === null) {
           alert('Erro ao verificar o pagamento.');
@@ -964,50 +961,42 @@ async function finalizarECapturarPedido() {
         } else {
           console.log("Status desconhecido:", statusPagamento);
         }
-        // Verifica novamente após 5 segundos
         await new Promise(resolve => setTimeout(resolve, 5000));
         statusPagamento = await verificarPagamento(txid);
       }
 
-      // Remove o txid do localStorage após a confirmação do pagamento
       localStorage.removeItem("txid");
     } else if (metodoPagamento === "pagamentoDinheiro") {
       metodoPagamentoTexto = "Pagamento em Dinheiro";
     }
 
-    // Adiciona a informação de pagamento à captura
     const informacaoPagamento = document.createElement('p');
     informacaoPagamento.innerText = metodoPagamentoTexto;
     informacaoPagamento.style.color = 'white';
     elementoParaCaptura.appendChild(informacaoPagamento);
 
-    // Captura o pedido após garantir que há conexão
     await capturarPedido(metodoPagamentoTexto);
-
-    // Finaliza a compra
     finalizarCompra();
-    informacaoEntrega.remove(); // Remove a informação de entrega da tela após finalizar
-    informacaoPagamento.remove(); // Remove a informação de pagamento da tela após finalizar
+
+    informacaoEntrega.remove();
+    informacaoPagamento.remove();
 
   } catch (error) {
     console.error(error);
     alert('Erro ao processar o pedido. Você será redirecionado.');
-    window.location.href = 'offline.html'; // Redireciona para a página offline em caso de erro
+    window.location.href = 'offline.html';
   }
 }
 
-
-// Desabilitar a opção "Dinheiro" se o pagamento via PIX for concluído
+// Desabilita a opção "Dinheiro" se o PIX foi concluído
 function desabilitarPagamentoDinheiro() {
   const pagamentoPix = document.getElementById('pagamentoPix');
   const pagamentoDinheiro = document.getElementById('pagamentoDinheiro');
 
-  // Verifica se o pagamento via PIX foi concluído
   const txid = localStorage.getItem("txid");
   if (txid) {
     verificarPagamento(txid).then(status => {
       if (status === "CONCLUIDA") {
-        // Se o pagamento via PIX foi concluído, desabilita a opção de Dinheiro
         pagamentoDinheiro.disabled = true;
         console.log('Pagamento via PIX concluído. Não é possível selecionar Dinheiro após finalizar um pagamento PIX.');
       }
@@ -1016,6 +1005,10 @@ function desabilitarPagamentoDinheiro() {
     });
   }
 }
+
+// Chama a função para desabilitar o pagamento em dinheiro ao carregar a página
+document.addEventListener("DOMContentLoaded", desabilitarPagamentoDinheiro);
+
 
 function capturarPedido() {
   return verificarConexao()
@@ -1172,7 +1165,6 @@ function capturarPedido() {
       });
     });
 }
-
 
 // Função para finalizar a compra
 function finalizarCompra() {
