@@ -603,11 +603,20 @@ async function solicitarQRCode(valor) {
   }
 }
 
-// Função para solicitar o QR Code
 async function solicitarQRCode(valor) {
   const qrCode = localStorage.getItem("qrCode");
   const txid = localStorage.getItem("txid");
-  const expiracao = parseInt(localStorage.getItem("expiracao"), 10);
+  let expiracao = localStorage.getItem("expiracao");
+
+  // Verifica se a expiração foi corretamente salva
+  if (!expiracao) {
+    console.error("Expiração não encontrada.");
+    return; // Retorna caso a expiração não esteja salva
+  }
+
+  expiracao = parseInt(expiracao, 10); // Converte para número
+
+  // Verifica se a expiração é válida
   if (isNaN(expiracao)) {
     console.error("Expiração inválida.");
     return; // Evita continuar se a expiração não for válida
@@ -631,11 +640,11 @@ async function solicitarQRCode(valor) {
       }
 
       const data = await response.json();
-      console.log(data); // Verifique o que é retornado da API
+      console.log(data);  // Verifique o que é retornado da API
       if (data.qrcode && data.qrcode.copiaECola) {
         // Gerar o QR Code diretamente com o código Copia e Cola
-        const expiracao = Date.now() + 600000; // 10 minutos
-        localStorage.setItem("expiracao", expiracao);
+        expiracao = Date.now() + 600000; // 10 minutos
+        localStorage.setItem("expiracao", expiracao.toString()); // Armazena como string
         exibirQRCode(data.qrcode.copiaECola, data.qrcode.txid, expiracao); // Passa o valor da expiração
       } else {
         console.error("Erro ao gerar QR Code:", data.error);
@@ -645,6 +654,7 @@ async function solicitarQRCode(valor) {
     }
   }
 }
+
 
 // Função para exibir o QR Code em uma modal
 function exibirQRCode(copiaECola, txid, expiracao) {
