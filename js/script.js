@@ -670,7 +670,7 @@ const verificarPagamento = (txid) => {
   });
 };
 
-function exibirQRCode(copiaECola, txid, expiracao) {
+function exibirQRCode(copiaECola, txid, expiracao) { 
   let pagamentoConcluido = false; // Flag para controlar se o pagamento foi concluído
 
   QRCode.toDataURL(copiaECola, function (err, url) {
