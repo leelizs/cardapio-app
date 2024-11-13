@@ -565,8 +565,10 @@ function adicionarOpcoesPagamento(container, total) {
   desabilitarPagamentoDinheiro();
 }
 
-
 async function solicitarQRCode(valor) {
+  // Exibe o loader
+  mostrarLoader();
+  
   // Recupera as informações do localStorage
   const qrCode = localStorage.getItem("qrCode");
   let txid = localStorage.getItem("txid"); // txid pode ser atualizado
@@ -582,6 +584,7 @@ async function solicitarQRCode(valor) {
   if (qrCode && txid && expiracao && Date.now() < parseInt(expiracao, 10)) {
     //console.log("QR Code encontrado no localStorage, exibindo...");
     exibirQRCode(qrCode, txid, parseInt(expiracao, 10));
+    esconderLoader();
     return; // Termina a execução da função
   }
 
@@ -616,6 +619,9 @@ async function solicitarQRCode(valor) {
     }
   } catch (error) {
     console.error("Erro ao solicitar QR Code:", error);
+  } finally {
+    // Esconde o loader após a requisição ser concluída
+    esconderLoader();  // Função para esconder o loader
   }
 }
 
@@ -812,7 +818,6 @@ function exibirQRCode(copiaECola, txid, expiracao) {
   });
 }
 
-
 // Função para copiar o código Copia e Cola
 function copiarCopiaCola(codigo) {
   navigator.clipboard.writeText(codigo)
@@ -881,6 +886,21 @@ function adicionarOpcoesEntrega(container) {
   container.appendChild(metodoEntregaDiv); // Adiciona a seção de método de entrega ao carrinho
 }
 
+function mostrarLoader() {
+  const loader = document.getElementById('loader');
+
+  if (loader) {
+    loader.style.display = 'flex'; // Mostra o loader e o coloca no centro (usando flex)
+  }
+}
+
+function esconderLoader() {
+  const loader = document.getElementById('loader');
+  if (loader) {
+    loader.style.display = 'none'; // Oculta o loader
+  }
+}
+
 // Função para salvar os itens do carrinho no localStorage
 function saveCarrinhoToLocalStorage() {
   localStorage.setItem('produtosCarrinho', JSON.stringify(produtosCarrinho));
@@ -908,8 +928,7 @@ function verificarConexao() {
 }
 
 async function finalizarECapturarPedido() {
-  const loader = document.getElementById('loader');
-  loader.style.display = 'flex'; // Mostra o loader e o coloca no centro (usando flex)
+  mostrarLoader();
 
   try {
     await verificarConexao();
@@ -921,12 +940,12 @@ async function finalizarECapturarPedido() {
 
     if (!retirarLocalChecked && !fazerEntregaChecked) {
       alert('Por favor, selecione uma opção de recebimento.');
-      loader.style.display = 'none'; // Oculta o loader
+      esconderLoader();
       return;
     }
     if (fazerEntregaChecked && !enderecoEntrega) {
       alert('Por favor, preencha o campo de endereço.');
-      loader.style.display = 'none'; // Oculta o loader
+      esconderLoader();
       return;
     }
 
@@ -944,7 +963,7 @@ async function finalizarECapturarPedido() {
 
     if (!pagamentoSelecionado) {
       alert('Por favor, selecione um método de pagamento.');
-      loader.style.display = 'none'; // Oculta o loader
+      esconderLoader();
       return;
     }
 
@@ -957,7 +976,7 @@ async function finalizarECapturarPedido() {
 
       if (!txid) {
         alert('Erro: Transação PIX não encontrada.');
-        loader.style.display = 'none'; // Oculta o loader
+        esconderLoader();
         return;
       }
 
@@ -966,7 +985,7 @@ async function finalizarECapturarPedido() {
       while (statusPagamento !== "CONCLUIDA") {
         if (statusPagamento === null) {
           alert('Erro ao verificar o pagamento.');
-          loader.style.display = 'none'; // Oculta o loader
+          esconderLoader();
           return;
         }
         if (statusPagamento === "PENDENTE") {
@@ -1001,10 +1020,9 @@ async function finalizarECapturarPedido() {
     alert('Erro ao processar o pedido. Você será redirecionado.');
     window.location.href = 'offline.html';
   } finally {
-    loader.style.display = 'none'; // Oculta o loader no final do processo
+    esconderLoader();
   }
 }
-
 
 // Desabilita a opção "Dinheiro" se o PIX foi concluído
 function desabilitarPagamentoDinheiro() {
