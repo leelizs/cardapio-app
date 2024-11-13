@@ -77,6 +77,7 @@ let itemEscolhido; //variavel que guarda o tipo de lanche escolhido, sorvete, ha
 
 iconeCarrinho.addEventListener('click', () => { // Botão do carrinho para mostrar os pedidos
   mostrarPedidos();
+  alert("Somente é possível exibir o carrinho quando houver itens.");
 });
 
 todosButaoAdd.forEach((item) => { // Botão adicionar o item no carrinho
@@ -315,7 +316,7 @@ function mostrarPedidos() {
 
   // Verifica se há itens no carrinho antes de exibi-lo
   if (produtosCarrinho.length === 0) {
-    alert(`Ops! Tente novamente. Possíveis causas: 'Adicione algo ao carrinho para que os itens possam ser exibidos', 'Este alerta é exibido quando algo não ocorre como esperado' ou 'Item removido do carrinho.'`);
+    //alert(`Ops! Tente novamente. Possíveis causas: 'Adicione algo ao carrinho para que os itens possam ser exibidos', 'Este alerta é exibido quando algo não ocorre como esperado' ou 'Item removido do carrinho.'`);
     modalCarrinho.classList.remove("show"); // Fecha o modal se estiver aberto
     return; // Não faz nada se o carrinho estiver vazio
   } else {
@@ -568,7 +569,7 @@ function adicionarOpcoesPagamento(container, total) {
 async function solicitarQRCode(valor) {
   // Exibe o loader
   mostrarLoader();
-  
+
   // Recupera as informações do localStorage
   const qrCode = localStorage.getItem("qrCode");
   let txid = localStorage.getItem("txid"); // txid pode ser atualizado
