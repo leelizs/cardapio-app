@@ -756,8 +756,10 @@ function exibirQRCode(copiaECola, txid, expiracao) {
     progressoBarra.id = "progressoBarra";
     barraFechamento.appendChild(progressoBarra);
 
+    // Adiciona a barra de carregamento **após** a modalContent para garantir que fique visível
     qrCodeModal.appendChild(modalContent); // Modal com o QR Code
     qrCodeModal.appendChild(barraFechamento); // Barra de carregamento abaixo da modal
+
     document.body.appendChild(qrCodeModal);
 
     localStorage.setItem("qrCode", copiaECola);
@@ -788,6 +790,11 @@ function exibirQRCode(copiaECola, txid, expiracao) {
         mensagemConfirmacaoPagamento.appendChild(texto);
 
         modalContent.appendChild(mensagemConfirmacaoPagamento);
+
+        // Remover o botão "Fechar" quando o pagamento for confirmado
+        if (fecharModal) {
+          fecharModal.remove();
+        }
 
         // Inicia a animação da barra e fecha a modal após 7 segundos
         progressoBarra.style.width = "100%";
