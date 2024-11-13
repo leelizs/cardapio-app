@@ -1140,11 +1140,6 @@ ul li a i {
 
 /* Responsividade */
 @media (max-width: 600px) {
-    .produto-modal {
-        width: 95%;
-        /* Reduzir um pouco mais em telas pequenas */
-    }
-
     .salgado-row {
         flex-direction: row;
         /* Manter na mesma linha para dispositivos móveis */

@@ -890,20 +890,25 @@ function verificarConexao() {
 }
 
 async function finalizarECapturarPedido() {
+  const loader = document.getElementById('loader');
+  loader.style.display = 'block'; // Mostra o loader
+
   try {
     await verificarConexao();
 
-    // Verificação de retirada/local e endereço
+    // Verificação de retirada/local e endereço como está feito
     const retirarLocalChecked = document.getElementById('retirarLocal')?.checked;
     const fazerEntregaChecked = document.getElementById('fazerEntrega')?.checked;
     const enderecoEntrega = document.getElementById('enderecoEntrega')?.value.trim();
 
     if (!retirarLocalChecked && !fazerEntregaChecked) {
       alert('Por favor, selecione uma opção de recebimento.');
+      loader.style.display = 'none'; // Oculta o loader
       return;
     }
     if (fazerEntregaChecked && !enderecoEntrega) {
       alert('Por favor, preencha o campo de endereço.');
+      loader.style.display = 'none'; // Oculta o loader
       return;
     }
 
@@ -912,14 +917,7 @@ async function finalizarECapturarPedido() {
       : `Fazer Entrega em: ${enderecoEntrega}`;
 
     const elementoParaCaptura = document.getElementById('conteudo');
-
-    // Remover qualquer informação de entrega anterior
-    const informacaoEntregaAnterior = document.getElementById("informacaoEntrega");
-    if (informacaoEntregaAnterior) informacaoEntregaAnterior.remove();
-
-    // Adicionar nova informação de entrega
     const informacaoEntrega = document.createElement('p');
-    informacaoEntrega.id = "informacaoEntrega";
     informacaoEntrega.innerText = formaEntrega;
     informacaoEntrega.style.color = 'white';
     elementoParaCaptura.appendChild(informacaoEntrega);
@@ -928,6 +926,7 @@ async function finalizarECapturarPedido() {
 
     if (!pagamentoSelecionado) {
       alert('Por favor, selecione um método de pagamento.');
+      loader.style.display = 'none'; // Oculta o loader
       return;
     }
 
@@ -940,6 +939,7 @@ async function finalizarECapturarPedido() {
 
       if (!txid) {
         alert('Erro: Transação PIX não encontrada.');
+        loader.style.display = 'none'; // Oculta o loader
         return;
       }
 
@@ -948,6 +948,7 @@ async function finalizarECapturarPedido() {
       while (statusPagamento !== "CONCLUIDA") {
         if (statusPagamento === null) {
           alert('Erro ao verificar o pagamento.');
+          loader.style.display = 'none'; // Oculta o loader
           return;
         }
         if (statusPagamento === "PENDENTE") {
@@ -966,19 +967,13 @@ async function finalizarECapturarPedido() {
       metodoPagamentoTexto = "Pagamento em Dinheiro";
     }
 
-    // Remover qualquer informação de pagamento anterior
-    const informacaoPagamentoAnterior = document.getElementById("informacaoPagamento");
-    if (informacaoPagamentoAnterior) informacaoPagamentoAnterior.remove();
-
-    // Adicionar nova informação de pagamento
     const informacaoPagamento = document.createElement('p');
-    informacaoPagamento.id = "informacaoPagamento";
     informacaoPagamento.innerText = metodoPagamentoTexto;
     informacaoPagamento.style.color = 'white';
     elementoParaCaptura.appendChild(informacaoPagamento);
 
     await capturarPedido(metodoPagamentoTexto);
-    finalizarCompra();
+    await finalizarCompra();
 
     informacaoEntrega.remove();
     informacaoPagamento.remove();
@@ -987,6 +982,8 @@ async function finalizarECapturarPedido() {
     console.error(error);
     alert('Erro ao processar o pedido. Você será redirecionado.');
     window.location.href = 'offline.html';
+  } finally {
+    loader.style.display = 'none'; // Oculta o loader no final do processo
   }
 }
 
