@@ -741,6 +741,8 @@ function exibirQRCode(copiaECola, txid, expiracao) {
       // Limpar o localStorage ao fechar a modal
       localStorage.removeItem("qrCode");
       localStorage.removeItem("expiracao");
+
+      document.getElementById("pagamentoPix").checked = false;
     });
 
     // Adiciona os elementos à "modal-content"
@@ -891,7 +893,7 @@ async function finalizarECapturarPedido() {
   try {
     await verificarConexao();
 
-    // Verificação de retirada/local e endereço como está feito
+    // Verificação de retirada/local e endereço
     const retirarLocalChecked = document.getElementById('retirarLocal')?.checked;
     const fazerEntregaChecked = document.getElementById('fazerEntrega')?.checked;
     const enderecoEntrega = document.getElementById('enderecoEntrega')?.value.trim();
@@ -910,7 +912,14 @@ async function finalizarECapturarPedido() {
       : `Fazer Entrega em: ${enderecoEntrega}`;
 
     const elementoParaCaptura = document.getElementById('conteudo');
+
+    // Remover qualquer informação de entrega anterior
+    const informacaoEntregaAnterior = document.getElementById("informacaoEntrega");
+    if (informacaoEntregaAnterior) informacaoEntregaAnterior.remove();
+
+    // Adicionar nova informação de entrega
     const informacaoEntrega = document.createElement('p');
+    informacaoEntrega.id = "informacaoEntrega";
     informacaoEntrega.innerText = formaEntrega;
     informacaoEntrega.style.color = 'white';
     elementoParaCaptura.appendChild(informacaoEntrega);
@@ -957,7 +966,13 @@ async function finalizarECapturarPedido() {
       metodoPagamentoTexto = "Pagamento em Dinheiro";
     }
 
+    // Remover qualquer informação de pagamento anterior
+    const informacaoPagamentoAnterior = document.getElementById("informacaoPagamento");
+    if (informacaoPagamentoAnterior) informacaoPagamentoAnterior.remove();
+
+    // Adicionar nova informação de pagamento
     const informacaoPagamento = document.createElement('p');
+    informacaoPagamento.id = "informacaoPagamento";
     informacaoPagamento.innerText = metodoPagamentoTexto;
     informacaoPagamento.style.color = 'white';
     elementoParaCaptura.appendChild(informacaoPagamento);
@@ -974,6 +989,7 @@ async function finalizarECapturarPedido() {
     window.location.href = 'offline.html';
   }
 }
+
 
 // Desabilita a opção "Dinheiro" se o PIX foi concluído
 function desabilitarPagamentoDinheiro() {
@@ -1000,7 +1016,6 @@ function desabilitarPagamentoDinheiro() {
     });
   }
 }
-
 
 function capturarPedido() {
   return verificarConexao()
@@ -1126,7 +1141,7 @@ function capturarPedido() {
             const metodoPagamentoEscolhido = document.querySelector('input[name="metodoPagamento"]:checked');
             if (metodoPagamentoEscolhido) {
               const metodoPagamentoTexto = metodoPagamentoEscolhido.nextElementSibling.textContent.trim();
-              mensagemTexto += `Método de Pagamento: ${metodoPagamentoTexto}\n`;
+              mensagemTexto += `\nMétodo de Pagamento: ${metodoPagamentoTexto}\n`;
             } else {
               mensagemTexto += `Método de Pagamento: Não especificado\n`; // Caso nenhum esteja selecionado
             }
