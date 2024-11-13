@@ -802,6 +802,8 @@ function exibirQRCode(copiaECola, txid, expiracao) {
 
         setTimeout(() => {
           document.body.removeChild(qrCodeModal);
+          localStorage.removeItem("qrCode");
+          localStorage.removeItem("expiracao");
         }, 7000);
       }
     }).catch(error => {
