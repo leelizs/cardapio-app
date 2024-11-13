@@ -670,7 +670,7 @@ const verificarPagamento = (txid) => {
   });
 };
 
-function exibirQRCode(copiaECola, txid, expiracao) { 
+function exibirQRCode(copiaECola, txid, expiracao) {
   let pagamentoConcluido = false; // Flag para controlar se o pagamento foi concluído
 
   QRCode.toDataURL(copiaECola, function (err, url) {
@@ -797,7 +797,9 @@ function exibirQRCode(copiaECola, txid, expiracao) {
         }
 
         // Inicia a animação da barra e fecha a modal após 7 segundos
+        progressoBarra.style.transition = "width 7s ease"; // Adiciona uma transição para animar a largura da barra
         progressoBarra.style.width = "100%";
+
         setTimeout(() => {
           document.body.removeChild(qrCodeModal);
         }, 7000);
