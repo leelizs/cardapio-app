@@ -727,6 +727,7 @@ function exibirQRCode(copiaECola, txid, expiracao) {
       }
     }, 1000);
 
+    // Cria o botão de fechar, mas somente se o pagamento não foi concluído
     const fecharModal = document.createElement("button");
     fecharModal.innerText = "Fechar";
     fecharModal.addEventListener("click", () => {
@@ -741,40 +742,18 @@ function exibirQRCode(copiaECola, txid, expiracao) {
     modalContent.appendChild(qrCodeImg);
     modalContent.appendChild(copiarBtn);
     modalContent.appendChild(timerElement);
-    modalContent.appendChild(fecharModal);
 
-    // Cria a mensagem de confirmação de pagamento
-    const mensagemConfirmacaoPagamento = document.createElement("div");
-    mensagemConfirmacaoPagamento.id = "mensagemConfirmacaoPagamento";
-    mensagemConfirmacaoPagamento.style.display = "none";
-    mensagemConfirmacaoPagamento.style.textAlign = "center";
-
-    const icon = document.createElement("span");
-    icon.style.fontSize = "30px";
-    icon.style.color = "green";
-    icon.innerText = "✔️";
-
-    const texto = document.createElement("p");
-    texto.style.fontSize = "18px";
-    texto.style.color = "#4CAF50";
-    texto.innerText = "Pagamento recebido com sucesso!";
-
-    mensagemConfirmacaoPagamento.appendChild(icon);
-    mensagemConfirmacaoPagamento.appendChild(texto);
-
-    modalContent.appendChild(mensagemConfirmacaoPagamento);
+    // Adiciona o botão de fechar apenas se o pagamento não foi concluído
+    if (!pagamentoConcluido) {
+      modalContent.appendChild(fecharModal);
+    }
 
     // Cria a barra de carregamento para indicar o fechamento
     const barraFechamento = document.createElement("div");
-    barraFechamento.style.width = "100%";
-    barraFechamento.style.height = "5px";
-    barraFechamento.style.backgroundColor = "#ddd";
+    barraFechamento.id = "barraFechamento";
 
     const progressoBarra = document.createElement("div");
-    progressoBarra.style.width = "0%";
-    progressoBarra.style.height = "100%";
-    progressoBarra.style.backgroundColor = "#4CAF50";
-    progressoBarra.style.transition = "width 7s linear";
+    progressoBarra.id = "progressoBarra";
     barraFechamento.appendChild(progressoBarra);
 
     qrCodeModal.appendChild(modalContent); // Modal com o QR Code
@@ -788,10 +767,27 @@ function exibirQRCode(copiaECola, txid, expiracao) {
       if (status === "CONCLUIDA") {
         pagamentoConcluido = true;
         console.log("Pagamento concluído.");
-        mensagemConfirmacaoPagamento.style.display = "block";
-        qrCodeImg.style.display = "none";
-        copiarBtn.style.display = "none";
-        timerElement.style.display = "none";
+
+        // Cria a mensagem de confirmação de pagamento
+        const mensagemConfirmacaoPagamento = document.createElement("div");
+        mensagemConfirmacaoPagamento.id = "mensagemConfirmacaoPagamento";
+        mensagemConfirmacaoPagamento.style.display = "block"; // Exibe a confirmação de pagamento
+        mensagemConfirmacaoPagamento.style.textAlign = "center";
+
+        const icon = document.createElement("span");
+        icon.style.fontSize = "30px";
+        icon.style.color = "green";
+        icon.innerText = "✔️";
+
+        const texto = document.createElement("p");
+        texto.style.fontSize = "18px";
+        texto.style.color = "#4CAF50";
+        texto.innerText = "Pagamento recebido com sucesso!";
+
+        mensagemConfirmacaoPagamento.appendChild(icon);
+        mensagemConfirmacaoPagamento.appendChild(texto);
+
+        modalContent.appendChild(mensagemConfirmacaoPagamento);
 
         // Inicia a animação da barra e fecha a modal após 7 segundos
         progressoBarra.style.width = "100%";
