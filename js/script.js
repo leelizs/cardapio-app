@@ -670,7 +670,6 @@ const verificarPagamento = (txid) => {
   });
 };
 
-// Função exibirQRCode
 function exibirQRCode(copiaECola, txid, expiracao) {
   let pagamentoConcluido = false; // Flag para controlar se o pagamento foi concluído
 
@@ -778,8 +777,8 @@ function exibirQRCode(copiaECola, txid, expiracao) {
     progressoBarra.style.transition = "width 7s linear";
     barraFechamento.appendChild(progressoBarra);
 
-    qrCodeModal.appendChild(modalContent);
-    qrCodeModal.appendChild(barraFechamento);
+    qrCodeModal.appendChild(modalContent); // Modal com o QR Code
+    qrCodeModal.appendChild(barraFechamento); // Barra de carregamento abaixo da modal
     document.body.appendChild(qrCodeModal);
 
     localStorage.setItem("qrCode", copiaECola);
@@ -903,7 +902,7 @@ function verificarConexao() {
 
 async function finalizarECapturarPedido() {
   const loader = document.getElementById('loader');
-  loader.style.display = 'block'; // Mostra o loader
+  loader.style.display = 'flex'; // Mostra o loader e o coloca no centro (usando flex)
 
   try {
     await verificarConexao();
