@@ -670,16 +670,15 @@ const verificarPagamento = (txid) => {
   });
 };
 
-
 // Função exibirQRCode
 function exibirQRCode(copiaECola, txid, expiracao) {
+  let pagamentoConcluido = false; // Flag para controlar se o pagamento foi concluído
+
   QRCode.toDataURL(copiaECola, function (err, url) {
     if (err) {
       console.error("Erro ao gerar QR Code:", err);
       return;
     }
-
-    console.log(url); // Verifique a URL gerada para o QR Code
 
     // Cria a div da modal
     const qrCodeModal = document.createElement("div");
@@ -691,28 +690,26 @@ function exibirQRCode(copiaECola, txid, expiracao) {
 
     // Cria a imagem do QR Code
     const qrCodeImg = document.createElement("img");
-    qrCodeImg.src = url; // URL do QR Code gerado
+    qrCodeImg.src = url;
     qrCodeImg.alt = "QR Code para pagamento PIX";
-    qrCodeImg.id = "qrCodeImage"; // Atribui um ID para poder ocultá-lo posteriormente
+    qrCodeImg.id = "qrCodeImage";
 
     // Cria o botão de copiar
     const copiarBtn = document.createElement("button");
     copiarBtn.innerText = "Copiar Código";
-    copiarBtn.id = "copiarBtn"; // Atribui um ID para poder ocultá-lo posteriormente
+    copiarBtn.id = "copiarBtn";
     copiarBtn.addEventListener("click", () => copiarCopiaCola(copiaECola));
 
     // Cria o timer para exibir a expiração
     const timerElement = document.createElement("p");
-    timerElement.id = "timer"; // Atribui um ID para poder ocultá-lo posteriormente
-
-    let tempoRestante = expiracao - Date.now(); // Usar a expiração fixa passada como parâmetro
+    timerElement.id = "timer";
+    let tempoRestante = expiracao - Date.now();
 
     if (tempoRestante <= 0) {
       alert("QR Code expirado!");
       return;
     }
 
-    // Função para atualizar o timer
     const atualizarTempo = () => {
       let minutos = Math.floor(tempoRestante / 60000);
       let segundos = Math.floor((tempoRestante % 60000) / 1000);
@@ -721,7 +718,6 @@ function exibirQRCode(copiaECola, txid, expiracao) {
 
     atualizarTempo();
 
-    // Atualiza o tempo a cada segundo
     const contadorExpiracao = setInterval(() => {
       tempoRestante -= 1000;
       if (tempoRestante <= 0) {
@@ -732,20 +728,17 @@ function exibirQRCode(copiaECola, txid, expiracao) {
       }
     }, 1000);
 
-    // Cria o botão de fechar
     const fecharModal = document.createElement("button");
     fecharModal.innerText = "Fechar";
     fecharModal.addEventListener("click", () => {
       document.body.removeChild(qrCodeModal);
-
-      // Limpar o localStorage ao fechar a modal
       localStorage.removeItem("qrCode");
       localStorage.removeItem("expiracao");
-
-      document.getElementById("pagamentoPix").checked = false;
+      if (!pagamentoConcluido) {
+        document.getElementById("pagamentoPix").checked = false;
+      }
     });
 
-    // Adiciona os elementos à "modal-content"
     modalContent.appendChild(qrCodeImg);
     modalContent.appendChild(copiarBtn);
     modalContent.appendChild(timerElement);
@@ -770,30 +763,49 @@ function exibirQRCode(copiaECola, txid, expiracao) {
     mensagemConfirmacaoPagamento.appendChild(icon);
     mensagemConfirmacaoPagamento.appendChild(texto);
 
-    // Adiciona a mensagem de confirmação ao conteúdo da modal
     modalContent.appendChild(mensagemConfirmacaoPagamento);
 
-    // Adiciona a "modal-content" à modal
-    qrCodeModal.appendChild(modalContent);
+    // Cria a barra de carregamento para indicar o fechamento
+    const barraFechamento = document.createElement("div");
+    barraFechamento.style.width = "100%";
+    barraFechamento.style.height = "5px";
+    barraFechamento.style.backgroundColor = "#ddd";
 
-    // Adiciona a modal ao corpo do documento
+    const progressoBarra = document.createElement("div");
+    progressoBarra.style.width = "0%";
+    progressoBarra.style.height = "100%";
+    progressoBarra.style.backgroundColor = "#4CAF50";
+    progressoBarra.style.transition = "width 7s linear";
+    barraFechamento.appendChild(progressoBarra);
+
+    qrCodeModal.appendChild(modalContent);
+    qrCodeModal.appendChild(barraFechamento);
     document.body.appendChild(qrCodeModal);
 
-    // Salva o QR Code e o txid no localStorage
     localStorage.setItem("qrCode", copiaECola);
-    localStorage.setItem("expiracao", expiracao); // Armazena a expiração original
+    localStorage.setItem("expiracao", expiracao);
 
-    // Agora passa o txid para a função verificarPagamento
     verificarPagamento(txid).then(status => {
       if (status === "CONCLUIDA") {
+        pagamentoConcluido = true;
         console.log("Pagamento concluído.");
+        mensagemConfirmacaoPagamento.style.display = "block";
+        qrCodeImg.style.display = "none";
+        copiarBtn.style.display = "none";
+        timerElement.style.display = "none";
+
+        // Inicia a animação da barra e fecha a modal após 7 segundos
+        progressoBarra.style.width = "100%";
+        setTimeout(() => {
+          document.body.removeChild(qrCodeModal);
+        }, 7000);
       }
     }).catch(error => {
       console.error("Erro ao verificar status de pagamento:", error);
     });
-
   });
 }
+
 
 // Função para copiar o código Copia e Cola
 function copiarCopiaCola(codigo) {
