@@ -76,8 +76,11 @@ let itemEscolhido; //variavel que guarda o tipo de lanche escolhido, sorvete, ha
 //EVENTOS ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 iconeCarrinho.addEventListener('click', () => { // Botão do carrinho para mostrar os pedidos
-  mostrarPedidos();
-  alert("Somente é possível exibir o carrinho quando houver itens.");
+  if (produtosCarrinho.length === 0) {
+    alert("Somente é possível exibir o carrinho quando houver itens.");
+  } else {
+    mostrarPedidos();
+  }
 });
 
 todosButaoAdd.forEach((item) => { // Botão adicionar o item no carrinho
