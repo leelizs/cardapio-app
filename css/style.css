@@ -920,15 +920,20 @@ ul li a i {
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.7);
-    /* Escurecer mais o fundo */
     display: flex;
     justify-content: center;
-    /* Centraliza o conteúdo */
     align-items: center;
-    /* Centraliza o conteúdo verticalmente */
     z-index: 1000;
     padding: 20px;
     overflow: hidden;
+    flex-direction: column;
+    /* Para empilhar a modal e a barra de progresso */
+}
+
+/* Para garantir que a modal não sobreponha a barra de progresso */
+.modal-content {
+    margin-bottom: 20px;
+    /* Espaçamento abaixo da modal */
 }
 
 /* Estilos para o conteúdo da modal */
@@ -1005,7 +1010,6 @@ ul li a i {
     background-color: #f1f1f1;
     /* Altera o fundo ao passar o mouse */
 }
-
 
 .metodo-entrega {
     color: white;

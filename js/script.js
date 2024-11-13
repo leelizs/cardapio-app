@@ -575,12 +575,12 @@ async function solicitarQRCode(valor) {
   if (txid === null) {
     console.error("txid não encontrado no localStorage.");
   } else {
-    console.log(`TXID recuperado do localStorage: ${txid}`);
+    //console.log(`TXID recuperado do localStorage: ${txid}`);
   }
 
   // Se o QR Code e a transação já foram salvos e a expiração ainda é válida, exibe o QR Code
   if (qrCode && txid && expiracao && Date.now() < parseInt(expiracao, 10)) {
-    console.log("QR Code encontrado no localStorage, exibindo...");
+    //console.log("QR Code encontrado no localStorage, exibindo...");
     exibirQRCode(qrCode, txid, parseInt(expiracao, 10));
     return; // Termina a execução da função
   }
@@ -599,7 +599,7 @@ async function solicitarQRCode(valor) {
     }
 
     const data = await response.json();
-    console.log("Dados da API:", data);
+    //console.log("Dados da API:", data);
 
     if (data.qrcode && data.qrcode.copiaECola) {
       // Gerar o QR Code diretamente com o código Copia e Cola
@@ -608,7 +608,7 @@ async function solicitarQRCode(valor) {
       localStorage.setItem("qrCode", data.qrcode.copiaECola); // Armazena o código Copia e Cola
       localStorage.setItem("txid", data.qrcode.txid); // Armazena o txid
       txid = data.qrcode.txid; // Atualiza a variável txid
-      console.log("txid armazenado:", txid); // Verifique se está correto
+      //console.log("txid armazenado:", txid); // Verifique se está correto
 
       exibirQRCode(data.qrcode.copiaECola, txid, expiracao); // Passa o valor da expiração
     } else {
@@ -768,7 +768,7 @@ function exibirQRCode(copiaECola, txid, expiracao) {
     verificarPagamento(txid).then(status => {
       if (status === "CONCLUIDA") {
         pagamentoConcluido = true;
-        console.log("Pagamento concluído.");
+        //console.log("Pagamento concluído.");
 
         // Cria a mensagem de confirmação de pagamento
         const mensagemConfirmacaoPagamento = document.createElement("div");
@@ -1011,18 +1011,17 @@ function desabilitarPagamentoDinheiro() {
   const pagamentoDinheiro = document.getElementById('pagamentoDinheiro');
   const txid = localStorage.getItem("txid");
 
-  console.log("TXID:", txid); // Verifica se o TXID está presente
+  //console.log("TXID:", txid); // Verifica se o TXID está presente
 
   if (txid) {
     verificarPagamento(txid).then(status => {
-      console.log("Status do pagamento:", status); // Verifique o status retornado
+      //console.log("Status do pagamento:", status); // Verifique o status retornado
       if (status === "CONCLUIDA") {
         // Desativa a opção de pagamento em dinheiro
         if (pagamentoDinheiro) {
           pagamentoDinheiro.disabled = true;
-          console.log('Pagamento via PIX concluído. Não é possível selecionar Dinheiro após finalizar um pagamento PIX.');
         } else {
-          console.warn("Elemento pagamentoDinheiro não encontrado no DOM.");
+          //console.warn("Elemento pagamentoDinheiro não encontrado no DOM.");
         }
       }
     }).catch(err => {
@@ -1227,7 +1226,7 @@ function loadCarrinhoFromLocalStorage() {
       keyCarrinho = produtosCarrinho.length; // Atualiza o índice do carrinho
       contagemCarrinho(); // Atualiza a contagem
       mostrarPedidos(); // Exibe os pedidos carregados
-      console.log('Carrinho carregado:', produtosCarrinho); // Adicionado para debug
+      //console.log('Carrinho carregado:', produtosCarrinho); // Adicionado para debug
       alert("Algo inesperado ocorreu, mas salvamos o seu último pedido.");
     } catch (error) {
       console.error('Erro ao carregar o carrinho do localStorage:', error);
@@ -1247,14 +1246,14 @@ function loadCarrinhoFromLocalStorage() {
       // Se o QR Code ainda não expirou, exibe o QR Code na página
       exibirQRCode(qrCode, txid, expiracao); // Passa o tempo de expiração
     } else {
-      console.log("QR Code expirado.");
+      //console.log("QR Code expirado.");
       // Limpar os dados expirados
       localStorage.removeItem('qrCode');
       localStorage.removeItem('txid');
       localStorage.removeItem('expiracao');
     }
   } else {
-    console.log("Não há QR Code armazenado ou dados de pagamento.");
+    //console.log("Não há QR Code armazenado ou dados de pagamento.");
   }
 
 
