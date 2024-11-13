@@ -1267,6 +1267,10 @@ function capturarPedido() {
           metodoPagamentoDiv.style.display = originalDisplayPagamento;
           elementoParaCaptura.classList.remove('captura');
           totalClone.remove();
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+          });
         });
       });
     });
@@ -1360,7 +1364,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // Chama a função para desabilitar o pagamento em dinheiro ao carregar a página
   desabilitarPagamentoDinheiro();
 });
-
 
 // Adiciona um evento de clique a todos os elementos com a classe "scroll-icon"
 document.querySelectorAll(".scroll-icon").forEach(icon => {
