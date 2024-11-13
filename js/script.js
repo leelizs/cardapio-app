@@ -73,15 +73,9 @@ let keyCarrinho = 0; //variavel que guarda o index da lista do carrinho
 let keyEscolhido;  //variavel que guarda qual item voce clicou para comprar
 let itemEscolhido; //variavel que guarda o tipo de lanche escolhido, sorvete, hamburguer etc...
 
-//EVENTOS ///////////////////////////////////////////////////////////////////////////////////////////////////
+let pagamentoConcluido = false; // Flag para controlar se o pagamento foi concluído
 
-iconeCarrinho.addEventListener('click', () => { // Botão do carrinho para mostrar os pedidos
-  if (produtosCarrinho.length === 0) {
-    mostrarModal("Somente é possível exibir o carrinho quando houver itens.");
-  } else {
-    mostrarPedidos();
-  }
-});
+//EVENTOS ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 function mostrarModal(mensagem) {
   // Cria o fundo da modal
@@ -132,6 +126,14 @@ function mostrarModal(mensagem) {
   document.body.appendChild(modalOverlay);
 }
 
+iconeCarrinho.addEventListener('click', () => { // Botão do carrinho para mostrar os pedidos
+  if (produtosCarrinho.length === 0) {
+    mostrarModal("Somente é possível exibir o carrinho quando houver itens.");
+  } else {
+    mostrarPedidos();
+  }
+});
+
 todosButaoAdd.forEach((item) => { // Botão adicionar o item no carrinho
   item.addEventListener('click', () => {
     addCarrinho(keyEscolhido, itemEscolhido);
@@ -150,6 +152,12 @@ setaFecharCarrinho.addEventListener('click', () => { // Botão da seta fechar o 
 botaoAddMaisItens.addEventListener('click', () => { // Botão adicionar mais itens
   document.querySelector('.carrinho').style.animationName = 'slideout';
   setTimeout(() => {
+    // Verifica se o pagamento foi concluído
+    if (pagamentoConcluido) {
+      mostrarModal("Não é possível adicionar itens ao carrinho após o pagamento.");
+      return; // Impede a execução do restante do código
+    }
+
     modalCarrinho.classList.remove("show");
   }, 500);
 });
@@ -532,6 +540,14 @@ function mostrarPedidos() {
 
     // Evento para remover item do carrinho
     carrinhoButton.addEventListener('click', () => {
+
+      // Verifica se o pagamento foi concluído
+      if (pagamentoConcluido) {
+        mostrarModal("Não é possível remover itens do carrinho após o pagamento.");
+        return; // Impede a execução do restante do código
+      }
+
+      // Remover o item do carrinho
       produtosCarrinho.splice(index, 1); // Remove o item do carrinho
 
       // Verifica se o carrinho ficou vazio após a remoção
@@ -730,7 +746,6 @@ const verificarPagamento = (txid) => {
 };
 
 function exibirQRCode(copiaECola, txid, expiracao) {
-  let pagamentoConcluido = false; // Flag para controlar se o pagamento foi concluído
 
   QRCode.toDataURL(copiaECola, function (err, url) {
     if (err) {
