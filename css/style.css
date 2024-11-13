@@ -919,18 +919,22 @@ ul li a i {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.7); /* Escurecer mais o fundo */
+    background-color: rgba(0, 0, 0, 0.7);
+    /* Escurecer mais o fundo */
     display: flex;
-    justify-content: center; /* Centraliza o conteúdo */
-    align-items: center; /* Centraliza o conteúdo verticalmente */
+    justify-content: center;
+    /* Centraliza o conteúdo */
+    align-items: center;
+    /* Centraliza o conteúdo verticalmente */
     z-index: 1000;
     padding: 20px;
     overflow: hidden;
-  }
-  
-  /* Estilos para o conteúdo da modal */
-  .modal-qrcode .modal-content {
-    background-color: #fff; /* Define fundo branco para o conteúdo */
+}
+
+/* Estilos para o conteúdo da modal */
+.modal-qrcode .modal-content {
+    background-color: #fff;
+    /* Define fundo branco para o conteúdo */
     padding: 20px;
     border-radius: 10px;
     display: flex;
@@ -938,29 +942,34 @@ ul li a i {
     align-items: center;
     justify-content: center;
     width: 90%;
-    max-width: 400px; /* Define uma largura máxima para a modal */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Adiciona sombra ao redor da modal */
-  }
-  
-  /* Estilo para o texto de expiração */
-  .modal-qrcode .expiration-text {
-    color: #000; /* Altera a cor do texto para preto */
+    max-width: 400px;
+    /* Define uma largura máxima para a modal */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    /* Adiciona sombra ao redor da modal */
+}
+
+/* Estilo para o texto de expiração */
+.modal-qrcode .expiration-text {
+    color: #000;
+    /* Altera a cor do texto para preto */
     font-size: 16px;
-    margin-bottom: 15px; /* Espaçamento entre o texto e o QR Code */
-  }
-  
-  /* Estilo para o QR Code */
-  .modal-qrcode img {
+    margin-bottom: 15px;
+    /* Espaçamento entre o texto e o QR Code */
+}
+
+/* Estilo para o QR Code */
+.modal-qrcode img {
     max-width: 90%;
     max-height: 80%;
     object-fit: contain;
-    border: 2px solid #fff; /* Borda branca ao redor da imagem */
+    border: 2px solid #fff;
+    /* Borda branca ao redor da imagem */
     border-radius: 10px;
     margin-bottom: 20px;
-  }
-  
-  /* Estilo para o botão de copiar */
-  .modal-qrcode .copy-btn {
+}
+
+/* Estilo para o botão de copiar */
+.modal-qrcode .copy-btn {
     background-color: #fff;
     border: 1px solid #ccc;
     padding: 10px 15px;
@@ -969,17 +978,20 @@ ul li a i {
     border-radius: 5px;
     transition: background-color 0.3s;
     margin-bottom: 20px;
-  }
-  
-  .modal-qrcode .copy-btn:hover {
-    background-color: #f1f1f1; /* Altera o fundo ao passar o mouse */
-  }
-  
-  /* Estilo para o botão de fechar */
-  .modal-qrcode .close-btn {
+}
+
+.modal-qrcode .copy-btn:hover {
+    background-color: #f1f1f1;
+    /* Altera o fundo ao passar o mouse */
+}
+
+/* Estilo para o botão de fechar */
+.modal-qrcode .close-btn {
     position: absolute;
-    bottom: 20px; /* Ajusta a posição do botão de fechar para o canto inferior */
-    right: 20px; /* Ajusta a posição do botão de fechar para o canto direito */
+    bottom: 20px;
+    /* Ajusta a posição do botão de fechar para o canto inferior */
+    right: 20px;
+    /* Ajusta a posição do botão de fechar para o canto direito */
     background-color: #fff;
     border: 1px solid #ccc;
     padding: 10px 15px;
@@ -987,12 +999,13 @@ ul li a i {
     font-size: 16px;
     border-radius: 5px;
     transition: background-color 0.3s;
-  }
-  
-  .modal-qrcode .close-btn:hover {
-    background-color: #f1f1f1; /* Altera o fundo ao passar o mouse */
-  }
-  
+}
+
+.modal-qrcode .close-btn:hover {
+    background-color: #f1f1f1;
+    /* Altera o fundo ao passar o mouse */
+}
+
 
 .metodo-entrega {
     color: white;
@@ -1993,28 +2006,57 @@ footer {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7); /* Fundo escuro */
-    display: none; /* Inicialmente escondido */
+    background-color: rgba(0, 0, 0, 0.7);
+    /* Fundo escuro */
+    display: none;
+    /* Inicialmente escondido */
     justify-content: center;
     align-items: center;
-    z-index: 9999; /* Fica sobre os outros elementos */
-  }
-  
-  #loader .spinner {
-    border: 4px solid #f3f3f3; /* Cor do fundo da borda */
-    border-top: 4px solid #371200; /* Cor da borda superior */
+    z-index: 9999;
+    /* Fica sobre os outros elementos */
+}
+
+#loader .spinner {
+    border: 4px solid #f3f3f3;
+    /* Cor do fundo da borda */
+    border-top: 4px solid #371200;
+    /* Cor da borda superior */
     border-radius: 50%;
     width: 50px;
     height: 50px;
     animation: spin 2s linear infinite;
-  }
-  
-  /* Animação do loader */
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-  
+}
+
+/* Animação do loader */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Estilo para a barra de carregamento */
+#barraFechamento {
+    width: 100%;
+    height: 10px;
+    background-color: #f3f3f3;
+    border-radius: 5px;
+    margin-top: 20px;
+    position: relative;
+}
+
+/* Estilo para a barra de progresso */
+#progressoBarra {
+    height: 100%;
+    width: 0%;
+    background-color: #4caf50;
+    border-radius: 5px;
+    transition: width 0.5s ease-in-out;
+}
+
 
 #mensagemOrientacao {
     font-size: 14px;
