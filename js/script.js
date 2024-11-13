@@ -430,7 +430,7 @@ function mostrarPedidos() {
         const carrinhoAdicionais = document.createElement("p"); // Elemento para exibir adicionais
 
         // Exibe os adicionais se estiver presente
-        console.log("Adicionais:", item.adicionais);
+        //console.log("Adicionais:", item.adicionais);
         if (Array.isArray(item.adicionais) && item.adicionais.length > 0) {
           carrinhoAdicionais.innerText = "Adicionais: " + item.adicionais.join(', '); // Adiciona os Adicionais ao carrinho
           carrinhodiv1.appendChild(carrinhoAdicionais); // Adicionando os adicionais
@@ -1246,7 +1246,7 @@ function loadCarrinhoFromLocalStorage() {
       contagemCarrinho(); // Atualiza a contagem
       mostrarPedidos(); // Exibe os pedidos carregados
       //console.log('Carrinho carregado:', produtosCarrinho); // Adicionado para debug
-      alert("Algo inesperado ocorreu, mas salvamos o seu último pedido.");
+      alert("Algo inesperado ocorreu, mas salvamos o seu pedido mais recente.");
     } catch (error) {
       console.error('Erro ao carregar o carrinho do localStorage:', error);
       produtosCarrinho = []; // Reinicializa o carrinho em caso de erro
