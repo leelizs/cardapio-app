@@ -120,6 +120,7 @@ body::-webkit-scrollbar-thumb {
     width: 175px;
     height: auto;
     image-rendering: auto;
+    margin-left: -27%;
     /* Suaviza a imagem para uma aparência melhor */
     image-rendering: -webkit-optimize-contrast;
     /* Suaviza a imagem em navegadores WebKit */

@@ -1,11 +1,11 @@
 let hamburgueres = [
-    { id: 0, name: 'X-Burguer', img: 'imagens/hamburguer.png', price: 8.00, description: 'Pão, Hamburguer, Queijo.', type: 'Hamburguer' },
-    { id: 1, name: 'X-Salada', img: 'imagens/hamburguer.png', price: 9.00, description: 'Pão, Hamburguer, Queijo, Tomate e Alface.', type: 'Hamburguer' },
-    { id: 2, name: 'X-Egg', img: 'imagens/hamburguer.png', price: 10.00, description: 'Pão, Hamburguer, Queijo, Ovo, Tomate e Alface.', type: 'Hamburguer' },
-    { id: 3, name: 'X-Calabresa', img: 'imagens/hamburguer.png', price: 12.00, description: 'Pão, Hamburguer, Queijo, Calabresa, Tomate e Alface.', type: 'Hamburguer' },
-    { id: 4, name: 'X-Bacon', img: 'imagens/hamburguer.png', price: 14.00, description: 'Pão, Hamburguer, Queijo, Bacon, Tomate e Alface.', type: 'Hamburguer' },
-    { id: 5, name: 'X-Tudo', img: 'imagens/hamburguer.png', price: 18.00, description: 'Pão, Hamburguer, Queijo, Calabresa, Omelete de Presunto e Queijo, Bacon, Tomate e Alface.', type: 'Hamburguer' },
-    { id: 6, name: 'X-Especial', img: 'imagens/hamburguer.png', price: 23.00, description: 'Pão, 2 Hamburgueres, Queijo, Calabresa, Omelete de Presunto e Queijo, Bacon, Tomate e Alface.', type: 'Hamburguer' }
+    { id: 0, name: 'X-Burguer', img: 'imagens/hamburguer.png', price: 9.00, description: 'Pão, Hamburguer, Queijo.', type: 'Hamburguer' },
+    { id: 1, name: 'X-Salada', img: 'imagens/hamburguer.png', price: 10.00, description: 'Pão, Hamburguer, Queijo, Tomate e Alface.', type: 'Hamburguer' },
+    { id: 2, name: 'X-Egg', img: 'imagens/hamburguer.png', price: 11.00, description: 'Pão, Hamburguer, Queijo, Ovo, Tomate e Alface.', type: 'Hamburguer' },
+    { id: 3, name: 'X-Calabresa', img: 'imagens/hamburguer.png', price: 14.00, description: 'Pão, Hamburguer, Queijo, Calabresa, Tomate e Alface.', type: 'Hamburguer' },
+    { id: 4, name: 'X-Bacon', img: 'imagens/hamburguer.png', price: 15.00, description: 'Pão, Hamburguer, Queijo, Bacon, Tomate e Alface.', type: 'Hamburguer' },
+    { id: 5, name: 'X-Tudo', img: 'imagens/hamburguer.png', price: 19.00, description: 'Pão, Hamburguer, Queijo, Calabresa, Omelete de Presunto e Queijo, Bacon, Tomate e Alface.', type: 'Hamburguer' },
+    { id: 6, name: 'X-Especial', img: 'imagens/hamburguer.png', price: 25.00, description: 'Pão, 2 Hamburgueres, Queijo, Calabresa, Omelete de Presunto e Queijo, Bacon, Tomate e Alface.', type: 'Hamburguer' }
 ];
 
 let sorvetes = [
@@ -14,10 +14,10 @@ let sorvetes = [
         name: 'Massa',
         img: 'imagens/sorvete.png',
         price: [
-            { size: '200ml', value: 4.00 },
-            { size: '300ml', value: 6.00 },
-            { size: '400ml', value: 8.00 },
-            { size: '500ml', value: 10.00 }
+            { size: '200ml', value: 5.00 },
+            { size: '300ml', value: 7.00 },
+            { size: '400ml', value: 9.00 },
+            { size: '500ml', value: 12.00 }
         ],
         description: '',
         type: 'Sorvete'
@@ -29,7 +29,7 @@ let sorvetes = [
         price: [
             { size: '200ml', value: 6.00 },
             { size: '300ml', value: 8.00 },
-            { size: '400ml', value: 10.00 },
+            { size: '400ml', value: 11.00 },
             { size: '500ml', value: 13.00 }
         ],
         description: '',
@@ -42,7 +42,7 @@ let sorvetes = [
         price: [
             { size: '200ml', value: 6.00 },
             { size: '300ml', value: 8.00 },
-            { size: '400ml', value: 10.00 },
+            { size: '400ml', value: 11.00 },
             { size: '500ml', value: 13.00 }
         ],
         description: '',
@@ -53,9 +53,9 @@ let sorvetes = [
         name: 'Milk Shake',
         img: 'imagens/sorvete.png',
         price: [
-            { size: '300ml', value: 7.00 },
-            { size: '400ml', value: 9.00 },
-            { size: '500ml', value: 12.00 }
+            { size: '300ml', value: 8.00 },
+            { size: '400ml', value: 10.00 },
+            { size: '500ml', value: 14.00 }
         ],
         description: '',
         type: 'Sorvete'

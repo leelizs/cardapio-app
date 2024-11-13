@@ -1012,7 +1012,6 @@ function desabilitarPagamentoDinheiro() {
       }
     }).catch(err => {
       console.error("Erro ao verificar o pagamento:", err);
-      alert('Erro ao verificar o status do pagamento. Tente novamente.');
     });
   }
 }
