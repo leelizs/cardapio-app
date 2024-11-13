@@ -77,11 +77,60 @@ let itemEscolhido; //variavel que guarda o tipo de lanche escolhido, sorvete, ha
 
 iconeCarrinho.addEventListener('click', () => { // Botão do carrinho para mostrar os pedidos
   if (produtosCarrinho.length === 0) {
-    alert("Somente é possível exibir o carrinho quando houver itens.");
+    mostrarModal("Somente é possível exibir o carrinho quando houver itens.");
   } else {
     mostrarPedidos();
   }
 });
+
+function mostrarModal(mensagem) {
+  // Cria o fundo da modal
+  const modalOverlay = document.createElement('div');
+  modalOverlay.style.position = 'fixed';
+  modalOverlay.style.top = 0;
+  modalOverlay.style.left = 0;
+  modalOverlay.style.width = '100%';
+  modalOverlay.style.height = '100%';
+  modalOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+  modalOverlay.style.display = 'flex';
+  modalOverlay.style.justifyContent = 'center';
+  modalOverlay.style.alignItems = 'center';
+  modalOverlay.style.zIndex = 1000;
+
+  // Cria o contêiner da modal
+  const modalContainer = document.createElement('div');
+  modalContainer.style.backgroundColor = '#fff';
+  modalContainer.style.padding = '20px';
+  modalContainer.style.borderRadius = '8px';
+  modalContainer.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+  modalContainer.style.maxWidth = '400px';
+  modalContainer.style.textAlign = 'center';
+
+  // Cria a mensagem da modal
+  const modalMessage = document.createElement('p');
+  modalMessage.textContent = mensagem;
+  modalContainer.appendChild(modalMessage);
+
+  // Cria o botão OK para fechar a modal
+  const closeButton = document.createElement('button');
+  closeButton.textContent = 'OK';
+  closeButton.style.marginTop = '15px';
+  closeButton.style.padding = '10px 20px';
+  closeButton.style.border = 'none';
+  closeButton.style.borderRadius = '4px';
+  closeButton.style.backgroundColor = '#ee7700';
+  closeButton.style.color = '#fff';
+  closeButton.style.cursor = 'pointer';
+
+  // Fecha a modal ao clicar no botão
+  closeButton.addEventListener('click', () => {
+    document.body.removeChild(modalOverlay);
+  });
+
+  modalContainer.appendChild(closeButton);
+  modalOverlay.appendChild(modalContainer);
+  document.body.appendChild(modalOverlay);
+}
 
 todosButaoAdd.forEach((item) => { // Botão adicionar o item no carrinho
   item.addEventListener('click', () => {
@@ -195,7 +244,7 @@ function addCarrinho(keyEscolhido, itemEscolhido) {
 
         // Verifica se ao menos um salgado foi selecionado
         if (compra.salgados.length === 0) {
-          alert("Por favor, selecione pelo menos um salgado antes de adicionar ao carrinho.");
+          mostrarModal("Por favor, selecione pelo menos um salgado antes de adicionar ao carrinho.");
           return; // Sai da função sem adicionar ao carrinho
         }
       }
@@ -237,7 +286,7 @@ function addCarrinho(keyEscolhido, itemEscolhido) {
 
     // Verifica se ao menos um sabor foi selecionado, exceto se for Açaí ou Cupuaçu
     if (saboresSelecionados.length === 0 && compra.produto.name !== 'Açaí' && compra.produto.name !== 'Cupuaçu') {
-      alert('Por favor, selecione pelo menos um sabor antes de adicionar ao carrinho.');
+      mostrarModal("Por favor, selecione pelo menos um sabor antes de adicionar ao carrinho.");
       return;
     }
 
@@ -482,7 +531,6 @@ function mostrarPedidos() {
     carrinhoItem.appendChild(carrinhodiv2);
 
     // Evento para remover item do carrinho
-    // Evento para remover item do carrinho
     carrinhoButton.addEventListener('click', () => {
       produtosCarrinho.splice(index, 1); // Remove o item do carrinho
 
@@ -490,6 +538,7 @@ function mostrarPedidos() {
       if (produtosCarrinho.length === 0) {
         localStorage.removeItem('produtosCarrinho'); // Remove a variável do localStorage
         modalCarrinho.classList.remove("show"); // Fecha o modal
+        mostrarModal("Todos os itens do carrinho foram removidos.");
       } else {
         saveCarrinhoToLocalStorage(); // Atualiza o localStorage
       }
@@ -731,7 +780,7 @@ function exibirQRCode(copiaECola, txid, expiracao) {
       tempoRestante -= 1000;
       if (tempoRestante <= 0) {
         clearInterval(contadorExpiracao);
-        alert("QR Code expirado!");
+        mostrarModal("QR Code expirado!");
       } else {
         atualizarTempo();
       }
@@ -943,12 +992,12 @@ async function finalizarECapturarPedido() {
     const enderecoEntrega = document.getElementById('enderecoEntrega')?.value.trim();
 
     if (!retirarLocalChecked && !fazerEntregaChecked) {
-      alert('Por favor, selecione uma opção de recebimento.');
+      mostrarModal("Por favor, selecione uma opção de recebimento.");
       esconderLoader();
       return;
     }
     if (fazerEntregaChecked && !enderecoEntrega) {
-      alert('Por favor, preencha o campo de endereço.');
+      mostrarModal("Por favor, preencha o campo de endereço.");
       esconderLoader();
       return;
     }
@@ -966,7 +1015,7 @@ async function finalizarECapturarPedido() {
     const pagamentoSelecionado = document.querySelector('input[name="metodoPagamento"]:checked');
 
     if (!pagamentoSelecionado) {
-      alert('Por favor, selecione um método de pagamento.');
+      mostrarModal("Por favor, selecione um método de pagamento.");
       esconderLoader();
       return;
     }
@@ -979,7 +1028,7 @@ async function finalizarECapturarPedido() {
       const txid = localStorage.getItem("txid");
 
       if (!txid) {
-        alert('Erro: Transação PIX não encontrada.');
+        mostrarModal("Transação PIX não encontrada.");
         esconderLoader();
         return;
       }
@@ -988,7 +1037,7 @@ async function finalizarECapturarPedido() {
 
       while (statusPagamento !== "CONCLUIDA") {
         if (statusPagamento === null) {
-          alert('Erro ao verificar o pagamento.');
+          mostrarModal("Erro ao verificar o pagamento.");
           esconderLoader();
           return;
         }
@@ -1021,7 +1070,7 @@ async function finalizarECapturarPedido() {
 
   } catch (error) {
     console.error(error);
-    alert('Erro ao processar o pedido. Você será redirecionado.');
+    mostrarModal("Erro ao processar o pedido. Você será redirecionado.");
     window.location.href = 'offline.html';
   } finally {
     esconderLoader();
@@ -1249,7 +1298,7 @@ function loadCarrinhoFromLocalStorage() {
       contagemCarrinho(); // Atualiza a contagem
       mostrarPedidos(); // Exibe os pedidos carregados
       //console.log('Carrinho carregado:', produtosCarrinho); // Adicionado para debug
-      alert("Algo inesperado ocorreu, mas salvamos o seu pedido mais recente.");
+      mostrarModal("Algo inesperado ocorreu, mas salvamos o seu pedido mais recente.");
     } catch (error) {
       console.error('Erro ao carregar o carrinho do localStorage:', error);
       produtosCarrinho = []; // Reinicializa o carrinho em caso de erro
